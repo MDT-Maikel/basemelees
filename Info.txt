@@ -1,0 +1,11 @@
+[Developer/Maintainer]
+Maikel 
+
+[Folder Information]
+This folder contains a consistent set of base melees for the original OpenClonk contents.
+
+All rounds have roughly the same features, an attack-free start up phase which allows the
+players to construct their settlements and defenses. There will be provided a menu which 
+allows the placement of certain structures by the team leader.
+
+[Information for developers]
