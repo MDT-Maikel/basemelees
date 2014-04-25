@@ -1,0 +1,2 @@
+Name=Herrschaft
+Description=Teams oder Spieler werden eliminiert wenn sie alle ihre Basen verloren haben.
