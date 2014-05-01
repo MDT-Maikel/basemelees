@@ -1,0 +1,11 @@
+List of medals and there index, all medals should have a unique index between 0 and 254
+
+
+[Medal List]
+------------------------------
+Medal ID           Medal index
+------------------------------
+Medal_Template          0
+------------------------------
+Medal_Kill              1
+Medal_Pyromania         2
