@@ -40,6 +40,13 @@ protected func RemovePlayer(int plr)
 	return;
 }
 
+protected func OnClonkDeath(object clonk, int killed_by)
+{
+	// Perform "OnCrewDeath" callbacks for all loaded medals.
+	DoOnCrewDeathCallbacks(clonk, killed_by);
+	return;
+}
+
 protected func Activate(int byplr)
 {
 	MessageWindow("$Description$", byplr);
@@ -115,6 +122,16 @@ private func DoOnRemovePlayerCallbacks(int plr)
 	while (def = GetDefinition(index++))
 		if (def->~IsMedal())
 			def->~OnRemovePlayer(plr);
+	return;	
+}
+
+// Performs the "OnCrewDeath" callback in all loaded medals.
+private func DoOnCrewDeathCallbacks(object crew, int killed_by)
+{
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsMedal())
+			def->~OnCrewDeath(crew, killed_by);
 	return;	
 }
 

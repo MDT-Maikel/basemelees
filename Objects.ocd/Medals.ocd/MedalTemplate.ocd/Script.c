@@ -5,12 +5,8 @@
 	@author Maikel
 */
 
-// A medal should have this function and return true.
-public func IsMedal() { return true; }
 
-// A medal should have this function and return a unique index.
-// Consult the list of existing medals to get a unique index.
-public func GetMedalIndex() { return 0; }
+/*-- Medal Properties --*/
 
 // A medal should have a name.
 local Name = "$Name$";
@@ -18,6 +14,15 @@ local Name = "$Name$";
 // A medal should have description.
 local Description = "$Description$";
 
+// A medal should have this function and return true.
+public func IsMedal() { return true; }
+
+// A medal should have this function and return a unique index.
+// Consult the list of existing medals to get a unique index.
+public func GetMedalIndex() { return 0; }
+
+
+/*-- Medal Scripts --*/
 
 // Medals have various ways to track whether they should be awarded.
 // A medal can be awared by making an ID call to the medal rule like:
@@ -36,7 +41,7 @@ local Description = "$Description$";
 // Called when the round starts, technically when the rule is created.
 public func OnRoundStart()
 {
-	Log("OnRoundStart() callback has been done in %i.", Medal_Template);
+	//Log("OnRoundStart() callback has been done in %i.", Medal_Template);
 	return;
 }
 
@@ -44,20 +49,27 @@ public func OnRoundStart()
 // or all goals are fulfilled.
 public func OnRoundFinish()
 {
-	Log("OnRoundFinish() callback has been done in %i.", Medal_Template);
+	//Log("OnRoundFinish() callback has been done in %i.", Medal_Template);
 	return;
 }
 
 // Called when a player is initialized.
 public func OnInitializePlayer(int plr)
 {
-	Log("OnInitializePlayer(%d) callback has been done in %i.", plr, Medal_Template);
+	//Log("OnInitializePlayer(%d) callback has been done in %i.", plr, Medal_Template);
 	return;
 }
 
 // Called when a player is removed.
 public func OnRemovePlayer(int plr)
 {
-	Log("OnRemovePlayer(%d) callback has been done in %i.", plr, Medal_Template);
+	//Log("OnRemovePlayer(%d) callback has been done in %i.", plr, Medal_Template);
+	return;
+}
+
+// Called when a crew member dies.
+public func OnCrewDeath(object crew, int killed_by)
+{
+	//Log("OnCrewDeath(%v, %d) callback has been done in %i.", crew, killed_by, Medal_Template);
 	return;
 }
