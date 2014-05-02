@@ -33,10 +33,18 @@ local Description = "$Description$";
 // to start effects. Remember that for ID calls you can't use
 // local variables. The calls are listed below.
 
-// Called when the rule is initialized.
-public func OnInitialize()
+// Called when the round starts, technically when the rule is created.
+public func OnRoundStart()
 {
-	Log("OnInitialize() callback has been done in %i.", Medal_Template);
+	Log("OnRoundStart() callback has been done in %i.", Medal_Template);
+	return;
+}
+
+// Called when the round is finished, i.e. when all players are elimanted
+// or all goals are fulfilled.
+public func OnRoundFinish()
+{
+	Log("OnRoundFinish() callback has been done in %i.", Medal_Template);
 	return;
 }
 

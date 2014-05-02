@@ -14,8 +14,15 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
-	// Perform "OnInitialize" callbacks for all loaded medals.
-	DoOnInitializeCallbacks();
+	// Perform "OnRoundStart" callbacks for all loaded medals.
+	DoOnRoundStartCallbacks();
+	return;
+}
+
+protected func OnGameOver()
+{
+	// Perform "OnRoundFinish" callbacks for all loaded medals.
+	DoOnRoundFinishCallbacks();
 	return;
 }
 
@@ -71,13 +78,23 @@ public func ClearMedals(int plr)
 
 /*-- Medal Callbacks --*/
 
-// Performs the "OnInitialize" callback in all loaded medals.
-private func DoOnInitializeCallbacks()
+// Performs the "OnRoundStart" callback in all loaded medals.
+private func DoOnRoundStartCallbacks()
 {
 	var index = 0, def;
 	while (def = GetDefinition(index++))
 		if (def->~IsMedal())
-			def->~OnInitialize();
+			def->~OnRoundStart();
+	return;
+}
+
+// Performs the "OnRoundFinish" callback in all loaded medals.
+private func DoOnRoundFinishCallbacks()
+{
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsMedal())
+			def->~OnRoundFinish();
 	return;
 }
 
