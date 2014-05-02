@@ -1,0 +1,2 @@
+Name=No Borders
+Description=The left and right border of the map are connected such that a continuous map is created.
