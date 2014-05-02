@@ -1,0 +1,2 @@
+Name=Marvelous Miner 
+Description=Awarded for mining at least one thousand clunkers during a single round.

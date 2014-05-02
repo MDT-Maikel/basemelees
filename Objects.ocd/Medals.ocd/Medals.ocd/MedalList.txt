@@ -8,3 +8,4 @@ Medal ID           Medal index
 Medal_Template          0
 ------------------------------
 Medal_Kill              1
+Medal_Miner	            2

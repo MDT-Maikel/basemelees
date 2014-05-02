@@ -31,7 +31,7 @@ public func GetMedalIndex() { return 0; }
 // Sometimes it is necessary to append scripts to existing objects.
 // These scripts should be a single script per medal called Medal*.c
 // and should be placed in the Scripts.ocd/System.ocg folder. See for
-// example the MedalTamplate.c script.
+// example the Medal_Template.c script.
 
 // There are also callbacks from the medal rule for certain events.
 // These are ID calls from the rule to the medal and can be used
