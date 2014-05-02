@@ -38,7 +38,7 @@ Information for Developers
 
 Version
 -------
-v0.1
+0.1
 
 
 License

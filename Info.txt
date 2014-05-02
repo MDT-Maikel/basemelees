@@ -8,4 +8,21 @@ All rounds have roughly the same features, an attack-free start up phase which a
 players to construct their settlements and defenses. There will be provided a menu which 
 allows the placement of certain structures by the team leader.
 
-[Information for developers]
+[Information for Developers]
+* This project is always developed alongside the OpenClonk master branch and should include the latest developments.
+* Please abide to coding style guidelines (http://wiki.openclonk.org/w/C4Script_Style_Guidelines) when developing new content.
+* All content added to this repository is implicitly relicensed under the CC BY-SA 4.0 license.
+* If you want to submit a patch please contact me on the OpenClonk forum.
+
+[Release Steps]
+Make sure the version has been increased and up to date.
+Remove unnecessary files from the folder and pack it using c4group.
+Test a few games from the scenario folder for script errors.
+Release this new version to Lorry and other platforms.
+
+[Packing Scenario Folder]
+cd planet/
+cp BaseMelees.ocf BaseMeleesRelease.ocf
+rm BaseMeleesRelease.ocf/Info.txt
+rm BaseMeleesRelease.ocf/README.md
+c4group BaseMeleesRelease.ocf -p
