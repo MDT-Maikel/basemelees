@@ -201,7 +201,7 @@ public func OpenBaseMenu(object clonk)
 	};
 	// Menu ID.
 	menu_id = CustomGuiOpen(menu);
-	clonk->SetMenu(menu_id);
+	clonk->SetMenu(this);
 	return;
 }
 
@@ -292,6 +292,8 @@ public func CloseConstructionMenu()
 	menu_controller = nil;
 	return;
 }
+
+public func Close() { return RemoveObject(); }
 
 
 /*-- Base Object Previewer --*/
