@@ -1,0 +1,2 @@
+Name=Kill
+Description=Wird verliehen wenn ein Gegner umgebracht wurde.
