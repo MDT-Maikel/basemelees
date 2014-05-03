@@ -25,4 +25,5 @@ cd planet/
 cp BaseMelees.ocf BaseMeleesRelease.ocf
 rm BaseMeleesRelease.ocf/Info.txt
 rm BaseMeleesRelease.ocf/README.md
+rm BaseMeleesRelease.ocf/.gitignore
 c4group BaseMeleesRelease.ocf -p
