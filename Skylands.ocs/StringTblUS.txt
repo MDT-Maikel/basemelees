@@ -1,0 +1,5 @@
+# Team Names
+TeamNameBoompack=Boompack Boys
+TeamNameCatapult=Catapult Cavalry
+TeamNameWindbag=Wind Whisperers
+TeamNameTeleglove=Tele Talkers

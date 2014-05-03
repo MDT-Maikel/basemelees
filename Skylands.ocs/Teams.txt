@@ -1,0 +1,26 @@
+[Teams]
+TeamColors=true
+
+	[Team]
+	id=1
+	Name=$TeamNameBoompack$
+	IconSpec=Boompack
+	MaxPlayer=8
+
+	[Team]
+	id=2
+	Name=$TeamNameCatapult$
+	IconSpec=Catapult
+	MaxPlayer=8
+	
+	[Team]
+	id=3
+	Name=$TeamNameWindbag$
+	IconSpec=WindBag
+	MaxPlayer=8
+	
+	[Team]
+	id=4
+	Name=$TeamNameTeleglove$
+	IconSpec=TeleGlove
+	MaxPlayer=8
