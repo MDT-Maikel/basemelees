@@ -35,6 +35,7 @@ protected func Initialize()
 	// Initialize different parts of the scenario.
 	InitVegetation();
 	InitEnvironment();
+	InitBlocking();
 
 	return;
 }
@@ -47,23 +48,8 @@ protected func InitializePlayer(int plr)
 		return;
 	
 	// Set a strict zoom range.
-	SetPlayerZoomByViewRange(plr, 5000, 3500, PLRZOOM_LimitMax);
+	SetPlayerZoomByViewRange(plr, 500, 350, PLRZOOM_LimitMax);
 	SetPlayerViewLock(plr, true);
-	
-	// Position crew and give them a shovel.
-	var i, crew;
-	for (i = 0; crew = GetCrew(plr, i); ++i)
-	{
-		var island = island_list[team - 1];
-		var x = island[0] + RandomX(-50, 50);
-		var y = FindHeight(x, island[1] - 80) - 11;
-		crew->SetPosition(x, y);
-		crew->CreateContents(Shovel);
-	}
-	
-	// Give player their knowledge and base materials.
-	GivePlayerKnowledge(plr);
-	GivePlayerMaterials(plr);
 	
 	// Base startup objects.
 	var base_objects = [
@@ -81,12 +67,27 @@ protected func InitializePlayer(int plr)
 	{
 		team_init[team - 1] = true;
 		var island = island_list[team - 1];
-		var x = island[0] + RandomX(-50, 50);
+		var x = island[0];
 		var y = FindHeight(x, island[1] - 50);
 		SetWealth(plr, 200);
 		CreateConstruction(Flagpole, x, y, plr, 100, true);		
 		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 320, y - 160, 640, 480));
 	}
+	
+	// Position crew and give them a shovel.
+	var i, crew;
+	for (i = 0; crew = GetCrew(plr, i); ++i)
+	{
+		var island = island_list[team - 1];
+		var x = island[0] + RandomX(-50, 50);
+		var y = FindHeight(x, island[1] - 80) - 11;
+		crew->SetPosition(x, y);
+		crew->CreateContents(Shovel);
+	}
+	
+	// Give player their knowledge and base materials.
+	GivePlayerKnowledge(plr);
+	GivePlayerMaterials(plr);
 	return;	
 }
 
@@ -177,7 +178,20 @@ private func InitEnvironment()
 	SetSkyParallax(0, 20, 20);
 	
 	// Disasters: meteors and lightning.
-	Meteor->SetChance(4);
-	Cloud->SetLightning(4);
+	Meteor->SetChance(2);
+	Cloud->SetLightning(2);
+	return;
+}
+
+private func InitBlocking()
+{
+	// Create a blocking rectangle around each island for 4 minutes.
+	for (var i = 0; i < 4; i++)
+	{
+		var island = island_list[i - 1];
+		var x = island[0];
+		var y = FindHeight(x, island[1] - 50);
+		AttackBarrier->BlockRectangle(x - 320, y - 160, 640, 480, 36 * 60 * 4);
+	}
 	return;
 }
