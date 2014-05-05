@@ -1,0 +1,2 @@
+Name=Attack Barriers
+Description=Barriers preventing early attacks and allowing for building up a settlement.

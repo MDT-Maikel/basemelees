@@ -1,0 +1,9 @@
+[DefCore]
+id=AttackBarrier
+Version=5,4,0,0
+Category=C4D_StaticBack
+Width=40
+Height=8
+Offset=-20,-4
+SolidMask=0,0,40,8,0,0
+Rotate=1
