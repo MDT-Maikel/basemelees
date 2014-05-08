@@ -68,10 +68,10 @@ protected func InitializePlayer(int plr)
 		team_init[team - 1] = true;
 		var island = island_list[team - 1];
 		var x = island[0];
-		var y = FindHeight(x, island[1] - 50);
+		var y = FindHeight(x, island[1] + 20);
 		SetWealth(plr, 200);
 		CreateConstruction(Flagpole, x, y, plr, 100, true);		
-		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 320, y - 160, 640, 480));
+		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 300, y - 120, 600, 440));
 	}
 	
 	// Position crew and give them a shovel.
@@ -177,10 +177,40 @@ private func InitEnvironment()
 	// Set a certain parallax.
 	SetSkyParallax(0, 20, 20);
 	
-	// Disasters: meteors and lightning.
-	Meteor->SetChance(2);
-	Cloud->SetLightning(2);
+	// Disasters: meteors, lightning and earthquakes are controlled by an effect.
+	AddEffect("IntDistasterControl", nil, 100);
 	return;
+}
+
+global func FxIntDistasterControlStart(object target, proplist effect, int temporary)
+{
+	if (temporary)
+		return FX_OK;
+	
+	effect.count = 0;
+	// Call the timer every five minutes.
+	effect.Interval = 36 * 60 * 5;
+	// Set disasters to zero.
+	Meteor->SetChance(0);
+	Cloud->SetLightning(0);
+	Earthquake->SetChance(0);
+	return FX_OK;
+}
+
+global func FxIntDistasterControlTimer(object target, proplist effect, int time)
+{
+	// Increase counter.
+	effect.count++;
+
+	// Increase chance for Disasters.
+	Meteor->SetChance(2 * effect.count);
+	Cloud->SetLightning(2 * effect.count);
+	Earthquake->SetChance(2 * effect.count);
+	
+	// Remove effect if above some maximum value.
+	if (effect.count >= 20)
+		return FX_Execute_Kill;
+	return FX_OK;
 }
 
 private func InitBlocking()
@@ -191,7 +221,7 @@ private func InitBlocking()
 		var island = island_list[i - 1];
 		var x = island[0];
 		var y = FindHeight(x, island[1] - 50);
-		AttackBarrier->BlockRectangle(x - 320, y - 160, 640, 480, 36 * 60 * 4);
+		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * 4);
 	}
 	return;
 }
