@@ -82,11 +82,18 @@ public func DrawMainIsland(proplist island_largerect)
 	DrawMaterial("Firestone", island, 4, 6);
 	DrawMaterial("Ore", island, 3, 8);
 	DrawMaterial("Gold", island, 3, 7);
-	DrawMaterial("Tunnel", island, 8, 20);
+	DrawMaterial("Tunnel", island, 4, 20);
 	DrawMaterial("Water", island, 4, 6);
 	DrawMaterial("Coal", island, 3, 8);
 	DrawMaterial("Firestone", island, 4, 6);
 	DrawMaterial("Ore", island, 3, 8);
+	
+	// Draw a larger cave in the middle of the island.
+	var x = island_largerect.X + island_largerect.Wdt / 2;
+	var y = island_largerect.Y + island_largerect.Hgt / 2 - RandomX(3, 5);
+	var cave = {Algo = MAPALGO_Rect, X = x - 7, Y = y - 4, Wdt = 14, Hgt = 8};
+	cave = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = [8, 8], Scale = [6, 6], Iterations = 3, Op = cave};
+	Draw("Tunnel", cave);
 	
 	// Draw a granite border, with "holes" out of tunnel and rock.
 	var island_border = {Algo = MAPALGO_Border, Left = [-1, 1], Right = [-1, 1], Top = 0, Bottom = [-1,2], Op = island};

@@ -58,7 +58,8 @@ protected func InitializePlayer(int plr)
 		{def = ToolsWorkshop, amount = 1, contents = [[Chunk_Wood, 8], [Chunk_Metal, 4]]},
 		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Chunk_Wood, 4], [Chunk_Metal, 2]]},
 		{def = Sawmill, amount = 1},
-		{def = Foundry, amount = 1},
+		{def = Foundry, amount = 1, contents = [[Chunk_Metal, 6]]},
+		{def = Elevator, amount = 1},
 		{def = Lorry, amount = 1, contents = [[Loam, 3], [Hammer, 2], [Axe, 2]]}
 	];
 	
@@ -68,7 +69,7 @@ protected func InitializePlayer(int plr)
 		team_init[team - 1] = true;
 		var island = island_list[team - 1];
 		var x = island[0];
-		var y = FindHeight(x, island[1] + 20);
+		var y = FindHeight(x, island[1]);
 		SetWealth(plr, 200);
 		CreateConstruction(Flagpole, x, y, plr, 100, true);		
 		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 300, y - 120, 600, 440));
@@ -80,7 +81,7 @@ protected func InitializePlayer(int plr)
 	{
 		var island = island_list[team - 1];
 		var x = island[0] + RandomX(-50, 50);
-		var y = FindHeight(x, island[1] - 80) - 11;
+		var y = FindHeight(x, island[1]) - 11;
 		crew->SetPosition(x, y);
 		crew->CreateContents(Shovel);
 	}
@@ -136,7 +137,7 @@ private func InitVegetation()
 	PlaceGrass(85);
 	
 	// Cave mushrooms and coconut trees provide wood.
-	LargeCaveMushroom->Place(30, nil, { terraform = false });
+	LargeCaveMushroom->Place(30, nil, { terrafom = false });
 	Tree_Coconut->Place(60);
 	
 	// Some mushrooms to regain health.
@@ -220,7 +221,7 @@ private func InitBlocking()
 	{
 		var island = island_list[i - 1];
 		var x = island[0];
-		var y = FindHeight(x, island[1] - 50);
+		var y = FindHeight(x, island[1]);
 		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * 4);
 	}
 	return;
