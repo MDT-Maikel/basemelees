@@ -61,10 +61,10 @@ public func SetBaseRectangle(proplist rect)
 {
 	base_rect = rect;
 	// Center player view to the rectangle.
-	SetPosition(base_rect.x + base_rect.w / 2, base_rect.y + base_rect.h / 2);
+	SetPosition(base_rect.x + base_rect.w / 2, base_rect.y + base_rect.h / 2 - 50);
 	SetPlrView(GetOwner(), this);
-	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.w / 10, 11 * base_rect.h / 10, PLRZOOM_Direct);
 	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.w / 10, 11 * base_rect.h / 10, PLRZOOM_LimitMax);
+	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.w / 10, 11 * base_rect.h / 10, PLRZOOM_Direct);
 	SetPlayerViewLock(GetOwner(), true);
 	// Show base rectangle.
 	ShowBaseRect();
@@ -99,9 +99,9 @@ public func DeleteBaseRect()
 /*-- Construction Menu --*/
 
 // Background colors for hovering and bars and description.
-static const BASEMENU_HoverColor = 0x50ffffff;
-static const BASEMENU_BarColor = 0x50888888;
-static const BASEMENU_DescColor = 0xffaa0000;
+static const BASEMENU_BackgroundColor = 0x77000000;
+static const BASEMENU_HoverColor = 0x99ffffff;
+static const BASEMENU_BarColor = 0x99888888;
 
 local menu, menu_id, menu_controller;
 
@@ -135,7 +135,7 @@ public func OpenBaseMenu(object clonk)
 		Right = Format("%d%", 50 + menu_width),
 		Top = Format("%d%", 50 - menu_height),
 		Bottom = Format("%d%", 50 + menu_height),
-		BackgroundColor = {Std = 0},
+		BackgroundColor = {Std = BASEMENU_BackgroundColor},
 	};
 	
 	// Description top ten percent.
@@ -148,7 +148,7 @@ public func OpenBaseMenu(object clonk)
 		Top = "0%",
 		Bottom = "10%",
 		Text = "$MsgPlaceObjects$",
-		BackgroundColor = {Std = 0},	
+		BackgroundColor = {Std = BASEMENU_BackgroundColor},	
 	};
 	
 	// Bar between description and objects.
@@ -172,19 +172,19 @@ public func OpenBaseMenu(object clonk)
 		Top = "12%",
 		Bottom = "88%",
 		Style = GUI_GridLayout,
-		BackgroundColor = {Std = 0},
+		BackgroundColor = {Std = BASEMENU_BackgroundColor},
 	};
 	objects = MenuAddObjects(objects, clonk);
 	menu.objects = objects;
 	// Bar between objects and object info.
-	menu.bar1 = 
+	menu.bar2 = 
 	{
 		Target = this,
 		ID = 4,
 		Left = "0%",
 		Right = "100%",
-		Top = "10%",
-		Bottom = "12%",
+		Top = "86%",
+		Bottom = "88%",
 		BackgroundColor = {Std = BASEMENU_BarColor},
 	};
 	// Object info bottom ten percent.
@@ -194,14 +194,25 @@ public func OpenBaseMenu(object clonk)
 		ID = 5,
 		Left = "0%",
 		Right = "100%",
-		Top = "90%",
+		Top = "88%",
+		Bottom = "96%",
+		Text = nil,
+		BackgroundColor = {Std = BASEMENU_BackgroundColor},
+	};
+	menu.objectspawn = 
+	{
+		Target = this,
+		ID = 6,
+		Left = "0%",
+		Right = "100%",
+		Top = "96%",
 		Bottom = "100%",
 		Text = nil,
-		BackgroundColor = {Std = 0},
+		BackgroundColor = {Std = BASEMENU_BackgroundColor},
 	};
 	// Menu ID.
 	menu_id = CustomGuiOpen(menu);
-	// Notify the clonk and set the menu to be unclosable.
+	// Notify the clonk and set the menu to be uncloseable.
 	clonk->SetMenu(this, true);
 	return;
 }
@@ -214,12 +225,7 @@ public func MenuAddObjects(proplist struct, object clonk)
 	{
 		if (obj.amount <= 0)
 			continue;
-			
-		var content_str = "";
-		if (obj.contents)
-			for (c in obj.contents)
-				content_str = Format("%s %dx{{%i}}", content_str, c[1], c[0]);
-				
+							
 		var str =
 		{
 			Target = this,
@@ -230,7 +236,7 @@ public func MenuAddObjects(proplist struct, object clonk)
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnObjectHover", obj)],
 			OnMouseOut = GuiAction_SetTag("Std"), 
 			OnClick = GuiAction_Call(this, "OnObjectSelection", {base_obj = obj, constructor = clonk}),
-			Picture = 
+			picture = 
 			{
 				Target = this,
 				ID = cnt + 2000,
@@ -240,7 +246,7 @@ public func MenuAddObjects(proplist struct, object clonk)
 				Bottom = "92%",
 				Symbol = obj.def,
 			},
-			Amount = 
+			amount = 
 			{
 				Target = this,
 				ID = cnt + 3000,
@@ -250,18 +256,8 @@ public func MenuAddObjects(proplist struct, object clonk)
 				Bottom = "20%",
 				Text = Format("%dx", obj.amount),
 			},
-			Contents = 
-			{
-				Target = this,
-				ID = cnt + 3000,
-				Left = "0%",
-				Right = "100%",
-				Top = "80%",
-				Bottom = "100%",
-				Text = content_str,
-			}
 		};
-		struct[Format("Struct%d", cnt + 4)] = str;		
+		struct[Format("struct%d", cnt + 4)] = str;		
 		cnt++;
 	}
 	return struct;
@@ -280,6 +276,16 @@ public func OnObjectHover(proplist obj)
 	// Update the description of the object.
 	menu.objectinfo.Text = obj.def.Description;
 	CustomGuiUpdate(menu.objectinfo, menu_id, menu.objectinfo.ID, this);
+	// Update the description of the object.
+	var content_str = "";
+	if (obj.contents)
+	{
+		for (c in obj.contents)
+			content_str = Format("%s %dx{{%i}}", content_str, c[1], c[0]);	
+		content_str	= Format("$MsgSpawnContents$ %s", 0xffff0000, content_str);
+	}
+	menu.objectspawn.Text = content_str;
+	CustomGuiUpdate(menu.objectspawn, menu_id, menu.objectspawn.ID, this);
 	return;
 }
 

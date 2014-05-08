@@ -1,4 +1,5 @@
 Name=Base Menu
 Description=Let's the team leader place structures and vehicles in their base area on startup.
 
-MsgPlaceObjects=As a team leader you are allowed to place certain structures and vehicles in your base area. Pick any of the items below and place them in the landscape within the base boundaries.
+MsgPlaceObjects=As a team leader you are allowed to place certain structures and vehicles in your base area. Pick any of the items below and place them in the landscape within the base boundaries. Some of the structures will spawn with certain objects inside, this is indicated below.
+MsgSpawnContents=<c %x>Spawn Inhalt:</c>
