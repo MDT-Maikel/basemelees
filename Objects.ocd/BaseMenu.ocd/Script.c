@@ -201,7 +201,8 @@ public func OpenBaseMenu(object clonk)
 	};
 	// Menu ID.
 	menu_id = CustomGuiOpen(menu);
-	clonk->SetMenu(this);
+	// Notify the clonk and set the menu to be unclosable.
+	clonk->SetMenu(this, true);
 	return;
 }
 
