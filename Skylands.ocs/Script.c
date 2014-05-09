@@ -18,6 +18,7 @@ protected func Initialize()
 	CreateObject(Goal_Melee);
 	CreateObject(Rule_NoBorders);
 	CreateObject(Rule_Domination);
+	CreateObject(Rule_BaseRespawn);
 	CreateObject(Rule_BuyAtFlagpole);
 	CreateObject(Rule_TeamAccount);
 	CreateObject(Rule_Medals);	
@@ -36,7 +37,6 @@ protected func Initialize()
 	InitVegetation();
 	InitEnvironment();
 	InitBlocking();
-
 	return;
 }
 

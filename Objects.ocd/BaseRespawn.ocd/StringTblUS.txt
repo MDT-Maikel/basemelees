@@ -1,0 +1,2 @@
+Name=Base Respawn
+Description=You respawn at the nearest base if sufficient clonks and clunkers are available.
