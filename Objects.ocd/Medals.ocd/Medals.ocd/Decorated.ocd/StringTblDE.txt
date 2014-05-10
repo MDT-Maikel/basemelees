@@ -1,0 +1,2 @@
+Name=Decorated
+Description=Awarded when you get awarded with more than ten medals in a single round.
