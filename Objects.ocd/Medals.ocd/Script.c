@@ -1,9 +1,11 @@
 /**
-	Medals
-	If this rule is activated players can earn medals by performing certain actions like:
-	* special kills
-	* defensive manouvers
-	* destroying bases
+	Medals Rule
+	If this rule is activated players can earn medals by performing certain actions.
+	All medals are listed in MedalList.txt and should be added there with a unique ID.
+	A medal can be awarded by the definition call to this rule:
+	  Rule_Medals->AwardMedal(id medal, int plr);
+	And the rule will do an extended gamecall when a medal is awarded:
+	  OnMedalAwarded(id medal, int to_plr);
 	
 	@author Maikel
 */
@@ -14,35 +16,35 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
-	// Perform "OnRoundStart" callbacks for all loaded medals.
+	// Perform "OnRoundStart" callback for all loaded medals.
 	DoOnRoundStartCallbacks();
 	return;
 }
 
 protected func OnGameOver()
 {
-	// Perform "OnRoundFinish" callbacks for all loaded medals.
+	// Perform "OnRoundFinish" callback for all loaded medals.
 	DoOnRoundFinishCallbacks();
 	return;
 }
 
 protected func InitializePlayer(int plr)
 {
-	// Perform "OnInitializePlayer" callbacks for all loaded medals.
+	// Perform "OnInitializePlayer" callback for all loaded medals.
 	DoOnInitializePlayerCallbacks(plr);
 	return;
 }
 
 protected func RemovePlayer(int plr)
 {
-	// Perform "OnRemovePlayer" callbacks for all loaded medals.
+	// Perform "OnRemovePlayer" callback for all loaded medals.
 	DoOnRemovePlayerCallbacks(plr);
 	return;
 }
 
 protected func OnClonkDeath(object clonk, int killed_by)
 {
-	// Perform "OnCrewDeath" callbacks for all loaded medals.
+	// Perform "OnCrewDeath" callback for all loaded medals.
 	DoOnCrewDeathCallbacks(clonk, killed_by);
 	return;
 }
@@ -59,19 +61,28 @@ protected func Activate(int byplr)
 // Gives the player the specified medal.
 public func AwardMedal(id medal, int plr)
 {
-	Log("Medal %i rewarded for %s", medal, GetPlayerName(plr));
+	// Safety check: is the passed medal really a medal?
+	if (!medal->~IsMedal())
+		return;
+	
+	//Log("Medal %i rewarded for %s", medal, GetPlayerName(plr));
 	// Retrieve the medal count from the players medal list using the medal index.
 	var medal_index = medal->GetMedalIndex();
 	var medal_data = GetMedalData(plr);
 	var medal_count = GetMedalCount(medal_data, medal_index);
-	Log("Obtained medal count from medal data (%s)", medal_data);
-	Log("Medal count for medal %i equals %d", medal, medal_count);
+	//Log("Obtained medal count from medal data (%s)", medal_data);
+	//Log("Medal count for medal %i equals %d", medal, medal_count);
 	
 	// Set the medal count from the players medal list using the medal index.
 	medal_data = SetMedalCount(medal_data, medal_index, medal_count + 1);
-	Log("New medal data has been set to (%s)", medal_data);
+	//Log("New medal data has been set to (%s)", medal_data);
 	SetMedalData(plr, medal_data);
-
+	
+	// Perform "OnMedalAwarded" callback for all loaded medals.
+	DoOnMedalAwardedCallbacks(medal, plr);
+	
+	// Also perform "OnMedalAwarded" callback in scenario scripts & rules.
+	GameCallEx("OnMedalAwarded", medal, plr);
 	return;
 }
 
@@ -133,6 +144,16 @@ private func DoOnCrewDeathCallbacks(object crew, int killed_by)
 		if (def->~IsMedal())
 			def->~OnCrewDeath(crew, killed_by);
 	return;	
+}
+
+// Performs the "OnMedalAwarded" callback in all loaded medals.
+private func DoOnMedalAwardedCallbacks(id medal, int to_plr)
+{
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsMedal())
+			def->~OnMedalAwarded(medal, to_plr);
+	return;
 }
 
 

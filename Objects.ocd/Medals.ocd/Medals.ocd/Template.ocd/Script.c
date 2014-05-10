@@ -1,6 +1,6 @@
 /**
 	Medal Template
-	Template for medals.
+	Template for medals, copy and modify this to create your own medals.
 
 	@author Maikel
 */
@@ -19,6 +19,7 @@ public func IsMedal() { return true; }
 
 // A medal should have this function and return a unique index.
 // Consult the list of existing medals to get a unique index.
+// The medal index can be any integer between 0 and 254.
 public func GetMedalIndex() { return 0; }
 
 
@@ -45,7 +46,7 @@ public func OnRoundStart()
 	return;
 }
 
-// Called when the round is finished, i.e. when all players are elimanted
+// Called when the round is finished, i.e. when all players are eliminated
 // or all goals are fulfilled.
 public func OnRoundFinish()
 {
@@ -71,5 +72,12 @@ public func OnRemovePlayer(int plr)
 public func OnCrewDeath(object crew, int killed_by)
 {
 	//Log("OnCrewDeath(%v, %d) callback has been done in %i.", crew, killed_by, Medal_Template);
+	return;
+}
+
+// Called when a medal is awarded to a player.
+public func OnMedalAwarded(id medal, int to_plr)
+{
+	//Log("OnMedalAwarded(%i, %d) callback has been done in %i.", medal, to_plr, Medal_Template);
 	return;
 }

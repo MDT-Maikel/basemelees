@@ -36,6 +36,9 @@ public func OnRoundFinish()
 	return;
 }
 
+
+/*-- Medal Effects --*/
+
 // Medal miner effect keeps track of which players have gained wealth.
 public func FxIntMedalMinerStart(object target, proplist effect, int temporary)
 {
