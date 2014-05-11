@@ -1,0 +1,4 @@
+[DefCore]
+id=Library_LogSpecial
+Version=5,4,0,0
+Category=C4D_StaticBack
