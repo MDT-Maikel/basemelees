@@ -22,8 +22,9 @@ Release this new version to Lorry and other platforms.
 
 [Packing Scenario Folder]
 cd planet/
-cp BaseMelees.ocf BaseMeleesRelease.ocf
-rm BaseMeleesRelease.ocf/Info.txt
-rm BaseMeleesRelease.ocf/README.md
-rm BaseMeleesRelease.ocf/.gitignore
-c4group BaseMeleesRelease.ocf -p
+cp BaseMelees.ocf BaseMeleesV1.0.ocf
+rm BaseMeleesV1.0.ocf/Info.txt
+rm BaseMeleesV1.0.ocf/README.md
+rm BaseMeleesV1.0.ocf/.gitignore
+rm -rf BaseMeleesV1.0.ocf/Misc/
+c4group BaseMeleesV1.0.ocf -p

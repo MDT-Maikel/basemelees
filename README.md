@@ -36,10 +36,10 @@ Get the latest development version which works with the OpenClonk snapshots or d
 Information for Developers
 ----------------------------
 
-* This project is always developed alongside the [OpenClonk master branch](https://git.openclonk.org/openclonk.git) and should include the latest developments.
+* This project is always developed alongside the [OpenClonk master branch](https://git.openclonk.org/openclonk.git) and will include the latest developments.
 * Please abide to [coding style guidelines](http://wiki.openclonk.org/w/C4Script_Style_Guidelines) when developing new content.
 * All content added to this repository is implicitly relicensed under the [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/) license.
-* If you want to submit a patch please contact me on the [OpenClonk forum](http://forum.openclonk.org/forum_show.pl).
+* For bug reports or submitting a patch please use the [GitHub Issues page](https://github.com/MDT-Maikel/basemelees/issues).
 
 
 Version
