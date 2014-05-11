@@ -1,0 +1,2 @@
+Name=Kamikaze
+Description=Wird verliehen wenn du dich und einen gegnerischen Clonk gleichzeitig umbringst.

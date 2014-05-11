@@ -1,0 +1,2 @@
+Name=Kamikaze
+Description=Awarded when you kill yourself and an enemy clonk simultaneously.
