@@ -1,5 +1,5 @@
 /**
-	Medal Pyromania
+	Pyromania
 	Awarded for setting 100 objects on fire in a single round.
 
 	@author Maikel

@@ -11,41 +11,43 @@
 */
 
 
+/*-- Callbacks --*/
+
 protected func Initialize()
 {
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
 	// Perform "OnRoundStart" callback for all loaded medals.
-	DoOnRoundStartCallbacks();
+	PerformMedalCallbacks("OnRoundStart");
 	return;
 }
 
 protected func OnGameOver()
 {
 	// Perform "OnRoundFinish" callback for all loaded medals.
-	DoOnRoundFinishCallbacks();
+	PerformMedalCallbacks("OnRoundFinish");
 	return;
 }
 
 protected func InitializePlayer(int plr)
 {
 	// Perform "OnInitializePlayer" callback for all loaded medals.
-	DoOnInitializePlayerCallbacks(plr);
+	PerformMedalCallbacks("OnInitializePlayer", plr);
 	return;
 }
 
 protected func RemovePlayer(int plr)
 {
 	// Perform "OnRemovePlayer" callback for all loaded medals.
-	DoOnRemovePlayerCallbacks(plr);
+	PerformMedalCallbacks("OnRemovePlayer", plr);
 	return;
 }
 
 protected func OnClonkDeath(object clonk, int killed_by)
 {
 	// Perform "OnCrewDeath" callback for all loaded medals.
-	DoOnCrewDeathCallbacks(clonk, killed_by);
+	PerformMedalCallbacks("OnCrewDeath", clonk, killed_by);
 	return;
 }
 
@@ -53,6 +55,19 @@ protected func Activate(int byplr)
 {
 	MessageWindow("$Description$", byplr);
 	return;
+}
+
+// Performs the given callback in all loaded medals.
+private func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
+{
+	// Add "~" to the callback. 
+	callback = Format("~%s", callback);
+	// Loop over all loaded medals.
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsMedal())
+			def->Call(callback, par1, par2, par3, par4);
+	return;	
 }
 
 
@@ -79,7 +94,7 @@ public func AwardMedal(id medal, int plr)
 	SetMedalData(plr, medal_data);
 	
 	// Perform "OnMedalAwarded" callback for all loaded medals.
-	DoOnMedalAwardedCallbacks(medal, plr);
+	PerformMedalCallbacks("OnMedalAwarded", medal, plr);
 	
 	// Also perform "OnMedalAwarded" callback in scenario scripts & rules.
 	GameCallEx("OnMedalAwarded", medal, plr);
@@ -90,69 +105,6 @@ public func AwardMedal(id medal, int plr)
 public func ClearMedals(int plr)
 {
 	SetMedalData(plr, "MEDALS__");
-	return;
-}
-
-
-/*-- Medal Callbacks --*/
-
-// Performs the "OnRoundStart" callback in all loaded medals.
-private func DoOnRoundStartCallbacks()
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnRoundStart();
-	return;
-}
-
-// Performs the "OnRoundFinish" callback in all loaded medals.
-private func DoOnRoundFinishCallbacks()
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnRoundFinish();
-	return;
-}
-
-// Performs the "OnInitializePlayer" callback in all loaded medals.
-private func DoOnInitializePlayerCallbacks(int plr)
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnInitializePlayer(plr);
-	return;	
-}
-
-// Performs the "OnRemovePlayer" callback in all loaded medals.
-private func DoOnRemovePlayerCallbacks(int plr)
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnRemovePlayer(plr);
-	return;	
-}
-
-// Performs the "OnCrewDeath" callback in all loaded medals.
-private func DoOnCrewDeathCallbacks(object crew, int killed_by)
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnCrewDeath(crew, killed_by);
-	return;	
-}
-
-// Performs the "OnMedalAwarded" callback in all loaded medals.
-private func DoOnMedalAwardedCallbacks(id medal, int to_plr)
-{
-	var index = 0, def;
-	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
-			def->~OnMedalAwarded(medal, to_plr);
 	return;
 }
 
