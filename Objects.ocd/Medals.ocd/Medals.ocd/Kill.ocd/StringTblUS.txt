@@ -1,2 +1,0 @@
-Name=Kill
-Description=Awarded when you have killed an enemy.

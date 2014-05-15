@@ -1,0 +1,2 @@
+Name=Hat-trick
+Description=Awarded when three enemies are killed in a row.

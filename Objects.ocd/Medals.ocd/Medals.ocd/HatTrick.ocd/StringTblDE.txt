@@ -1,0 +1,2 @@
+Name=Hattrick
+Description=Wird verliehen wenn drei Gegner aufeinanderfolgend umgebracht werden.
