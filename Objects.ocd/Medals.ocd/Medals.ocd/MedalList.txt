@@ -12,3 +12,4 @@ Medal_Miner	            2
 Medal_Decorated         3
 Medal_Kamikaze          4
 Medal_Pyromania         5
+Medal_CriticalHit       6
