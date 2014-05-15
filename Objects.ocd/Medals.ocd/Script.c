@@ -96,8 +96,13 @@ public func AwardMedal(id medal, int plr)
 	// Perform "OnMedalAwarded" callback for all loaded medals.
 	PerformMedalCallbacks("OnMedalAwarded", medal, plr);
 	
+	// Give the player its reward for obtaining the medal in clunkers.
+	var reward = medal->~GetMedalReward();
+	if (reward)
+		DoWealth(plr, reward);
+	
 	// Also perform "OnMedalAwarded" callback in scenario scripts & rules.
-	GameCallEx("OnMedalAwarded", medal, plr);
+	GameCallEx("OnMedalAwarded", medal, plr, reward);
 	return;
 }
 

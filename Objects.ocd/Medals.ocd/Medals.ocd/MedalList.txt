@@ -2,15 +2,15 @@ List of medals and there index, all medals should have a unique index between 0 
 
 
 [Medal List]
-------------------------------
-Medal ID           Medal index
-------------------------------
-Medal_Template          0
-------------------------------
-Medal_HatTrick          1
-Medal_Miner	            2
-Medal_Decorated         3
-Medal_Kamikaze          4
-Medal_Pyromania         5
-Medal_CriticalHit       6
-Medal_Demolition        7
+--------------------------------------
+Medal ID           	  Index     Reward
+--------------------------------------
+Medal_Template          0          0
+--------------------------------------
+Medal_HatTrick          1         25
+Medal_Miner	            2         50
+Medal_Decorated         3         50
+Medal_Kamikaze          4         25
+Medal_Pyromania         5         40
+Medal_CriticalHit       6         20
+Medal_Demolition        7         50

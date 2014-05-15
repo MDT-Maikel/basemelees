@@ -13,6 +13,7 @@ local Description = "$Description$";
 
 public func IsMedal() { return true; }
 public func GetMedalIndex() { return 5; }
+public func GetMedalReward() { return 40; }
 
 
 /*-- Medal Scripts --*/

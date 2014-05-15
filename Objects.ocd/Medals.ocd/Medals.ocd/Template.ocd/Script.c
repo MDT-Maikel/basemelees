@@ -22,6 +22,10 @@ public func IsMedal() { return true; }
 // The medal index can be any integer between 0 and 254.
 public func GetMedalIndex() { return 0; }
 
+// A medal can have a reward in clunker which needs to be
+// returned by this function.
+public func GetMedalReward() { return 0; }
+
 
 /*-- Medal Scripts --*/
 
