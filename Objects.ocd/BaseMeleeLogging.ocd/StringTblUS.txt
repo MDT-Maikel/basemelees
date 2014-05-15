@@ -27,4 +27,5 @@ Teamkill2=%s's %s fell out of %s's favour.
 Teamkill3=%s's %s was denied by %s.
 
 # Messages for awarded medals
-AwardedMedal={{%i}}%s has been awarded the %s medal and earned %d clunker. 
+AwardedMedalReward={{%i}}%s has been awarded the %s medal and earned %d {{%i}}. 
+AwardedMedal={{%i}}%s has been awarded the %s medal.

@@ -77,12 +77,16 @@ private func GetPlayerCountByTeam(int team)
 }
 
 // Callback when a player earns a medal, this will be logged.
-protected func OnMedalAwarded(id medal, int to_plr)
+protected func OnMedalAwarded(id medal, int to_plr, int reward)
 {
 	if (!medal->~IsMedal())
 		return;
-	var reward = 0; // medal->GetMedalReward();
-	var log = Format("$AwardedMedal$", medal, GetPlayerName(to_plr), medal.Name, reward);
+	// The logging format depends on the medal reward.
+	var log;
+	if (reward)
+		log = Format("$AwardedMedalReward$", medal, GetPlayerName(to_plr), medal.Name, reward, GUI_Wealth);
+	else
+		log = Format("$AwardedMedal$", medal, GetPlayerName(to_plr), medal.Name);
 	LogSpecial(log);
 	return;
 }

@@ -27,4 +27,5 @@ Teamkill2=%ss %s ist bei %s in Ungnade gefallen.
 Teamkill3=%ss %s wurde von %s sauber hintergangen.
 
 # Messages for awarded medals
-AwardedMedal={{%i}}%s has been awarded the %s medal and earned %d clunker. 
+AwardedMedalReward={{%i}}%s has been awarded the %s medal and earned %d {{%i}}. 
+AwardedMedal={{%i}}%s has been awarded the %s medal. 
