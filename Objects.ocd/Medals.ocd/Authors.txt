@@ -1,0 +1,10 @@
+Authors:
+Maikel - Scripting, Ideas
+
+Artwork:
+
+Sounds:
+Kastenfrosch - MedalAward.ogg - CC0 1.0 - http://www.freesound.org/people/Kastenfrosch/sounds/162467/
+
+Thanks To:
+Pitri - Inspiration from CR medal system

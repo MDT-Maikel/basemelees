@@ -93,13 +93,16 @@ public func AwardMedal(id medal, int plr)
 	//Log("New medal data has been set to (%s)", medal_data);
 	SetMedalData(plr, medal_data);
 	
-	// Perform "OnMedalAwarded" callback for all loaded medals.
-	PerformMedalCallbacks("OnMedalAwarded", medal, plr);
+	// Play a global sound when a medal is rewarded.
+	Sound("MedalAward", true, 80);
 	
 	// Give the player its reward for obtaining the medal in clunkers.
 	var reward = medal->~GetMedalReward();
 	if (reward)
 		DoWealth(plr, reward);
+	
+	// Perform "OnMedalAwarded" callback for all loaded medals.
+	PerformMedalCallbacks("OnMedalAwarded", medal, plr);
 	
 	// Also perform "OnMedalAwarded" callback in scenario scripts & rules.
 	GameCallEx("OnMedalAwarded", medal, plr, reward);
