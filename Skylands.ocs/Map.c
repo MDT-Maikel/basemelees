@@ -19,11 +19,11 @@ protected func InitializeMap(proplist map)
 	map->Resize(480, 160);
 	
 	// Calculate the main island positions and return them in terms of rectangles.
-	var islands = CalculateIslandPositions(map, 4, 56, 40);
+	var main_islands = FindMainIslands(map, 4, 56, 40);
 	
 	// Store island positions (middle top) in a static variable for the scenario script.
 	island_list = [];
-	for (var island in islands)
+	for (var island in main_islands)
 	{
 		var x = island.X + island.Wdt / 2;
 		var y = island.Y;
@@ -31,12 +31,14 @@ protected func InitializeMap(proplist map)
 	}	
 	
 	// Draw the first main island and then duplicate that onto the others.
-	DrawMainIsland(islands[0]);
+	DrawMainIsland(main_islands[0]);
 	for (var i = 1; i < 4; i++)
-		DuplicateMainIsland(islands[0], islands[i]);
+		DuplicateMainIsland(main_islands[0], main_islands[i]);
 
 	// Then draw some smaller islands which will have a certain distance from the main islands.
-	DrawSmallIslands(map, 24, islands, 48);
+	var small_islands = FindSmallIslands(map, main_islands, 24);
+	for (island in small_islands)
+		DrawRandomSmallIsland(island);
 	
 	// Fix the liquid borders.
 	FixLiquidBorders();
@@ -48,7 +50,7 @@ protected func InitializeMap(proplist map)
 
 /*-- Main Sky Islands --*/
 
-public func CalculateIslandPositions(proplist map, int nr_teams, int island_wdt, int island_hgt)
+public func FindMainIslands(proplist map, int nr_teams, int island_wdt, int island_hgt)
 {
 	// Safety check for number of teams.
 	nr_teams = BoundBy(nr_teams, 2, 4);
@@ -124,37 +126,36 @@ public func DuplicateMainIsland(proplist orig, proplist onto)
 
 /*-- Small Sky Islands --*/
 
-public func DrawSmallIslands(proplist map, int amount, array islands, int dist)
+public func FindSmallIslands(proplist map, array main_islands, int amount)
 {
-	var border_clear = 3;
-	// Calculate the centers of the main islands.
-	var islands_center = [];
-	for (var i = 0; i < GetLength(islands); i++)
-		islands_center[i] = [islands[i].X + islands[i].Wdt / 2, islands[i].Y + islands[i].Hgt / 2];
-	// Create the amount of islands.	
+	// Prepare a mask out of the map and the large islands.
+	var mask = map->CreateLayer();
+	mask->Draw("Rock");
+	for (var island in main_islands)
+		mask->Draw("Tunnel", {Algo = MAPALGO_Rect, X = island.X - 15, Y = island.Y - 18, Wdt = island.Wdt + 30, Hgt = island.Hgt + 32});
+
+	var small_islands = [];
+	var border = 4;
+	var island_dist = 24;
+	var count = 0;
+	// Loop over the amount of islands to find.
 	for (var i = 0; i < amount; i++)
 	{
-		// Find a position far away from the main islands.
-		var x, y, found = false;
-		do
-		{
-			found = true;
-			x = RandomX(border_clear, map.Wdt - border_clear);
-			y = RandomX(3 * border_clear, map.Hgt - border_clear);
-			for (var j = 0; j < GetLength(islands_center); j++)
-			{
-				if (Distance(x, y, islands_center[j][0], islands_center[j][1]) < dist)
-					found = false;		
-			}
-		}
-		while (!found);
-		// Island location found, create a random island.
-		var size = RandomX(4, 5);
-		var island = {Algo = MAPALGO_Rect, X = x - size - 1, Y = y - size, Wdt = 2 * size + 2, Hgt = 2 * size};
-		island = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = [6, 6], Scale = [6, 6], Iterations = 4, Op = island};
-		DrawRandomSmallIsland(island);
+		// Find new island position.
+		var island_mask = {};
+		if (!mask->FindPosition(island_mask, "Rock", [border, border * 3, map.Wdt - border * 2, map.Hgt - border * 4]))
+			continue;
+		var x = island_mask.X;
+		var y = island_mask.Y;
+		// Add new island to the mask.
+		mask->Draw("Tunnel", {Algo = MAPALGO_Ellipsis, X = x, Y = y, Wdt = island_dist, Hgt = island_dist});
+		// Create algorithm for new island.
+		var size = RandomX(5, 6);
+		var small_island = {Algo = MAPALGO_Ellipsis, X = x, Y = y, Wdt = size + 3, Hgt = size};
+		small_island = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = [6, 6], Scale = [6, 6], Iterations = 4, Op = small_island};
+		small_islands[count++] = small_island;
 	}
-	return;
+	return small_islands;
 }
 
 public func DrawRandomSmallIsland(proplist island)
@@ -163,9 +164,10 @@ public func DrawRandomSmallIsland(proplist island)
 	// Draw a gems core with granite borders.
 	if (rnd == 0)
 	{
-		var border = {Algo = MAPALGO_Border, Wdt = 2, Op = island};
 		Draw(["Ruby", "Amethyst"][Random(2)], island);
+		var border = {Algo = MAPALGO_Border, Wdt = 2, Op = island};
 		Draw("Granite", border);
+		DrawMaterial("Rock", border, 4, 20);
 		return;
 	}
 	// Mainly firestones with some earth and rock, dangerous!
@@ -174,14 +176,21 @@ public func DrawRandomSmallIsland(proplist island)
 		Draw("Firestone", island);
 		DrawMaterial("Rock", island, 2, 40);
 		DrawMaterial("Earth", island, 2, 32);
+		var border = {Algo = MAPALGO_Border, Top = 1, Op = island};
+		Draw("Earth", border);
+		DrawMaterial("Sand", border, 4, 20);
 		return;
 	}
-	// Island with rock, ore and gold.
+	// Island with rock, ore, coal and gold.
 	if (rnd == 2)
 	{
 		Draw("Rock", island);
 		DrawMaterial("Ore", island, 3, 50);
-		DrawMaterial("Gold", island, 3, 30);
+		DrawMaterial("Coal", island, 3, 50);
+		DrawMaterial("Gold", island, 3, 25);
+		var border = {Algo = MAPALGO_Border, Top = 1, Op = island};
+		Draw("Earth", border);
+		DrawMaterial("Earth-earth_midsoil", border, 4, 20);
 		return;
 	}
 	Draw("Earth", island);

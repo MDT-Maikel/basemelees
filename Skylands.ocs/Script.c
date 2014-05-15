@@ -21,15 +21,17 @@ protected func Initialize()
 	CreateObject(Rule_BaseRespawn);
 	CreateObject(Rule_BuyAtFlagpole);
 	CreateObject(Rule_TeamAccount);
-	CreateObject(Rule_Medals);	
+	CreateObject(Rule_BaseMeleeLogging);
+	CreateObject(Rule_Medals);
 	
-	// Rescale island coordinates with map zoom.
+	// Rescale island coordinates with map zoom and shuffle them.
 	var mapzoom = GetScenarioVal("MapZoom", "Landscape");
 	for (var island in island_list)
 	{
 		island[0] *= mapzoom;
 		island[1] *= mapzoom;	
 	}
+	ShuffleArray(island_list);
 	// Team initialized variable should be a list.
 	team_init = [false, false, false, false];
 
@@ -60,7 +62,7 @@ protected func InitializePlayer(int plr)
 		{def = Sawmill, amount = 1},
 		{def = Foundry, amount = 1, contents = [[Chunk_Metal, 6]]},
 		{def = Elevator, amount = 1},
-		{def = Lorry, amount = 1, contents = [[Loam, 3], [Hammer, 2], [Axe, 2]]}
+		{def = Lorry, amount = 1, contents = [[Chunk_Wood, 6], [Chunk_Metal, 6], [Planks, 4], [Chunk_Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]}
 	];
 	
 	// If team not yet initialize, do the startup objects and flagpole creation.
@@ -138,7 +140,7 @@ private func InitVegetation()
 	
 	// Cave mushrooms and coconut trees provide wood.
 	LargeCaveMushroom->Place(30, nil, { terrafom = false });
-	Tree_Coconut->Place(60);
+	Tree_Coconut->Place(80);
 	
 	// Some mushrooms to regain health.
 	Mushroom->Place(40);
@@ -219,7 +221,7 @@ private func InitBlocking()
 	// Create a blocking rectangle around each island for 4 minutes.
 	for (var i = 0; i < 4; i++)
 	{
-		var island = island_list[i - 1];
+		var island = island_list[i];
 		var x = island[0];
 		var y = FindHeight(x, island[1]);
 		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * 4);
