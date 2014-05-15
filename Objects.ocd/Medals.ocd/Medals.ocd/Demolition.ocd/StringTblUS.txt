@@ -1,0 +1,2 @@
+Name=Demolition
+Description=Awarded for destroying ten structures.

@@ -13,3 +13,4 @@ Medal_Decorated         3
 Medal_Kamikaze          4
 Medal_Pyromania         5
 Medal_CriticalHit       6
+Medal_Demolition        7
