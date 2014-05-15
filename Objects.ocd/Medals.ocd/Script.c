@@ -18,6 +18,8 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
+	// Initialize the message board commands.
+	InitMedalMessageBoard();		
 	// Perform "OnRoundStart" callback for all loaded medals.
 	PerformMedalCallbacks("OnRoundStart");
 	return;
@@ -116,6 +118,26 @@ public func ClearMedals(int plr)
 	return;
 }
 
+// Returns a list of the players medals in the format [medal_id, medal_cnt].
+public func GetMedals(int plr)
+{
+	var medal_list = [];
+	var medal_data = GetMedalData(plr);
+	// Loop over all loaded medal and check the medal count.
+	// If non zero add to the players medal list.
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+	{
+		if (def->~IsMedal())
+		{
+			var medal_count = GetMedalCount(medal_data, def->GetMedalIndex());
+			if (medal_count > 0)
+				PushBack(medal_list, [def, medal_count]);
+		}
+	}
+	return medal_list;
+}
+
 
 /*-- Medal Data Handling --*/
 
@@ -191,6 +213,30 @@ private func SetMedalData(int plr, string data)
 
 	// Not in a league so set via player extra data.
 	SetPlrExtraData(plr, "Medals", data);
+	return;
+}
+
+
+/*-- Message Board --*/
+
+// Adds message board commands for the medal rule.
+private func InitMedalMessageBoard()
+{
+	// Add a message board command "/medals <plr name>".
+	AddMsgBoardCmd("medals", "Rule_Medals->~ShowPlayerMedals(\"%s\", %player%)");
+	return;
+}
+
+// Callback from message board command "/medals <plr name>".
+public func ShowPlayerMedals(string player_name, int plr)
+{
+	var for_plr = GetPlayerByName(player_name);
+	if (for_plr == NO_OWNER)
+		return;
+	var message = Format("$MenuPlayerHasMedals$", player_name);
+	for (medal in Rule_Medals->GetMedals(for_plr))
+		message = Format("%s %dx{{%i}}", message, medal[1], medal[0]);
+	CustomMessage(message, nil, plr, 0, 16 + 64, 0xffffff, GUI_MenuDeco, nil, MSG_HCenter);
 	return;
 }
 

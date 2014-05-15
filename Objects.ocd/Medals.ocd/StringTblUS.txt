@@ -1,2 +1,5 @@
 Name=Medals
 Description=Players are awarded medals for special achievements.
+
+# Medal Menu
+MenuPlayerHasMedals=%s has medals:

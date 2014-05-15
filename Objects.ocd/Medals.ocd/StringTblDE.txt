@@ -1,2 +1,5 @@
 Name=Medaillen
 Description=Spieler werden Medaillen verliehen für bestimmte Erfolge.
+
+# Medal Menu
+MenuPlayerHasMedals=%s hat Medaillen:
