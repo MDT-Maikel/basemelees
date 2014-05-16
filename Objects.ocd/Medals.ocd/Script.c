@@ -27,6 +27,15 @@ protected func Initialize()
 
 protected func OnGameOver()
 {
+	// Remove the medal rule after the round has been finished so that
+	// no more medals can be awarded. The medal defintions are informed
+	// via the "OnRoundFinish" callback in the Destruction call.
+	RemoveObject();
+	return;
+}
+
+protected func Destruction()
+{
 	// Perform "OnRoundFinish" callback for all loaded medals.
 	PerformMedalCallbacks("OnRoundFinish");
 	return;
@@ -81,6 +90,17 @@ public func AwardMedal(id medal, int plr)
 	// Safety check: is the passed medal really a medal?
 	if (!medal->~IsMedal())
 		return;
+	// Safety check: player may not equal NO_OWNER;
+	if (plr == NO_OWNER)	
+		return;
+		
+	// Make sure the medal rule is still active, otherwise warn scripter.
+	if (!FindObject(Find_ID(Rule_Medals)))
+	{
+		Log("$WarningRuleNotActive$", medal, plr);
+		Log("$WarningFixMedalScript$");
+		return;
+	}
 	
 	//Log("Medal %i rewarded for %s", medal, GetPlayerName(plr));
 	// Retrieve the medal count from the players medal list using the medal index.

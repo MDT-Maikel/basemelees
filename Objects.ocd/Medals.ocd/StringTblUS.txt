@@ -3,3 +3,7 @@ Description=Players are awarded medals for special achievements.
 
 # Medal Menu
 MenuPlayerHasMedals=%s has medals:
+
+# Script Warnings
+WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.
+WarningFixMedalScript=WARNING: Fix medal script to award medals only while rule is active.
