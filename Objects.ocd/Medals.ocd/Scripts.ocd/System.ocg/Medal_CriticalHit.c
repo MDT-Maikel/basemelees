@@ -1,4 +1,4 @@
-// Appendto script for the critical hit. Tracks eneergy change in crew memebers.
+// Appendto script for the critical hit medal. Tracks energy change in crew memebers.
 
 #appendto Clonk
 
@@ -10,6 +10,6 @@ protected func OnEnergyChange(int change, int cause, int by_plr)
 	var damage = -change / 1000;
 	var effect = GetEffect("IntMedalCriticalHit", nil);
 	if (effect)
-		EffectCall(nil, effect, "OnCrewDamage", damage, this->GetOwner(), by_plr);
+		EffectCall(nil, effect, "OnCrewDamage", damage, GetOwner(), by_plr);
 	return _inherited(change, cause, by_plr, ...);
 }

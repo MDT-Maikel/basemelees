@@ -1,0 +1,2 @@
+Name=Heroic
+Description=Awarded when a crew member survives more than 250 damage points.

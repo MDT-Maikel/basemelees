@@ -14,3 +14,4 @@ Medal_Kamikaze          4         25
 Medal_Pyromania         5         40
 Medal_CriticalHit       6         20
 Medal_Demolition        7         50
+Medal_Heroic            8         40
