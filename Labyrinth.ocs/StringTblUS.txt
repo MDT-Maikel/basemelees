@@ -1,0 +1,5 @@
+# Team Names
+TeamNameGemGenies=Gem Genies
+TeamNameMetalMagicians=Metal Magicians
+TeamNameRockRobbers=Rock Robbers
+TeamNameOreOracles=Ore Oracles 

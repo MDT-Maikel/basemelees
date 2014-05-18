@@ -1,0 +1,26 @@
+[Teams]
+TeamColors=true
+
+	[Team]
+	id=1
+	Name=$TeamNameGemGenies$
+	IconSpec=Chunk_Ruby
+	MaxPlayer=8
+
+	[Team]
+	id=2
+	Name=$TeamNameMetalMagicians$
+	IconSpec=Chunk_Metal
+	MaxPlayer=8
+	
+	[Team]
+	id=3
+	Name=$TeamNameRockRobbers$
+	IconSpec=Chunk_Rock
+	MaxPlayer=8
+	
+	[Team]
+	id=4
+	Name=$TeamNameOreOracles$
+	IconSpec=Chunk_Ore
+	MaxPlayer=8
