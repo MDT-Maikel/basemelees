@@ -32,7 +32,7 @@ protected func InitializeMap(proplist map)
 	
 	// Draw the first main island and then duplicate that onto the others.
 	DrawMainIsland(main_islands[0]);
-	for (var i = 1; i < 4; i++)
+	for (var i = 1; i < GetLength(main_islands); i++)
 		DuplicateMainIsland(main_islands[0], main_islands[i]);
 
 	// Then draw some smaller islands which will have a certain distance from the main islands.

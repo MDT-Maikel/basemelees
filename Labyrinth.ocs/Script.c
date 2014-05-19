@@ -49,7 +49,7 @@ protected func InitializePlayer(int plr)
 		return;
 	
 	// Set a strict zoom range.
-	SetPlayerZoomByViewRange(plr, 5000, 3500, PLRZOOM_LimitMax);
+	SetPlayerZoomByViewRange(plr, 500, 350, PLRZOOM_LimitMax);
 	SetPlayerViewLock(plr, true);
 	
 	// Base startup objects.
@@ -59,6 +59,7 @@ protected func InitializePlayer(int plr)
 		{def = ToolsWorkshop, amount = 1, contents = [[Chunk_Wood, 8], [Chunk_Metal, 4]]},
 		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Chunk_Wood, 4], [Chunk_Metal, 2]]},
 		{def = Foundry, amount = 1, contents = [[Chunk_Metal, 6]]},
+		{def = Armory, amount = 1, contents = [[Planks, 5], [Chunk_Metal, 6]]},
 		{def = Lorry, amount = 1, contents = [[Chunk_Wood, 6], [Chunk_Metal, 6], [Planks, 4], [Chunk_Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]}
 	];
 	

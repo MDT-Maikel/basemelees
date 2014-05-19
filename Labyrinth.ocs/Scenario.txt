@@ -1,5 +1,5 @@
 [Head]
-Icon=37
+Icon=36
 Title=Labyrinth
 Version=5,4,0,0
 MinPlayer=2
