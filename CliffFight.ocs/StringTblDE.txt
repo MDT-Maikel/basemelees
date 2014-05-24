@@ -1,0 +1,2 @@
+TeamNameRockSlingers=Steinschleuderer
+TeamNameDynamiteDaredevils=Dynamit Daredevils

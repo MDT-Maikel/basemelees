@@ -1,0 +1,14 @@
+[Teams]
+TeamColors=true
+
+	[Team]
+	id=1
+	Name=$TeamNameRockSlingers$
+	IconSpec=Rock
+	MaxPlayer=6
+
+	[Team]
+	id=2
+	Name=$TeamNameDynamiteDaredevils$
+	IconSpec=Dynamite
+	MaxPlayer=6
