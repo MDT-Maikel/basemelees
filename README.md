@@ -8,6 +8,7 @@ Scenario folder with base melees for open source 2D platformer [OpenClonk](http:
 Ingame Screenshots
 -----------
 
+<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/CliffFight.ocs/Title.png" width=180> 
 <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Skylands.ocs/Title.png" width=180> 
 <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Labyrinth.ocs/Title.png" width=180> 
 
