@@ -39,13 +39,11 @@ cp Title.txt BaseMeleesV$version.ocf/Title.txt
 cp Title.png BaseMeleesV$version.ocf/Title.png
 cp Version.txt BaseMeleesV$version.ocf/Version.txt
 
-# copy the local objects folder
-rsync -av --exclude=".*" --exclude="*~" Objects.ocd/* BaseMeleesV$version.ocf/Objects.ocd
-
-# copy the scenario folders
-rsync -av --exclude=".*" --exclude="*~" CliffFight.ocs/* BaseMeleesV$version.ocf/CliffFight.ocs
-rsync -av --exclude=".*" --exclude="*~" Labyrinth.ocs/* BaseMeleesV$version.ocf/Labyrinth.ocs
-rsync -av --exclude=".*" --exclude="*~" Skylands.ocs/* BaseMeleesV$version.ocf/Skylands.ocs
+# copy all .ocd's and .ocf's
+for dir in $(find -maxdepth 1 -type d -name "*.ocd" -o -name "*.ocs"); 
+do
+	rsync -a --exclude=".*" --exclude="*~" $dir BaseMeleesV$version.ocf
+done
 
 # pack the folder with c4group
 c4group BaseMeleesV$version.ocf -p
