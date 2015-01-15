@@ -1,6 +1,7 @@
 [Developer/Maintainer]
 Maikel 
 
+
 [Folder Information]
 This folder contains a consistent set of base melees for the original OpenClonk contents.
 
@@ -8,23 +9,34 @@ All rounds have roughly the same features, an attack-free start up phase which a
 players to construct their settlements and defenses. There will be provided a menu which 
 allows the placement of certain structures by the team leader.
 
+
 [Information for Developers]
 * This project is always developed alongside the OpenClonk master branch and should include the latest developments.
 * Please abide to coding style guidelines (http://wiki.openclonk.org/w/C4Script_Style_Guidelines) when developing new content.
 * All content added to this repository is implicitly relicensed under the CC BY-SA 4.0 license.
 * If you want to submit a patch please contact me on the OpenClonk forum.
 
+
 [Release Steps]
-Make sure the version has been increased and up to date.
-Remove unnecessary files from the folder and pack it using c4group.
-Test a few games from the scenario folder for script errors.
-Release this new version to Lorry and other platforms.
+* Make sure the version of objects and scenarios is correct.
+* Make sure the version has been increased and is up to date.
+* Remove unnecessary files from the folder and pack it using c4group.
+* Test a few games from the packed scenario folder for script errors.
+* Release this new version to Lorry and other platforms.
+* Create a release branch for future bugfixes (git branch v1).
+* Tag the changeset for this new release (git tag -a v1.0 -m "version 1.0").
+
 
 [Packing Scenario Folder]
 cd planet/
-cp BaseMelees.ocf BaseMeleesV1.0.ocf
-rm BaseMeleesV1.0.ocf/Info.txt
-rm BaseMeleesV1.0.ocf/README.md
-rm BaseMeleesV1.0.ocf/.gitignore
-rm -rf BaseMeleesV1.0.ocf/Misc/
+cp -r BaseMelees.ocf BaseMeleesV1.0.ocf
+cd BaseMeleesV1.0.ocf
+rm Info.txt
+rm README.md
+rm .gitignore
+rm -rf .git/
+rm -rf Misc/
+rm *~
+cd ..
 c4group BaseMeleesV1.0.ocf -p
+
