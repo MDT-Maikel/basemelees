@@ -1,7 +1,7 @@
 [Head]
 Icon=35
 Title=CliffFight
-Version=5,4,0,0
+Version=6,0
 MinPlayer=2
 MaxPlayer=12
 Difficulty=1

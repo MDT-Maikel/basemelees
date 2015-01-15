@@ -1,4 +1,4 @@
 [DefCore]
 id=BasePreviewer
-Version=5,4,0,0
+Version=6,0
 Category=C4D_StaticBack | C4D_IgnoreFoW
