@@ -1,9 +1,9 @@
 // Appendto script for the marvelous miner. Tracks the mining of gold and gems.
 
-#appendto Chunk_Gold
+#appendto Nugget
 #appendto GoldBar
-#appendto Chunk_Ruby
-#appendto Chunk_Amethyst
+#appendto Ruby
+#appendto Amethyst
 
 
 // Callback from the seller library, is done just before selling an item.

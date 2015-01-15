@@ -86,7 +86,7 @@ public func CreateBaseObject()
 	if (!AdjustPreview())
 		return false;
 
-	var created = CreateObject(obj.def, 0, obj.def->GetDefHeight() / 2, GetOwner());
+	var created = CreateObjectAbove(obj.def, 0, obj.def->GetDefHeight() / 2, GetOwner());
 	if (obj.contents)
 		for(c in obj.contents)
 			created->CreateContents(c[0], c[1]);

@@ -55,12 +55,11 @@ protected func InitializePlayer(int plr)
 	// Base startup objects.
 	var base_objects = [
 		{def = Flagpole, amount = 1},
-		{def = SteamEngine, amount = 1, contents = [[Chunk_Coal, 8]]},
-		{def = ToolsWorkshop, amount = 1, contents = [[Chunk_Wood, 8], [Chunk_Metal, 4]]},
-		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Chunk_Wood, 4], [Chunk_Metal, 2]]},
-		{def = Foundry, amount = 1, contents = [[Chunk_Metal, 6]]},
-		{def = Armory, amount = 1, contents = [[Planks, 5], [Chunk_Metal, 6]]},
-		{def = Lorry, amount = 1, contents = [[Chunk_Wood, 6], [Chunk_Metal, 6], [Planks, 4], [Chunk_Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]}
+		{def = SteamEngine, amount = 1, contents = [[Coal, 8]]},
+		{def = ToolsWorkshop, amount = 1, contents = [[Wood, 8], [Metal, 4]]},
+		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Wood, 4], [Metal, 2]]},
+		{def = Foundry, amount = 1, contents = [[Metal, 6]]},
+		{def = Lorry, amount = 1, contents = [[Wood, 6], [Metal, 6], [Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]}
 	];
 	
 	// If team not yet initialize, do the startup objects and flagpole creation.
@@ -76,11 +75,11 @@ protected func InitializePlayer(int plr)
 		
 		// Give the team also gates to their cave.
 		ClearFreeRect(x + cave[2] - 24, y - 72, 8, 72);
-		var gate = CreateObject(StoneDoor, x + cave[2] - 20, y - 4, plr);
+		var gate = CreateObjectAbove(StoneDoor, x + cave[2] - 20, y - 4, plr);
 		gate->SetAutoControl(team);
 		gate->CloseDoor();
 		ClearFreeRect(x - cave[2] + 24, y - 72, 8, 72);
-		var gate = CreateObject(StoneDoor, x - cave[2] + 28, y - 4, plr);
+		var gate = CreateObjectAbove(StoneDoor, x - cave[2] + 28, y - 4, plr);
 		gate->SetAutoControl(team);
 		gate->CloseDoor();
 	}
@@ -124,11 +123,11 @@ private func GivePlayerMaterials(int plr)
 	// Set the base material.
 	var mats = [[Clonk, 10], [Shovel, 2], [Pickaxe, 2], [Axe, 2], [Hammer, 2]];
 	for (var mat in mats)
-		DoHomebaseMaterial(plr, mat[0], mat[1]);
+		DoBaseMaterial(plr, mat[0], mat[1]);
 	// Set the base production.
 	var prods = [[Clonk, 2], [Shovel, 1], [Pickaxe, 1], [Axe, 1], [Hammer, 1]];
 	for (var prod in prods)
-		DoHomebaseMaterial(plr, prod[0], prod[1]);
+		DoBaseMaterial(plr, prod[0], prod[1]);
 	return;
 }
 
@@ -145,17 +144,17 @@ private func FindHeight(int x, int y)
 private func InitVegetation()
 {
 	// Cave mushrooms provide wood, extra place them in the large caves.
-	LargeCaveMushroom->Place(100 + Random(30), nil, { terrafom = false });
+	LargeCaveMushroom->Place(100 + Random(30), nil, { terraform = false });
 	for (var cave in cave_list)
-		LargeCaveMushroom->Place(80 + Random(3), Rectangle(cave[0] - cave[2], cave[1] - cave[3], 2 * cave[2], 2 * cave[3]), { terrafom = false });
+		LargeCaveMushroom->Place(80 + Random(3), Rectangle(cave[0] - cave[2], cave[1] - cave[3], 2 * cave[2], 2 * cave[3]), { terraform = false });
 	
 	// Some mushrooms to regain health.
 	Mushroom->Place(80);
 	Fern->Place(60);
 	
 	// Some objects in the earth.	
-	PlaceObjects(Chunk_Metal, 15 + Random(10), "Earth");
-	PlaceObjects(Chunk_Wood, 15 + Random(10), "Earth");
+	PlaceObjects(Metal, 15 + Random(10), "Earth");
+	PlaceObjects(Wood, 15 + Random(10), "Earth");
 	PlaceObjects(Loam, 50 + Random(30), "Earth");
 	PlaceObjects(Firestone, 50 + Random(30), "Earth");
 

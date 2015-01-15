@@ -211,7 +211,7 @@ public func OpenBaseMenu(object clonk)
 		BackgroundColor = {Std = BASEMENU_BackgroundColor},
 	};
 	// Menu ID.
-	menu_id = CustomGuiOpen(menu);
+	menu_id = GuiOpen(menu);
 	// Notify the clonk and set the menu to be uncloseable.
 	clonk->SetMenu(this, true);
 	return;
@@ -275,7 +275,7 @@ public func OnObjectHover(proplist obj)
 {
 	// Update the description of the object.
 	menu.objectinfo.Text = obj.def.Description;
-	CustomGuiUpdate(menu.objectinfo, menu_id, menu.objectinfo.ID, this);
+	GuiUpdate(menu.objectinfo, menu_id, menu.objectinfo.ID, this);
 	// Update the description of the object.
 	var content_str = "";
 	if (obj.contents)
@@ -285,14 +285,14 @@ public func OnObjectHover(proplist obj)
 		content_str	= Format("$MsgSpawnContents$ %s", 0xffff0000, content_str);
 	}
 	menu.objectspawn.Text = content_str;
-	CustomGuiUpdate(menu.objectspawn, menu_id, menu.objectspawn.ID, this);
+	GuiUpdate(menu.objectspawn, menu_id, menu.objectspawn.ID, this);
 	return;
 }
 
 public func CloseConstructionMenu()
 {
 	// Close the menu and inform the controller.
-	CustomGuiClose(menu_id, nil, this);
+	GuiClose(menu_id, nil, this);
 	menu_id = nil;
 	if (menu_controller)
 		menu_controller->MenuClosed();
@@ -320,7 +320,7 @@ public func FxControlBasePreviewStart(object clonk, effect, int temp, proplist o
 	effect.obj = obj;
 	effect.flipable = !effect.obj.def->~NoConstructionFlip();
 	if (!effect.preview) 
-		effect.preview = CreateObject(BasePreviewer, AbsX(clonk->GetX()), AbsY(clonk->GetY()), clonk->GetOwner());
+		effect.preview = CreateObjectAbove(BasePreviewer, AbsX(clonk->GetX()), AbsY(clonk->GetY()), clonk->GetOwner());
 	effect.preview->Set(clonk, effect.obj, base_rect);
 }
 

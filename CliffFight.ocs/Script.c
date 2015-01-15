@@ -45,11 +45,11 @@ protected func InitializePlayer(int plr)
 	var base_objects = [
 		{def = Flagpole, amount = 1},
 		{def = WindGenerator, amount = 1},
-		{def = ToolsWorkshop, amount = 1, contents = [[Chunk_Wood, 8], [Chunk_Metal, 4]]},
-		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Chunk_Wood, 4], [Chunk_Metal, 2]]},
+		{def = ToolsWorkshop, amount = 1, contents = [[Wood, 8], [Metal, 4]]},
+		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Wood, 4], [Metal, 2]]},
 		{def = Sawmill, amount = 1},
-		{def = Foundry, amount = 1, contents = [[Chunk_Metal, 6]]},
-		{def = Lorry, amount = 1, contents = [[Chunk_Wood, 6], [Chunk_Metal, 6], [Planks, 4], [Chunk_Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]},
+		{def = Foundry, amount = 1, contents = [[Metal, 6]]},
+		{def = Lorry, amount = 1, contents = [[Wood, 6], [Metal, 6], [Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2]]},
 		{def = Cannon, amount = 1, contents = [[PowderKeg, 1]]}
 	];
 	
@@ -105,11 +105,11 @@ private func GivePlayerMaterials(int plr)
 	// Set the base material.
 	var mats = [[Clonk, 10], [Shovel, 2], [Pickaxe, 2], [Axe, 2], [Hammer, 2]];
 	for (var mat in mats)
-		DoHomebaseMaterial(plr, mat[0], mat[1]);
+		DoBaseMaterial(plr, mat[0], mat[1]);
 	// Set the base production.
 	var prods = [[Clonk, 2], [Shovel, 1], [Pickaxe, 1], [Axe, 1], [Hammer, 1]];
 	for (var prod in prods)
-		DoHomebaseMaterial(plr, prod[0], prod[1]);
+		DoBaseMaterial(plr, prod[0], prod[1]);
 	return;
 }
 
@@ -139,14 +139,13 @@ private func InitVegetation()
 		PlaceVegetation(SproutBerryBush, LandscapeWidth() - 900, 830, 100, 100, 100000);
 	}
 	
-	
 	// Some mushrooms to regain health.
 	Mushroom->Place(40);
 	Fern->Place(30);
 	
 	// Some objects in the earth.	
-	PlaceObjects(Chunk_Metal, 15 + Random(10), "Earth");
-	PlaceObjects(Chunk_Wood, 15 + Random(10), "Earth");
+	PlaceObjects(Metal, 15 + Random(10), "Earth");
+	PlaceObjects(Wood, 15 + Random(10), "Earth");
 	PlaceObjects(Firestone, 30 + Random(5), "Earth");
 
 	return;

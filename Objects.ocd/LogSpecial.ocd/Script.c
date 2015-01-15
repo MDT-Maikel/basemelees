@@ -106,7 +106,7 @@ private func DisplayMessage(object target, string message, int message_nr)
 		BackgroundColor = {Std = 0x00000000},
 		Text = message,
 	};
-	var menu_id = CustomGuiOpen(menu);
+	var menu_id = GuiOpen(menu);
 	menu.ID = menu_id;
 	return menu;
 }
@@ -114,7 +114,7 @@ private func DisplayMessage(object target, string message, int message_nr)
 // Removes a message created by DisplayMessage.
 private func RemoveMessage(proplist menu)
 {
-	CustomGuiClose(menu.ID, nil, menu.Target);
+	GuiClose(menu.ID, nil, menu.Target);
 	return;
 }
 
