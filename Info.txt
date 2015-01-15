@@ -20,23 +20,9 @@ allows the placement of certain structures by the team leader.
 [Release Steps]
 * Make sure the version of objects and scenarios is correct.
 * Make sure the version has been increased and is up to date.
-* Remove unnecessary files from the folder and pack it using c4group.
+* Use misc/create_release.sh to generate the packed scenario folder.
 * Test a few games from the packed scenario folder for script errors.
 * Release this new version to Lorry and other platforms.
 * Create a release branch for future bugfixes (git branch v1).
 * Tag the changeset for this new release (git tag -a v1.0 -m "version 1.0").
-
-
-[Packing Scenario Folder]
-cd planet/
-cp -r BaseMelees.ocf BaseMeleesV1.0.ocf
-cd BaseMeleesV1.0.ocf
-rm Info.txt
-rm README.md
-rm .gitignore
-rm -rf .git/
-rm -rf Misc/
-rm *~
-cd ..
-c4group BaseMeleesV1.0.ocf -p
 
