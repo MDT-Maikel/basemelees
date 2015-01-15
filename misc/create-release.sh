@@ -17,7 +17,7 @@ version=$1
 cd ..
 if [ ! -f Title.txt ]
 then
-	echo "Execute from basemelees/tools currently executed from wrong folder."
+	echo "Execute from basemelees/misc, currently executed from wrong folder."
 	exit 1
 fi
 

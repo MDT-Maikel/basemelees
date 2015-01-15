@@ -20,9 +20,16 @@ allows the placement of certain structures by the team leader.
 [Release Steps]
 * Make sure the version of objects and scenarios is correct.
 * Make sure the version has been increased and is up to date.
-* Use misc/create_release.sh to generate the packed scenario folder.
+* Use misc/create-release.sh to generate the packed scenario folder.
 * Test a few games from the packed scenario folder for script errors.
 * Release this new version to Lorry and other platforms.
 * Create a release branch for future bugfixes (git branch v1).
 * Tag the changeset for this new release (git tag -a v1.0 -m "version 1.0").
+
+
+[Medals Release Steps]
+* Make sure the version has been increased and is up to date.
+* Use misc/create-medals.sh to generate the packed medals object.
+* Test the individual medals.
+* Release this new version to Lorry and other platforms.
 
