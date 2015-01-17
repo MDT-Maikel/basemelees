@@ -1,0 +1,2 @@
+Name=Chain Reaction
+Description=Awarded for setting of a chain reaction of firestone explosions.

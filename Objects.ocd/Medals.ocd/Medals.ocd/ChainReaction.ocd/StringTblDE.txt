@@ -1,0 +1,2 @@
+Name=Kettenreaktion
+Description=Awarded for setting of a chain reaction of firestone explosions.

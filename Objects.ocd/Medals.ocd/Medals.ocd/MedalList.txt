@@ -15,3 +15,4 @@ Medal_Pyromania         5         40
 Medal_CriticalHit       6         20
 Medal_Demolition        7         50
 Medal_Heroic            8         40
+Medal_ChainReaction     9         20

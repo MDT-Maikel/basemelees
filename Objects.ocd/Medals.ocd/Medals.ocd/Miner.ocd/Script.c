@@ -53,12 +53,15 @@ public func FxIntMedalMinerStart(object target, proplist effect, int temporary)
 // Effect callback made by a sold resource.
 public func FxIntMedalMinerHasMined(object target, proplist effect, int plr, id resource, int value)
 {
+	// Don't do anything if the player does not exist.
+	if (plr == NO_OWNER)
+		return FX_OK;	
 	// Increase the mined wealth for the player.
 	var plr_id = GetPlayerID(plr);
 	if (effect.mined_wealth[plr_id] == nil)
 		effect.mined_wealth[plr_id] = 0;
 	effect.mined_wealth[plr_id] += value;
-	//Log("%s has mined %i for %d clunker and has now mined %d clunker in total", GetPlayerName(plr), resource, value, effect.mined_wealth[plr_id]);
+	Log("%s has mined %i for %d clunker and has now mined %d clunker in total", GetPlayerName(plr), resource, value, effect.mined_wealth[plr_id]);
 	// Check whether the wealth exceeds a thousand clunkers, if so notify rule.
 	if (effect.mined_wealth[plr_id] >= 1000)
 	{
