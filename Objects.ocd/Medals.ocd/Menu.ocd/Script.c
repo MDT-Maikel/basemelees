@@ -68,9 +68,6 @@ public func OpenMedalMenu(int plr)
 			ID = 2,
 			Right = "100%-3em",
 			Bottom = "3em",
-			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
-			OnMouseIn = GuiAction_SetTag("Hover"),
-			OnMouseOut = GuiAction_SetTag("Std"),
 			Text = "$MedalMenuCaption$",
 		},
 		header_close = 
@@ -175,7 +172,7 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 			OnClick = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerClick", plr)],
 			Text = GetTaggedPlayerName(plr),
 			Style = GUI_TextHCenter,
-			Symbol = GetCursor(plr),
+			Symbol = GetCursor(plr) ?? Clonk,
 		};
 		parent[Format("players%d", cnt + 4)] = plr_menu;		
 		cnt++;
@@ -187,7 +184,6 @@ public func MenuShowMedals(proplist parent, int plr)
 {
 	// Show all the medals this player has.
 	var medals = Rule_Medals->GetMedals(plr);
-	Log("%v", medals);
 	var cnt = 0;
 	for (var medal in medals)
 	{
@@ -215,50 +211,27 @@ public func MenuShowMedals(proplist parent, int plr)
 	return parent;
 }
 
-public func MenuUpdateMedals(proplist parent, int plr)
-{
-	// Get all the medals this player has.
-	var medals = Rule_Medals->GetMedals(plr);
-	// Loop over all existing medals.
-	var index = 0; var medal;
-	while (medal = parent[Format("medal%d", index + 4)])
-	{
-		var new_medal = medals[index];
-		if (!new_medal || new_medal[1] == 0)
-		{
-			GuiClose(menu_id, medal.ID, medal.Target);
-			continue;	
-		}
-		medal.Symbol = new_medal[0];
-		medal.Text = Format("%dx", new_medal[1]);
-		GuiUpdate(medal, menu_id, medal.ID, this);
-		index++;
-	}
-	return;
-}
-
 public func OnPlayerClick(int plr)
 {
 	// Clear all possible previous medal entries.
-	//var index = 0;
-	//while (menu.medals[Format("medal%d", index + 4)])
-	//{
-	//	var medal = menu.medals[Format("medal%d", index + 4)];
-	//	GuiClose(menu_id, medal.ID, medal.Target);
-	//}
-	//GuiClose(menu_id, menu.medals.ID, menu.medals.Target);
-	Log("player click: %d", plr);
-	//menu.medals = MenuShowMedals(menu.medals, plr);
-	//GuiOpen(menu.medals);
-	//GuiUpdate(menu.medals, menu_id, menu.medals.ID, this);
-	//MenuUpdateMedals(menu.medals, plr);
+	var index = 0;
+	while (menu.medals[Format("medal%d", index + 4)])
+	{
+		var medal = menu.medals[Format("medal%d", index + 4)];
+		GuiClose(menu_id, medal.ID, medal.Target);
+		menu.medals[Format("medal%d", index + 4)] = nil;
+		index++;
+	}
+	// Then reinit the medals for the new player and update the menu.
+	menu.medals = MenuShowMedals(menu.medals, plr);
+	GuiUpdate(menu.medals, menu_id, menu.medals.ID, this);
 	return;
 }
 
 public func OnMedalHover(id medal_id)
 {
 	// Update the description of the object.
-	menu.medalinfo.Text = Format("<c %x>%s:</c> %s", 0xffff0000, medal_id.Name, medal_id.Description);
+	menu.medalinfo.Text = Format("<c %x>%s (%d</c> {{GUI_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }

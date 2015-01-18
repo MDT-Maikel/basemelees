@@ -38,3 +38,5 @@ allows the placement of certain structures by the team leader.
 * Improve the medal menu (fix scaling)
 * Improve the medal menu (option to display all available medals)
 * Improve the medal menu (sorting & grouping)
+* Improve the medal menu (update on changed medal count and removed player)
+* Option for medal menu to compare between players.
