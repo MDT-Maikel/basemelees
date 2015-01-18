@@ -33,3 +33,8 @@ allows the placement of certain structures by the team leader.
 * Test the individual medals.
 * Release this new version to Lorry and other platforms.
 
+[List of Open Todos]
+* Improve the fancy logging
+* Improve the medal menu (fix scaling)
+* Improve the medal menu (option to display all available medals)
+* Improve the medal menu (sorting & grouping)

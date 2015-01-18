@@ -6,6 +6,9 @@
 	  Rule_Medals->AwardMedal(id medal, int plr);
 	And the rule will do an extended gamecall when a medal is awarded:
 	  OnMedalAwarded(id medal, int to_plr);
+	Players can view their medals and medals of other players in the round by typing
+	  /medals 
+	in the chat window, which shows a menu with all achieved medals.
 	
 	@author Maikel
 */
@@ -242,21 +245,18 @@ private func SetMedalData(int plr, string data)
 // Adds message board commands for the medal rule.
 private func InitMedalMessageBoard()
 {
-	// Add a message board command "/medals <plr name>".
-	AddMsgBoardCmd("medals", "Rule_Medals->~ShowPlayerMedals(\"%s\", %player%)");
+	// Add a message board command "/medals".
+	AddMsgBoardCmd("medals", "Rule_Medals->~ShowPlayerMedals(%player%)");
 	return;
 }
 
-// Callback from message board command "/medals <plr name>".
-public func ShowPlayerMedals(string player_name, int plr)
+// Callback from message board command "/medals".
+public func ShowPlayerMedals(int plr)
 {
-	var for_plr = GetPlayerByName(player_name);
-	if (for_plr == NO_OWNER)
+	if (plr == NO_OWNER)
 		return;
-	var message = Format("$MenuPlayerHasMedals$", player_name);
-	for (medal in Rule_Medals->GetMedals(for_plr))
-		message = Format("%s %dx{{%i}}", message, medal[1], medal[0]);
-	CustomMessage(message, nil, plr, 0, 16 + 64, 0xffffff, GUI_MenuDeco, nil, MSG_HCenter);
+	// Show the medal menu for this player.
+	MedalMenu->CreateMedalMenu(plr);
 	return;
 }
 
