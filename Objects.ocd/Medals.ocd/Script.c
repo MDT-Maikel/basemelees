@@ -146,7 +146,7 @@ public func GetMedals(int plr)
 {
 	var medal_list = [];
 	var medal_data = GetMedalData(plr);
-	// Loop over all loaded medal and check the medal count.
+	// Loop over all loaded medals and check the medal count.
 	// If non zero add to the players medal list.
 	var index = 0, def;
 	while (def = GetDefinition(index++))
@@ -159,6 +159,21 @@ public func GetMedals(int plr)
 		}
 	}
 	return medal_list;
+}
+
+// Returns a list of the currently active medals with their ids.
+public func GetActiveMedals()
+{
+	var active_medals = [];
+	// Loop over all loaded medals and add them to the list.
+	// Except for the template medal which is not a real medal.
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+	{
+		if (def->~IsMedal() && def->~GetMedalIndex() > 0)
+			PushBack(active_medals, def);
+	}
+	return active_medals;
 }
 
 
