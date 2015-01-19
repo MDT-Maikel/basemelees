@@ -1,4 +1,7 @@
-List of medals and there index, all medals should have a unique index between 0 and 254
+List of medals and their index, all medals should have a unique index between 0 and 254.
+All medals in the official release of the medal rule are listed here. If you want to add
+additional medals yourself, make sure the index of the medal is not conflicting with one
+of the medals in this list.
 
 
 [Medal List]
@@ -16,3 +19,4 @@ Medal_CriticalHit       6         20
 Medal_Demolition        7         50
 Medal_Heroic            8         40
 Medal_ChainReaction     9         20
+Medal_Rocketeer        10         25

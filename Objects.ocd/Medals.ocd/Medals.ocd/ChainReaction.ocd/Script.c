@@ -40,7 +40,7 @@ public func OnRoundFinish()
 
 /*-- Medal Effects --*/
 
-// Medal miner effect keeps track of which players have gained wealth.
+// Medal chain reaction effect keeps track of which players have caused which explosions.
 public func FxIntMedalChainReactionStart(object target, proplist effect, int temporary)
 {
 	if (temporary)
@@ -110,7 +110,7 @@ public func FxIntMedalChainReactionOnDestruction(object target, proplist effect,
 	return FX_OK;
 }
 
-// Medal miner effect keeps track of which players have gained wealth.
+// Medal chain reaction effect keeps track of which players have caused which explosions.
 public func FxIntMedalChainReactionStop(object target, proplist effect, int reason, bool temporary)
 {
 	if (temporary)

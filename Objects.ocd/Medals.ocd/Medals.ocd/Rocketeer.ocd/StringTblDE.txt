@@ -1,0 +1,2 @@
+Name=Rocketeer
+Description=Awarded for killing an enemy clonk with a rocket explosion.
