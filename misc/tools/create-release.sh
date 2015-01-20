@@ -14,7 +14,7 @@ fi
 version=$1
 
 # move to basemelees folder
-cd ..
+cd ../..
 if [ ! -f Title.txt ]
 then
 	echo "Execute from basemelees/misc, currently executed from wrong folder."
