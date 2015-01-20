@@ -22,7 +22,7 @@ public func CreateMedalMenu(int plr)
 
 // Background colors for hovering and bars and description.
 static const MEDALMENU_BackgroundColor = 0x77000000;
-static const MEDALMENU_HoverColor = 0x99ffffff;
+static const MEDALMENU_HoverColor = 0x99888888;
 static const MEDALMENU_BarColor = 0x99888888;
 
 local menu, menu_id, menu_controller;
@@ -170,7 +170,7 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 		Right = "8em",
 		Bottom = "8em",
 		Priority = 0,
-		// Margin = ["0.5em", "0.5em", "0.5em", "0.5em"],
+		Margin = ["0.5em"],
 		BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 		OnMouseIn = GuiAction_SetTag("Hover"),
 		OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -192,7 +192,7 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 			Right = "8em",
 			Bottom = "8em",
 			Priority = cnt,
-			// Margin = ["0.5em", "0.5em", "0.5em", "0.5em"],
+			Margin = ["0.5em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = GuiAction_SetTag("Hover"),
 			OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -219,12 +219,12 @@ public func MenuShowAllMedals(proplist parent)
 			Target = this,
 			ID = cnt + 1000,
 			Priority = medal_id->GetMedalIndex(),
-			Right = "8em",
-			Bottom = "8em",
-			// Margin = ["0.5em", "0.5em", "0.5em", "0.5em"],
+			Right = "6em",
+			Bottom = "6em",
+			Margin = ["0.3em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
-			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHover", medal_id)],
-			OnMouseOut = GuiAction_SetTag("Std"), 
+			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
+			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
 			Symbol = medal_id,
 			Text = Format("%d {{GUI_Wealth}}", medal_id->GetMedalReward()),
 		};
@@ -250,12 +250,12 @@ public func MenuShowPlayerMedals(proplist parent, int plr)
 			Target = this,
 			ID = cnt + 1000,
 			Priority = medal_id->GetMedalIndex(),
-			Right = "8em",
-			Bottom = "8em",
-			// Margin = ["0.5em", "0.5em", "0.5em", "0.5em"],
+			Right = "6em",
+			Bottom = "6em",
+			Margin = ["0.3em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
-			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHover", medal_id)],
-			OnMouseOut = GuiAction_SetTag("Std"), 
+			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
+			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
 			Symbol = medal_id,
 			Text = Format("%dx", medal_count),
 		};
@@ -285,10 +285,18 @@ public func OnPlayerClick(int plr)
 	return;
 }
 
-public func OnMedalHover(id medal_id)
+public func OnMedalHoverIn(id medal_id)
 {
-	// Update the description of the object.
+	// Update the description of the medal.
 	menu.medalinfo.Text = Format("<c %x>%s (%d</c> {{GUI_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
+	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
+	return;
+}
+
+public func OnMedalHoverOut(id medal_id)
+{
+	// Remove the description of the medal.
+	menu.medalinfo.Text = nil;
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }
