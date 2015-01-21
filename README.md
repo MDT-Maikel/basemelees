@@ -1,6 +1,8 @@
 Base Melees 
 ===========
-<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Title.png" width=300>
+<p align="center">
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Title.png" width=300>
+</p>
 
 Scenario folder with base melees for open source 2D platformer [OpenClonk](http://www.openclonk.org/). Base melees are scenarios in which players are divided in teams which try to conquer enemy bases. Gameplay is focussed around settlement, strategy and action, which allows for creative and interesting rounds. More information about this project and the scenarios can be found on this [wiki page](http://wiki.openclonk.org/w/Base_Melees).
 
@@ -8,9 +10,11 @@ Scenario folder with base melees for open source 2D platformer [OpenClonk](http:
 Ingame Screenshots
 ------------------
 
-<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/CliffFight.ocs/Title.png" width=180> 
-<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Skylands.ocs/Title.png" width=180> 
-<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Labyrinth.ocs/Title.png" width=180> 
+<p align="center">
+    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/CliffFight.ocs/Title.png" width=180> 
+    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Skylands.ocs/Title.png" width=180> 
+    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Labyrinth.ocs/Title.png" width=180> 
+</p>
 
 
 Information for Players
@@ -22,7 +26,7 @@ There a different ways to get the scenario folder and to play it.
 
 Get the release version of this scenario folder at one of the download sites.
 
-* On Lorry (to be released). 
+* On [Lorry](https://clonklorry.org/) (to be released). 
 
 Extract the files into the installation directory and fire up the game!
 
@@ -37,7 +41,7 @@ Get the latest development version which works with the OpenClonk snapshots or d
 Information for Developers
 --------------------------
 
-* This project is always developed alongside the [OpenClonk master branch](https://git.openclonk.org/openclonk.git) and will include the latest developments.
+* This project is developed alongside the [OpenClonk master branch](https://git.openclonk.org/openclonk.git).
 * Please abide to [coding style guidelines](http://wiki.openclonk.org/w/C4Script_Style_Guidelines) when developing new content.
 * All content added to this repository is implicitly relicensed under the [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/) license.
 * For bug reports or submitting a patch please use the [GitHub Issues page](https://github.com/MDT-Maikel/basemelees/issues).
