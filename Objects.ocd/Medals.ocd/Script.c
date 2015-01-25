@@ -234,10 +234,12 @@ private func GetMedalData(int plr)
 	// Not in a league so get via player extra data.
 	data = GetPlrExtraData(plr, "Medals");
 	// Check whether it is a string starting with "MEDALS__".
+	var correct_string = "MEDALS__";
 	if (GetType(data) != C4V_String)
-		return "MEDALS__";
-	if (GetChar(data, 0) != GetChar("M", 0) || GetChar(data, 1) != GetChar("E", 0) || GetChar(data, 2) != GetChar("D", 0) || GetChar(data, 3) != GetChar("A", 0))
-		return "MEDALS__";
+		return correct_string;
+	for (var index = 0; index < GetLength(correct_string); index++)
+		if (GetChar(data, index) != GetChar(correct_string, index))
+			return correct_string;
 	// Data is safe and just return it.
 	return data;
 }
