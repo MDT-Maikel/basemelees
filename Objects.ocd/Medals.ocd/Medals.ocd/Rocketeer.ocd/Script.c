@@ -27,7 +27,7 @@ public func OnRoundStart()
 	return;
 }
 
-// Called when the round is finished, i.e. when all players are elimanted
+// Called when the round is finished, i.e. when all players are eliminated
 // or all goals are fulfilled.
 public func OnRoundFinish()
 {
