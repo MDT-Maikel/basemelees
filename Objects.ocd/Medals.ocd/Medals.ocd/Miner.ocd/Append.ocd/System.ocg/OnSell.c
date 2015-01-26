@@ -14,15 +14,12 @@ public func QueryOnSell(int controller)
 	var no_sell = _inherited(controller, ...);
 	if (no_sell)
 		return true;
-		
 	// Get value of the resource.
 	var value = GetValue();
-	
 	// Notify the effect that keeps track of the mining that a valuable has been sold.
 	var effect = GetEffect("IntMedalMiner", nil);
 	if (effect)
 		EffectCall(nil, effect, "HasMined", controller, this->GetID(), value);
-
 	// Allow the selling.
 	return false;
 }
