@@ -24,11 +24,15 @@ public func Initialize()
 	team_init = [false, false];
 	
 	// Initialize different parts of the scenario.
+	InitAnimals();
 	InitVegetation();
 	InitEnvironment();
-	InitBlocking();
-	return true;
+	InitBlocking(SCENPAR_AttackBarrier);
+	return;
 }
+
+
+/*-- Player Initiliaztion --*/
 
 protected func InitializePlayer(int plr)
 {
@@ -124,6 +128,15 @@ private func FindHeight(int x)
 
 /*-- Scenario Initiliaztion --*/
 
+private func InitAnimals()
+{
+	var wdt = LandscapeWidth();
+	var hgt = LandscapeHeight();
+	var place_rect = Rectangle(wdt / 2 - 600, 0, 1200, hgt);
+	Fish->Place(20, place_rect);
+	return;
+}
+
 private func InitVegetation()
 {
 	// Some grass is always nice.
@@ -162,9 +175,14 @@ private func InitEnvironment()
 	return;
 }
 
-private func InitBlocking()
+private func InitBlocking(int minutes)
 {
-	// Create a blocking rectangle around each cliff for 4 minutes.
-
+	if (!minutes)
+		return;
+	var wdt = LandscapeWidth();
+	var hgt = LandscapeHeight();
+	// Create a blocking line at each of the sides for n minutes.
+	AttackBarrier->BlockLine(wdt / 3, 0, wdt / 3, hgt, 36 * 60 * minutes);
+	AttackBarrier->BlockLine(2 * wdt / 3, 0, 2 * wdt / 3, hgt, 36 * 60 * minutes);
 	return;
 }
