@@ -1,0 +1,23 @@
+[ParameterDef]
+Name=$AttackBarriers$
+Description=$DescAttackBarriers$
+ID=AttackBarrier
+Default=5
+LeagueValue=5
+
+	[Options]
+		
+		[Option]
+		Name=$NoBarrier$
+		Description=$DescNoBarrier$
+		Value=0
+		
+		[Option]
+		Name=$BarrierFive$
+		Description=$DescBarrierFive$
+		Value=5
+		
+		[Option]
+		Name=$BarrierTen$
+		Description=$DescBarrierTen$
+		Value=10		

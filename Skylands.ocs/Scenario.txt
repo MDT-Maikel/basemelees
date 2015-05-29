@@ -4,7 +4,7 @@ Title=Skylands
 Version=6,0
 MinPlayer=2
 MaxPlayer=16
-Difficulty=2
+Difficulty=3
 
 [Definitions]
 Definition1=Objects.ocd

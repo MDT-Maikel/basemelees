@@ -1,0 +1,14 @@
+[Teams]
+TeamColors=true
+
+	[Team]
+	id=1
+	Name=$TeamNameSwordSlashers$
+	IconSpec=Sword
+	MaxPlayer=8
+
+	[Team]
+	id=2
+	Name=$TeamNameJavelinjugglers$
+	IconSpec=Javelin
+	MaxPlayer=8

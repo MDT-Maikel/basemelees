@@ -4,7 +4,7 @@ Title=Labyrinth
 Version=6,0
 MinPlayer=2
 MaxPlayer=16
-Difficulty=3
+Difficulty=4
 
 [Definitions]
 Definition1=Objects.ocd
