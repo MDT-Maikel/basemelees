@@ -1,5 +1,15 @@
-# Team Names
+# Team names
 TeamNameGemGenies=Gem Genies
 TeamNameMetalMagicians=Metal Magicians
 TeamNameRockRobbers=Rock Robbers
-TeamNameOreOracles=Ore Oracles 
+TeamNameOreOracles=Ore Oracles
+
+# Scenario parameter: attack barrier
+AttackBarriers=Attack Barriers
+DescAttackBarriers=Attack barriers prohibit teams from performing early attacks and allows for building up a small settlement, select the duration for those attack barriers to be present.
+NoBarrier=No Barriers
+DescNoBarrier=There are no barriers preventing early attacks.
+BarrierFive=5 Minutes
+DescBarrierFive=There are barriers preventing early attacks for 5 minutes.
+BarrierTen=10 Minutes
+DescBarrierTen=There are barriers preventing early attacks for 10 minutes.

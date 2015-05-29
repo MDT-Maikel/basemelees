@@ -38,8 +38,12 @@ protected func Initialize()
 	// Initialize different parts of the scenario.
 	InitVegetation();
 	InitEnvironment();
+	InitBlocking(SCENPAR_AttackBarrier);
 	return;
 }
+
+
+/*-- Player Initiliaztion --*/
 
 protected func InitializePlayer(int plr)
 {
@@ -193,4 +197,20 @@ global func FxIntDistasterControlTimer(object target, proplist effect, int time)
 	if (effect.count >= 20)
 		return FX_Execute_Kill;
 	return FX_OK;
+}
+
+private func InitBlocking(int minutes)
+{
+	if (!minutes)
+		return;
+	// Create a blocking rectangle around each cave for n minutes.
+	for (var i = 0; i < 4; i++)
+	{
+		var cave = cave_list[i];
+		var x = cave[0];
+		var y = cave[1];
+		var wdt = cave[2];
+		var hgt = cave[3];
+		AttackBarrier->BlockRectangle(x - wdt, y - hgt, 2 * wdt, 2 * hgt, 36 * 60 * minutes);
+	}
 }
