@@ -38,9 +38,12 @@ protected func Initialize()
 	// Initialize different parts of the scenario.
 	InitVegetation();
 	InitEnvironment();
-	InitBlocking();
+	InitBlocking(SCENPAR_AttackBarrier);
 	return;
 }
+
+
+/*-- Player Initiliaztion --*/
 
 protected func InitializePlayer(int plr)
 {
@@ -157,7 +160,6 @@ private func InitVegetation()
 private func InitEnvironment()
 {
 	// Set time to almost night and have stars.	
-	CreateObject(Environment_Celestial);
 	var time = CreateObject(Environment_Time);
 	time->SetTime(20 * 60 + 15);
 	time->SetCycleSpeed(0);
@@ -216,15 +218,17 @@ global func FxIntDistasterControlTimer(object target, proplist effect, int time)
 	return FX_OK;
 }
 
-private func InitBlocking()
+private func InitBlocking(int minutes)
 {
-	// Create a blocking rectangle around each island for 4 minutes.
+	if (!minutes)
+		return;
+	// Create a blocking rectangle around each island for n minutes.
 	for (var i = 0; i < 4; i++)
 	{
 		var island = island_list[i];
 		var x = island[0];
 		var y = FindHeight(x, island[1]);
-		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * 4);
+		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * minutes);
 	}
 	return;
 }
