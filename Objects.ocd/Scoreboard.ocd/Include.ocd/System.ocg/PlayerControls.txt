@@ -1,0 +1,17 @@
+[ControlDefs]
+
+	[ControlDef]
+	Identifier=Scoreboard
+	ExtraData=Scoreboard_BaseMelee
+	Hold=true
+	GUIName=Scoreboard
+	GUIDesc=Scoreboard
+	
+[ControlSets]
+
+	[ControlSet]
+	Name=*
+	
+		[Assignment]
+		Key=Tab
+		Control=Scoreboard
