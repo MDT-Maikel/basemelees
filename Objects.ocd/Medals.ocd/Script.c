@@ -98,6 +98,9 @@ private func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
 // Gives the player the specified medal.
 public func AwardMedal(id medal, int plr)
 {
+	// Safety check: this is a definition call.
+	if (this != Rule_Medals)
+		return;
 	// Safety check: is the passed medal really a medal?
 	if (!medal->~IsMedal())
 		return;
@@ -113,17 +116,12 @@ public func AwardMedal(id medal, int plr)
 		return;
 	}
 	
-	//Log("Medal %i rewarded for %s", medal, GetPlayerName(plr));
 	// Retrieve the medal count from the players medal list using the medal index.
 	var medal_index = medal->GetMedalIndex();
 	var medal_data = GetMedalData(plr);
 	var medal_count = GetMedalCount(medal_data, medal_index);
-	//Log("Obtained medal count from medal data (%s)", medal_data);
-	//Log("Medal count for medal %i equals %d", medal, medal_count);
-	
 	// Set the medal count from the players medal list using the medal index.
 	medal_data = SetMedalCount(medal_data, medal_index, medal_count + 1);
-	//Log("New medal data has been set to (%s)", medal_data);
 	SetMedalData(plr, medal_data);
 	
 	// Do the same for the round medals.
@@ -151,13 +149,22 @@ public func AwardMedal(id medal, int plr)
 // Clears the complete medal collection of the player.
 public func ClearMedals(int plr)
 {
+	// Safety check: this is a definition call.
+	if (this != Rule_Medals)
+		return;
+	// Clear both the stored player data and the round data.
 	SetMedalData(plr, "MEDALS__");
+	SetRoundMedalData(plr, "MEDALS__");
 	return;
 }
 
 // Returns a list of the players medals in the format [medal_id, medal_cnt].
+// If round_only is true, the medals awarded during this round are returned.
 public func GetMedals(int plr, bool round_only)
 {
+	// Safety check: this is a definition call.
+	if (this != Rule_Medals)
+		return;
 	var medal_list = [];
 	// Medal data taken from round medals if requested.
 	var medal_data = GetMedalData(plr);
@@ -181,6 +188,9 @@ public func GetMedals(int plr, bool round_only)
 // Returns a list of the currently active medals with their ids.
 public func GetActiveMedals()
 {
+	// Safety check: this is a definition call.
+	if (this != Rule_Medals)
+		return;
 	var active_medals = [];
 	// Loop over all loaded medals and add them to the list.
 	// Except for the template medal which is not a real medal.
@@ -256,7 +266,7 @@ private func GetMedalData(int plr)
 	for (var index = 0; index < GetLength(correct_string); index++)
 		if (GetChar(data, index) != GetChar(correct_string, index))
 			return correct_string;
-	// Data is safe and just return it.
+	// Data is safe, just return it.
 	return data;
 }
 
