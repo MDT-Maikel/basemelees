@@ -13,6 +13,9 @@
 	@author Maikel
 */
 
+// Variable to store the awarded medals for this round.
+local round_medals;
+
 
 /*-- Callbacks --*/
 
@@ -21,6 +24,8 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
+	// Initialize the local round medals to an empty list.
+	round_medals = [];
 	// Initialize the message board commands.
 	InitMedalMessageBoard();		
 	// Perform "OnRoundStart" callback for all loaded medals.
@@ -46,6 +51,9 @@ protected func Destruction()
 
 protected func InitializePlayer(int plr)
 {
+	// Set the round medals to zero for this player.
+	var plr_id = GetPlayerID(plr);
+	round_medals[plr_id] = "MEDALS__";
 	// Perform "OnInitializePlayer" callback for all loaded medals.
 	PerformMedalCallbacks("OnInitializePlayer", plr);
 	return;
@@ -118,6 +126,12 @@ public func AwardMedal(id medal, int plr)
 	//Log("New medal data has been set to (%s)", medal_data);
 	SetMedalData(plr, medal_data);
 	
+	// Do the same for the round medals.
+	var round_metal_data = GetRoundMedalData(plr);
+	var round_metal_count = GetMedalCount(round_metal_data, medal_index);
+	round_metal_data = SetMedalCount(round_metal_data, medal_index, round_metal_count + 1);
+	SetRoundMedalData(plr, round_metal_data);
+	
 	// Play a global sound when a medal is rewarded.
 	Sound("MedalAward", true, 80);
 	
@@ -142,10 +156,13 @@ public func ClearMedals(int plr)
 }
 
 // Returns a list of the players medals in the format [medal_id, medal_cnt].
-public func GetMedals(int plr)
+public func GetMedals(int plr, bool round_only)
 {
 	var medal_list = [];
+	// Medal data taken from round medals if requested.
 	var medal_data = GetMedalData(plr);
+	if (round_only)
+		medal_data = GetRoundMedalData(plr);
 	// Loop over all loaded medals and check the medal count.
 	// If non zero add to the players medal list.
 	var index = 0, def;
@@ -227,7 +244,6 @@ private func SetMedalCount(string medal_data, int medal_index, int count)
 // Medal data is a string of 2048 characters starting with "MEDALS__".
 private func GetMedalData(int plr)
 {
-	var plr_id = GetPlayerID(plr);
 	var data;
 	// If there is a league try to retrieve it from the league.
 
@@ -248,11 +264,44 @@ private func GetMedalData(int plr)
 // Medal data is a string of 2048 characters starting with "MEDALS__".
 private func SetMedalData(int plr, string data)
 {
-	var plr_id = GetPlayerID(plr);
 	// If there is a league try to set data in the league.
 
 	// Not in a league so set via player extra data.
 	SetPlrExtraData(plr, "Medals", data);
+	return;
+}
+
+// Returns the medal data of the player for this round only.
+private func GetRoundMedalData(int plr)
+{
+	var rule = FindObject(Find_ID(Rule_Medals));
+	if (!rule)
+		return;
+	return rule->GetRoundPlayerMedalData(plr);
+}
+
+// Sets the medal data of the player for this round only.
+private func SetRoundMedalData(int plr, string data)
+{
+	var rule = FindObject(Find_ID(Rule_Medals));
+	if (!rule)
+		return;
+	rule->SetRoundPlayerMedalData(plr, data);
+	return;	
+}
+
+// Get the player's medal round data from the medal rule object.
+public func GetRoundPlayerMedalData(int plr)
+{
+	var plr_id = GetPlayerID(plr);
+	return round_medals[plr_id];
+}
+
+// Set the player's medal round data from the medal rule object.
+public func SetRoundPlayerMedalData(int plr, string data)
+{
+	var plr_id = GetPlayerID(plr);
+	round_medals[plr_id] = data;
 	return;
 }
 

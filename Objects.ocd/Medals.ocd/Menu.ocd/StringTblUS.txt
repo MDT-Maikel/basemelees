@@ -2,3 +2,5 @@ Name=Medal Menu
 Description=Shows the player its medals or the medals of the selected player in this round.
 
 MedalMenuCaption=Shows the medals achieved by the selected player.
+MedalMenuSwitch=Switch view between all medals or medals achieved in this round.
+MedalMenuClose=Close the medal menu.

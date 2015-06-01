@@ -5,6 +5,22 @@
 	@author Maikel
 */
 
+// Background colors for hovering and bars and description.
+static const MEDALMENU_BackgroundColor = 0x77000000;
+static const MEDALMENU_HoverColor = 0x99888888;
+static const MEDALMENU_BarColor = 0x99888888;
+
+local menu, menu_id, menu_controller;
+local view_round_only;
+local medals_for_plr;
+
+
+protected func Initialize()
+{
+	// By default all medals of a player will be shown.
+	view_round_only = false;
+	return;
+}
 
 // Creates the medal menu for the given player.
 public func CreateMedalMenu(int plr)
@@ -20,13 +36,6 @@ public func CreateMedalMenu(int plr)
 
 /*-- Medal Menu --*/
 
-// Background colors for hovering and bars and description.
-static const MEDALMENU_BackgroundColor = 0x77000000;
-static const MEDALMENU_HoverColor = 0x99888888;
-static const MEDALMENU_BarColor = 0x99888888;
-
-local menu, menu_id, menu_controller;
-
 public func OpenMedalMenu(int plr)
 {
 	// Needs the cursor as command object.
@@ -39,6 +48,7 @@ public func OpenMedalMenu(int plr)
 	// This object functions as menu target and for visibility.
 	this.Visibility = VIS_Owner;
 	menu_controller = clonk;
+	medals_for_plr = plr;
 	
 	// Medal menu proplist.
 	menu =
@@ -53,51 +63,75 @@ public func OpenMedalMenu(int plr)
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
 	// A header showing the contents of this menu and close button.
-	var header = 
+	menu.header = 
 	{
 		Target = this,
 		ID = 1,
+		Style = GUI_Multiple,
 		Right = "100%",
 		Bottom = "3em",
 		header_text = 
 		{
 			Target = this,
 			ID = 2,
-			Right = "100%-3em",
+			Right = "100%-6em",
 			Bottom = "3em",
 			Text = "$MedalMenuCaption$",
+		},
+		header_view = 
+		{
+			Target = this,
+			ID = 3,
+			Left = "100%-6em",
+			Right = "100%-3em",
+			Bottom = "3em",
+			Symbol = Icon_World,
+			Tooltip = "$MedalMenuSwitch$",
+			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
+			OnMouseIn = GuiAction_SetTag("Hover"),
+			OnMouseOut = GuiAction_SetTag("Std"),
+			OnClick = GuiAction_Call(this, "SwitchMedalView"),
+			header_view_tag = {
+				Target = this,
+				ID = 4,
+				Left = "1.6em",
+				Top = "1.6em",
+				Symbol = Icon_Ok,
+			}
 		},
 		header_close = 
 		{
 			Target = this,
-			ID = 3,
+			ID = 5,
 			Left = "100%-3em",
 			Right = "100%",
 			Bottom = "3em",
 			Symbol = Icon_Cancel,
+			Tooltip = "$MedalMenuClose$",
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = GuiAction_SetTag("Hover"),
 			OnMouseOut = GuiAction_SetTag("Std"),
 			OnClick = GuiAction_Call(this, "CloseMedalMenu")
 		},
 	};
+	if (view_round_only)
+		menu.header.headerview.header_view_tag.Symbol = Icon_Cancel;
 	// Bar between header and player choice.
 	menu.bar1 = 
 	{
 		Target = this,
-		ID = 4,
+		ID = 6,
 		Left = "0%",
 		Right = "100%",
 		Top = "3em",
 		Bottom = "4em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
-	menu.header = header;
 	// Player choice takes top ten percent.
 	var playerchoice = 
 	{
 		Target = this,
-		ID = 5,
+		ID = 7,
 		Left = "0%",
 		Right = "100%",
 		Top = "4em",
@@ -111,7 +145,7 @@ public func OpenMedalMenu(int plr)
 	menu.bar2 = 
 	{
 		Target = this,
-		ID = 6,
+		ID = 8,
 		Left = "0%",
 		Right = "100%",
 		Top = "12em",
@@ -122,7 +156,7 @@ public func OpenMedalMenu(int plr)
 	var medals = 
 	{
 		Target = this,
-		ID = 7,
+		ID = 9,
 		Left = "0%",
 		Right = "100%",
 		Top = "13em",
@@ -135,7 +169,7 @@ public func OpenMedalMenu(int plr)
 	menu.bar3 = 
 	{
 		Target = this,
-		ID = 8,
+		ID = 10,
 		Left = "0%",
 		Right = "100%",
 		Top = "37em",
@@ -146,7 +180,7 @@ public func OpenMedalMenu(int plr)
 	menu.medalinfo = 
 	{
 		Target = this,
-		ID = 9,
+		ID = 11,
 		Left = "0%",
 		Right = "100%",
 		Top = "38em",
@@ -237,7 +271,7 @@ public func MenuShowAllMedals(proplist parent)
 public func MenuShowPlayerMedals(proplist parent, int plr)
 {
 	// Show all the medals this player has.
-	var medals = Rule_Medals->GetMedals(plr);
+	var medals = Rule_Medals->GetMedals(plr, view_round_only);
 	var cnt = 0;
 	for (var medal in medals)
 	{
@@ -265,8 +299,25 @@ public func MenuShowPlayerMedals(proplist parent, int plr)
 	return parent;
 }
 
+public func SwitchMedalView()
+{
+	// Switch the header view tag.
+	view_round_only = !view_round_only;
+	if (view_round_only)
+		menu.header.header_view.header_view_tag.Symbol = Icon_Cancel;
+	else 
+		menu.header.header_view.header_view_tag.Symbol = Icon_Ok;
+	GuiClose(menu_id, menu.header.header_view.header_view_tag.ID, menu.header.header_view.header_view_tag.Target);
+	GuiUpdate(menu.header.header_view, menu_id, menu.header.header_view.ID, this);
+
+	// Reinitialize the medals for the current player.
+	OnPlayerClick(medals_for_plr);
+	return;
+}
+
 public func OnPlayerClick(int plr)
 {
+	medals_for_plr = plr;
 	// Clear all possible previous medal entries.
 	var index = 0;
 	while (menu.medals[Format("medal%d", index)])
