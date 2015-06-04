@@ -84,7 +84,7 @@ protected func OnMedalAwarded(id medal, int to_plr, int reward)
 	// The logging format depends on the medal reward.
 	var log;
 	if (reward)
-		log = Format("$AwardedMedalReward$", medal, GetPlayerName(to_plr), medal.Name, reward, GUI_Wealth);
+		log = Format("$AwardedMedalReward$", medal, GetPlayerName(to_plr), medal.Name, reward, Icon_Wealth);
 	else
 		log = Format("$AwardedMedal$", medal, GetPlayerName(to_plr), medal.Name);
 	LogSpecial(log);

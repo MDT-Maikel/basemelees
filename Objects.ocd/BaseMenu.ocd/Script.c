@@ -129,7 +129,6 @@ public func OpenBaseMenu(object clonk)
 	menu =
 	{
 		Target = this,
-		Style = GUI_Multiple,
 		Decoration = GUI_MenuDeco,
 		Left = Format("%d%", 50 - menu_width),
 		Right = Format("%d%", 50 + menu_width),

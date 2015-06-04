@@ -80,7 +80,7 @@ public func CreateScoreboardMenu(object clonk)
 	// Scoreboard contents;
 	var entries = [
 		{ icon = Flagpole, team_callback = "GetTeamFlags", plr_callback = "GetPlayerFlags" },
-		{ icon = Medal_Template, team_callback = "GetTeamMedals", plr_callback = "GetPlayerMedals" }
+		{ icon = Medal_Template, team_callback = "GetTeamMedals", plr_callback = "GetPlayerMedals", plr_clickcall = "OnMedalClick" }
 	];
 	var name_width = 20;
 	var entry_width = 3;
@@ -89,7 +89,6 @@ public func CreateScoreboardMenu(object clonk)
 	menu =
 	{
 		Target = this,
-		Style = GUI_Multiple,
 		Decoration = GUI_MenuDeco,
 		Left = Format("50%%%s", ToEmString((name_width + entry_width * GetLength(entries)) * -5)),
 		Right = Format("50%%%s", ToEmString((name_width + entry_width * GetLength(entries)) * 5)),
@@ -129,7 +128,6 @@ private func GetScoreboardHeader(array entries, int name_width, int entry_width)
 	var header = 
 	{
 		Target = this,
-		Style = GUI_Multiple,
 		ID = 1,
 		Top = "0em",
 		Bottom = "3em",
@@ -170,7 +168,6 @@ private func GetScoreboardRows(proplist scoreboard, array entries, int name_widt
 		var team_menu = 
 		{
 			Target = this,
-			Style = GUI_Multiple,
 			ID = 1000 * (team_index + 1),
 			Left = "0%",
 			Right = "100%",
@@ -195,7 +192,6 @@ private func MakeTeamRow(int team, int team_index, array entries, int name_width
 {
 	var row = {
 		Target = this,
-		Style = GUI_Multiple,
 		ID = 1000 * (team_index + 1) + 100,
 		Left = "0%",
 		Right = "100%",
@@ -232,7 +228,6 @@ private func MakePlayerRow(int plr, int team_index, int player_index, array entr
 {
 	var row = {
 		Target = this,
-		Style = GUI_Multiple,
 		ID = 1000 * (team_index + 1) + 100 * (player_index + 2),
 		Left = "0%",
 		Right = "100%",
@@ -260,6 +255,8 @@ private func MakePlayerRow(int plr, int team_index, int player_index, array entr
 			Style = GUI_TextVCenter | GUI_TextHCenter,
 			Text = Format("%d", Call(entries[index].plr_callback, plr)),
 		};
+		if (entries[index].plr_clickcall)
+			entry.OnClick = GuiAction_Call(this, entries[index].plr_clickcall, plr);
 		row[Format("entry%d", index)] = entry;	
 	}
 	return row;
@@ -307,31 +304,6 @@ public func OnMedalClick(int plr)
 	// Open medal menu for the specific player.
 	MedalMenu->CreateMedalMenu(plr);
 	return;
-}
-
-
-/*-- Misc --*/
-
-// Commit these two functions after controls merge.
-private func GetPlayerInTeamCount(int team)
-{
-	var cnt = 0;
-	for (var i = 0; i < GetPlayerCount(); i++)
-		if (GetPlayerTeam(GetPlayerByIndex(i)) == team)
-			cnt++;
-	return cnt;
-}
-
-private func GetPlayersInTeam(int team)
-{
-	var plr_list = [];
-	for (var index = 0; index < GetPlayerCount(); index++)
-	{
-		var plr = GetPlayerByIndex(index);
-		if (GetPlayerTeam(plr) == team)
-			PushBack(plr_list, plr);
-	}
-	return plr_list;
 }
 
 

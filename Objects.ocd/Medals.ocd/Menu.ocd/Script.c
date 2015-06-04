@@ -54,7 +54,6 @@ public func OpenMedalMenu(int plr)
 	menu =
 	{
 		Target = this,
-		Style = GUI_Multiple,
 		Decoration = GUI_MenuDeco,
 		Left = "50% - 24em",
 		Right = "50% + 24.1em", // 0.1 needed to fit six entries per row.
@@ -67,7 +66,6 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 1,
-		Style = GUI_Multiple,
 		Right = "100%",
 		Bottom = "3em",
 		header_text = 
@@ -260,7 +258,7 @@ public func MenuShowAllMedals(proplist parent)
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
 			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
 			Symbol = medal_id,
-			Text = Format("%d{{GUI_Wealth}}", medal_id->GetMedalReward()),
+			Text = Format("%d{{Icon_Wealth}}", medal_id->GetMedalReward()),
 		};
 		parent[Format("medal%d", cnt)] = medal;		
 		cnt++;
@@ -339,7 +337,7 @@ public func OnPlayerClick(int plr)
 public func OnMedalHoverIn(id medal_id)
 {
 	// Update the description of the medal.
-	menu.medalinfo.Text = Format("<c %x>%s (%d</c>{{GUI_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
+	menu.medalinfo.Text = Format("<c %x>%s (%d</c>{{Icon_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }
