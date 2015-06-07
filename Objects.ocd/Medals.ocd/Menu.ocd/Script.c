@@ -83,7 +83,7 @@ public func OpenMedalMenu(int plr)
 			Left = "100%-6em",
 			Right = "100%-3em",
 			Bottom = "3em",
-			Symbol = Icon_World,
+			Symbol = Medal_Template,
 			Tooltip = "$MedalMenuSwitch$",
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = GuiAction_SetTag("Hover"),
@@ -92,9 +92,10 @@ public func OpenMedalMenu(int plr)
 			header_view_tag = {
 				Target = this,
 				ID = 4,
-				Left = "1.6em",
-				Top = "1.6em",
-				Symbol = Icon_Ok,
+				Left = "1.4em",
+				Top = "1.4em",
+				Symbol = Icon_Number,
+				GraphicsName = "Sum",
 			}
 		},
 		header_close = 
@@ -302,12 +303,17 @@ public func SwitchMedalView()
 	// Switch the header view tag.
 	view_round_only = !view_round_only;
 	if (view_round_only)
-		menu.header.header_view.header_view_tag.Symbol = Icon_Cancel;
-	else 
-		menu.header.header_view.header_view_tag.Symbol = Icon_Ok;
+	{
+		menu.header.header_view.header_view_tag.Symbol = Icon_World;
+		menu.header.header_view.header_view_tag.GraphicsName = nil;
+	}
+	else
+	{
+		menu.header.header_view.header_view_tag.Symbol = Icon_Number;
+		menu.header.header_view.header_view_tag.GraphicsName = "Sum";
+	}
 	GuiClose(menu_id, menu.header.header_view.header_view_tag.ID, menu.header.header_view.header_view_tag.Target);
 	GuiUpdate(menu.header.header_view, menu_id, menu.header.header_view.ID, this);
-
 	// Reinitialize the medals for the current player.
 	OnPlayerClick(medals_for_plr);
 	return;
