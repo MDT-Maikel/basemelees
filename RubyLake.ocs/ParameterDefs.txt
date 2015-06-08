@@ -2,8 +2,7 @@
 Name=$AttackBarriers$
 Description=$DescAttackBarriers$
 ID=AttackBarrier
-Default=5
-LeagueValue=5
+Default=0
 
 	[Options]
 		
