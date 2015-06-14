@@ -20,3 +20,26 @@ Default=0
 		Name=$BarrierTen$
 		Description=$DescBarrierTen$
 		Value=10		
+
+[ParameterDef]
+Name=$BaseMaterials$
+Description=$DescBaseMaterials$
+ID=BaseMaterials
+Default=0
+
+	[Options]
+		
+		[Option]
+		Name=$MaterialsBasic$
+		Description=$DescMaterialsBasic$
+		Value=0
+		
+		[Option]
+		Name=$MaterialsNormal$
+		Description=$DescMaterialsNormal$
+		Value=1
+		
+		[Option]
+		Name=$MaterialsAdvanced$
+		Description=$DescMaterialsAdvanced$
+		Value=2		

@@ -11,3 +11,13 @@ BarrierFive=5 Minutes
 DescBarrierFive=There are barriers preventing early attacks for 5 minutes.
 BarrierTen=10 Minutes
 DescBarrierTen=There are barriers preventing early attacks for 10 minutes.
+
+# Scenario parameter: base materials
+BaseMaterials=Base Materials
+DescBaseMaterials=Players can buy materials, items and weapons at team base flags. This option determines the amount of materials available for purchase.
+MaterialsBasic=Basic Materials
+DescMaterialsBasic=Players can buy Clonks, food, construction materials and basic tools.
+MaterialsNormal=Normal Materials
+DescMaterialsNormal=Players can additionally buy advanced tools and basic weapons.
+MaterialsAdvanced=Advanced Materials
+DescMaterialsAdvanced=Players can additionally buy more advanced tools, advanced weapons and artillery.

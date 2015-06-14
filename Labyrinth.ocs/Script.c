@@ -102,22 +102,13 @@ protected func InitializePlayer(int plr)
 	
 	// Give player their knowledge and base materials.
 	GivePlayerBaseMeleeKnowledge(plr);
-	GivePlayerMaterials(plr);
+	// Give the player its base materials.
+	GivePlayerBasicBaseMaterial(plr);
+	if (SCENPAR_BaseMaterials >= 1)
+		GivePlayerNormalBaseMaterial(plr, true);
+	if (SCENPAR_BaseMaterials >= 2)
+		GivePlayerAdvancedBaseMaterial(plr, true);
 	return;	
-}
-
-// Give the relevant materials to each player.
-private func GivePlayerMaterials(int plr)
-{
-	// Set the base material.
-	var mats = [[Clonk, 10], [Shovel, 2], [Pickaxe, 2], [Axe, 2], [Hammer, 2]];
-	for (var mat in mats)
-		DoBaseMaterial(plr, mat[0], mat[1]);
-	// Set the base production.
-	var prods = [[Clonk, 2], [Shovel, 1], [Pickaxe, 1], [Axe, 1], [Hammer, 1]];
-	for (var prod in prods)
-		DoBaseMaterial(plr, prod[0], prod[1]);
-	return;
 }
 
 private func FindHeight(int x, int y)

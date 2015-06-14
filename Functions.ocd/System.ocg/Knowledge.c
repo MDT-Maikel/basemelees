@@ -34,7 +34,7 @@ global func GivePlayerBaseMeleeKnowledge(int plr)
 		// Tools for mining and tree chopping and loam production, etc.
 		Shovel, Hammer, Axe, Pickaxe, Barrel, MetalBarrel, Bucket, Torch, Pipe, WallKit,
 		// Weapons and explosives.
-		Bow, Arrow, Club, Sword, Javelin, Shield, Musket, LeadShot, Dynamite, DynamiteBox, IronBomb, GrenadeLauncher, PowderKeg,
+		Bow, Arrow, FireArrow, BombArrow, Club, Sword, Javelin, Shield, Musket, LeadShot, Dynamite, DynamiteBox, IronBomb, GrenadeLauncher, PowderKeg,
 		// Advanced tools.
 		Ropeladder, TeleGlove, WindBag, GrappleBow, Boompack, Balloon,
 		// Some basic vehicles which aid in the settlement construction.
