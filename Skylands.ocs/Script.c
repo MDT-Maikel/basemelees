@@ -92,24 +92,9 @@ protected func InitializePlayer(int plr)
 	}
 	
 	// Give player their knowledge and base materials.
-	GivePlayerKnowledge(plr);
+	GivePlayerBaseMeleeKnowledge(plr);
 	GivePlayerMaterials(plr);
 	return;	
-}
-
-// Give the relevant knowledge to each player.
-private func GivePlayerKnowledge(int plr)
-{
-	var structures = [Flagpole, WindGenerator, SteamEngine, Compensator, Foundry, Sawmill, Elevator, Pump, ToolsWorkshop, ChemicalLab, Armory, Chest, Windmill, Kitchen, InventorsLab, Shipyard];
-	var items = [Loam, GoldBar, Metal, Shovel, Axe, Hammer, Pickaxe, Barrel, Bucket, Dynamite, DynamiteBox, PowderKeg, Pipe, WallKit, TeleGlove, WindBag, GrappleBow, Boompack, Balloon];
-	var weapons = [Bow, Arrow, Club, Sword, Javelin, Shield, Musket, LeadShot, IronBomb, GrenadeLauncher];
-	var vehicles = [Lorry, Catapult, Cannon, Airship, Plane];
-	var total = Concatenate(structures, items);
-	total = Concatenate(total, weapons);
-	total = Concatenate(total, vehicles);
-	for (var def in total)
-		SetPlrKnowledge(plr, def);
-	return;
 }
 
 // Give the relevant materials to each player.

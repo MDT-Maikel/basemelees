@@ -94,9 +94,13 @@ func InitializeObjects()
 	foundry = CreateObjectAbove(Foundry, 300, 720);
 	foundry->CreateContents(Ore, 4);
 	foundry->CreateContents(Coal, 4);
+	foundry->CreateContents(Bucket, 2);
+	foundry->CreateContents(Barrel, 1);
 	foundry = CreateObjectAbove(Foundry, 1140, 720);
 	foundry->CreateContents(Ore, 4);
 	foundry->CreateContents(Coal, 4);
+	foundry->CreateContents(Bucket, 2);
+	foundry->CreateContents(Barrel, 1);
 
 	CreateObjectAbove(Sawmill, 245, 718);
 	CreateObjectAbove(Sawmill, 1195, 718);
@@ -148,7 +152,7 @@ func InitializeObjects()
 	chest->CreateContents(Shield, 2);
 	chest->CreateContents(Club, 2);
 
-	var Elevator001 = CreateObjectAbove(Elevator, 238, 431);
+	var Elevator001 = CreateObjectAbove(Elevator, 239, 431);
 	Elevator001->SetDir(DIR_Right);
 	Elevator001->SetColor(0xfff40000);
 	Elevator001->CreateShaft(289);
@@ -158,7 +162,7 @@ func InitializeObjects()
 	Elevator002->CreateShaft(289);
 	Elevator002->SetCasePosition(708);
 	Elevator002->LetsBecomeFriends(Elevator001);
-	var Elevator003 = CreateObjectAbove(Elevator, 1202, 431);
+	var Elevator003 = CreateObjectAbove(Elevator, 1201, 431);
 	Elevator003->SetColor(0xfff40000);
 	Elevator003->CreateShaft(289);
 	Elevator003->SetCasePosition(708);
