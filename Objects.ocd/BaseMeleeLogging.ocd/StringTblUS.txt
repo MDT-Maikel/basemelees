@@ -29,3 +29,11 @@ Teamkill3=%s's %s was denied by %s.
 # Messages for awarded medals
 AwardedMedalReward={{%i}}%s has been awarded the %s medal and earned %d {{%i}}. 
 AwardedMedal={{%i}}%s has been awarded the %s medal.
+
+# Messages for flagpole destruction
+FlagDestructionTeamN=Team %s has destroyed a flag of team %s, they now have %d flags remaining.
+FlagDestructionTeam1=Team %s has destroyed a flag of team %s, they now have one flag remaining.
+FlagDestructionTeam0=Team %s has destroyed a flag of team %s, this was their last flag.
+FlagDestructionSelfN=Team %s destroyed their own flag, they now have %d flags remaining.
+FlagDestructionSelf1=Team %s destroyed their own flag, they now have one flag remaining.
+FlagDestructionSelf0=Team %s destroyed their own flag, this was their last flag.

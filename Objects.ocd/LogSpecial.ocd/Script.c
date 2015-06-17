@@ -101,8 +101,8 @@ private func DisplayMessage(object target, string message, int message_nr)
 		Style = GUI_Multiple,
 		Left = "0%",
 		Right = Format("%dem", 2 * length),
-		Top = Format("10%%+%dem", 2 * message_nr),
-		Bottom = Format("10%%+%dem", 2 * (message_nr + 1)),
+		Top = Format("%dem", 10 + 2 * message_nr),
+		Bottom = Format("%dem", 10 + 2 * (message_nr + 1)),
 		BackgroundColor = {Std = 0x00000000},
 		Text = message,
 	};

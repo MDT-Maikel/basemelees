@@ -91,6 +91,35 @@ protected func OnMedalAwarded(id medal, int to_plr, int reward)
 	return;
 }
 
+// Callback when a flagpole has been destroyed.
+protected func OnFlagpoleDestruction(int owner, int destructor)
+{
+	var team_owner = GetPlayerTeam(owner);
+	var team_destructor = GetPlayerTeam(destructor);	
+	var self = team_owner == team_destructor;
+	var nr_flags_remaining = ObjectCount(Find_ID(Flagpole), Find_Team(team_owner)) - 1;
+	var log;
+	if (self)
+	{
+		if (nr_flags_remaining == 0)
+			log = Format("$FlagDestructionSelf0$", GetTaggedTeamName(team_owner));
+		else if (nr_flags_remaining == 1)
+			log = Format("$FlagDestructionSelf1$", GetTaggedTeamName(team_owner));
+		else
+			log = Format("$FlagDestructionSelfN$", GetTaggedTeamName(team_owner), nr_flags_remaining);
+	}
+	else
+	{
+		if (nr_flags_remaining == 0)
+			log = Format("$FlagDestructionTeam0$", GetTaggedTeamName(team_destructor), GetTaggedTeamName(team_owner));
+		else if (nr_flags_remaining == 1)
+			log = Format("$FlagDestructionTeam1$", GetTaggedTeamName(team_destructor), GetTaggedTeamName(team_owner));
+		else
+			log = Format("$FlagDestructionTeamN$", GetTaggedTeamName(team_destructor), GetTaggedTeamName(team_owner), nr_flags_remaining);
+	}
+	LogSpecial(log);
+}
+
 protected func Activate(int byplr)
 {
 	MessageWindow("$Description$", byplr);
