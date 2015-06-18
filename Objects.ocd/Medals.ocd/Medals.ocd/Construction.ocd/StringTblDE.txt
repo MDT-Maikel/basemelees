@@ -1,0 +1,2 @@
+Name=Konstruktion
+Description=Is awarded for aiding in the construction of ten structures.

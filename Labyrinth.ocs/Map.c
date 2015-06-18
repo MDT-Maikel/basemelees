@@ -156,7 +156,6 @@ public func FindCaveConnections(array small_caves, int max_length)
 			for (var line in connections)
 				if (IsLineOverlap(fx, fy, tx, ty, line.X[0], line.Y[0], line.X[1], line.Y[1]))	
 				{
-					//Log("(%d,%d) to (%d,%d) overlap with (%d,%d) to (%d,%d)", fx, fy, tx, ty, line.X[0], line.Y[0], line.X[1], line.Y[1]);
 					has_overlap = true;
 					break;
 				}
