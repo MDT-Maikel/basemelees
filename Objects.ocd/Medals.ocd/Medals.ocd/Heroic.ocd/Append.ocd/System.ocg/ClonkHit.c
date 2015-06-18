@@ -5,7 +5,6 @@
 // Callback from the engine when the energy of a living object changes.
 protected func OnEnergyChange(int change, int cause, int by_plr)
 {
-	//Log("%s energy: change %d, cause %d, by player %d", GetName(), change, cause, by_plr);
 	// Don't do anything if there is no heroic medal effect or crew member is not alive.
 	var effect = GetEffect("IntMedalHeroic", nil);
 	if (!effect || !GetAlive())

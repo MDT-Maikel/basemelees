@@ -74,15 +74,12 @@ public func FxIntMedalRocketeerOnExplosion(object target, proplist effect, objec
 	effect.possible_kills = rocket->FindObjects(Find_OCF(OCF_CrewMember), Find_Distance(50));
 	// Store the frame of the rocket explosion in the effect.
 	effect.explode_frame = FrameCounter();
-	//Log("Rocket explosion: frame %d, killer %d, kills %v", effect.explode_frame, effect.controller, effect.possible_kills);
 	return FX_OK;
 }
 
 // Effect callback made by when an enemy clonk has been killed.
 public func FxIntMedalRocketeerOnKill(object target, proplist effect, object clonk, int killer)
 {
-	//Log("Rocket on kill: frame %d, killer %d, clonk %v", FrameCounter(), killer, clonk);
-	//Log("Rocket on kill: frame %d, killer %d, kills %v", effect.explode_frame, effect.controller, effect.possible_kills);
 	// Check if both this kill and the last rocket explosion were in the same frame.
 	if (FrameCounter() != effect.explode_frame)
 	{

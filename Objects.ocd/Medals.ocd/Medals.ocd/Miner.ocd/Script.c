@@ -61,7 +61,6 @@ public func FxIntMedalMinerHasMined(object target, proplist effect, int plr, id 
 	if (effect.mined_wealth[plr_id] == nil)
 		effect.mined_wealth[plr_id] = 0;
 	effect.mined_wealth[plr_id] += value;
-	//Log("%s has mined %i for %d clunker and has now mined %d clunker in total", GetPlayerName(plr), resource, value, effect.mined_wealth[plr_id]);
 	// Check whether the wealth exceeds a thousand clunkers, if so notify rule.
 	if (effect.mined_wealth[plr_id] >= 1000)
 	{

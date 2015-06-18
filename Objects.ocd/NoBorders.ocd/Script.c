@@ -34,7 +34,6 @@ protected func FxIntCheckBordersTimer(object target, proplist effect, int time)
 				obj->SetPosition(new_x, new_y, true);
 				// Notify object via a callback.
 				obj->~OnBorderCrossed(DIR_Left);
-				//Log("%v with xdir = %d moved from (%d, %d) to (%d, %d).", obj, xdir, obj_wdt, x, obj->GetY(), new_x, new_y);
 			}
 			continue;
 		}
@@ -49,7 +48,6 @@ protected func FxIntCheckBordersTimer(object target, proplist effect, int time)
 				obj->SetPosition(new_x, new_y, true);
 				// Notify object via a callback.
 				obj->~OnBorderCrossed(DIR_Right);
-				//Log("%v with xdir = %d moved from (%d, %d) to (%d, %d).", obj, xdir, obj_wdt, x, obj->GetY(), new_x, new_y);
 			}		
 			continue;
 		}

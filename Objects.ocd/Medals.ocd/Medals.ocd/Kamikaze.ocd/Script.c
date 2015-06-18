@@ -66,16 +66,12 @@ public func FxIntMedalKamikazeOnKill(object target, proplist effect, int killer,
 {
 	var frame = FrameCounter();
 	// Remove all kills which have been done in previous frames.
-	RemoveOldKills(effect.kills, frame);
-	//Log("Looking for kamikaze while %s killed %s (frame %d)", GetPlayerName(killer), GetPlayerName(killed), frame);
-	//Log("Looking in old kills: %v", effect.kills);
-	
+	RemoveOldKills(effect.kills, frame);	
 	// Check if in previous kills there has been a kill compatible with this one.
 	var kamikaze = false;
 	for (var i = 0; i < GetLength(effect.kills); i++)
 	{
 		var kill = effect.kills[i];
-		//Log("Testing kill, old: %d killed %d, test: %d killed %d", kill.killer, kill.killed, killer, killed);
 		if (killer == killed)
 		{
 			// Made selfkill so look for an enemy kill by this killer.
@@ -96,7 +92,6 @@ public func FxIntMedalKamikazeOnKill(object target, proplist effect, int killer,
 		}
 	}
 	RemoveHoles(effect.kills);
-	
 	// Award medal if kamikaze has been detected.
 	if (kamikaze)
 	{

@@ -56,7 +56,6 @@ public func FxIntMedalPyromaniaOnIncineration(object target, proplist effect, in
 	if (effect.incinerated_counts[plr_id] == nil)
 		effect.incinerated_counts[plr_id] = 0;
 	effect.incinerated_counts[plr_id]++;
-	//Log("%s is playing pyromane and now has incinerated %d objects", GetPlayerName(plr), effect.incinerated_counts[plr_id]);
 	// Check whether the incinerated count exceeds 100, if so award medal.
 	if (effect.incinerated_counts[plr_id] >= 100)
 	{

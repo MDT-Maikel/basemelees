@@ -5,7 +5,6 @@
 // Callback from the engine when the energy of a living object changes.
 protected func OnEnergyChange(int change, int cause, int by_plr)
 {
-	//Log("%s energy: change %d, cause %d, by player %d", GetName(), change, cause, by_plr);
 	// Forward energy change to the critical hit effect.
 	var damage = -change / 1000;
 	var effect = GetEffect("IntMedalCriticalHit", nil);

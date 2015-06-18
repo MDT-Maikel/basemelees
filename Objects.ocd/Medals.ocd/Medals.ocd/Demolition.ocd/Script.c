@@ -18,7 +18,7 @@ public func GetMedalReward() { return 50; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_Demolition.c script for handling the destroying of structures.
+// See StructureDamage.c script for handling the destroying of structures.
 // This medal adds an effect which keeps track of the players' progress.
 
 // Called when the round starts, technically when the rule is created.
@@ -46,7 +46,7 @@ public func FxIntMedalDemolitionStart(object target, proplist effect, int tempor
 	return FX_OK;
 }
 
-// Effect callback made by a sold resource.
+// Effect callback made by a destroyed structure.
 public func FxIntMedalDemolitionHasDestroyed(object target, proplist effect, int plr, id structure)
 {
 	// Increase the destroyed structures for the player.
@@ -54,7 +54,6 @@ public func FxIntMedalDemolitionHasDestroyed(object target, proplist effect, int
 	if (effect.destroyed_structures[plr_id] == nil)
 		effect.destroyed_structures[plr_id] = 0;
 	effect.destroyed_structures[plr_id]++;
-	//Log("%s has destroyed structure {{%i}} and has now destroyed %d structures in total", GetPlayerName(plr), structure, effect.destroyed_structures[plr_id]);
 	// Check whether the destroyed structures exceed ten, if so notify rule.
 	if (effect.destroyed_structures[plr_id] >= 10)
 	{

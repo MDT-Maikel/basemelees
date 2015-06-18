@@ -164,7 +164,7 @@ private func GetScoreboardRows(proplist scoreboard, array entries, int name_widt
 	{
 		var team = GetTeamByIndex(team_index);
 		var nr_plr = GetPlayerInTeamCount(team);
-		var team_plrs = GetPlayersInTeam(team);
+		var team_plrs = GetPlayers(nil, team);
 		var team_menu = 
 		{
 			Target = this,
@@ -273,7 +273,7 @@ private func GetPlayerFlags(int plr)
 private func GetTeamFlags(int team)
 {
 	var flag_cnt = 0;
-	for (var plr in GetPlayersInTeam(team))
+	for (var plr in GetPlayers(nil, team))
 		flag_cnt += GetPlayerFlags(plr);
 	return flag_cnt;
 }
@@ -293,7 +293,7 @@ private func GetPlayerMedals(int plr)
 private func GetTeamMedals(int team)
 {
 	var medal_cnt = 0;
-	for (var plr in GetPlayersInTeam(team))
+	for (var plr in GetPlayers(nil, team))
 		medal_cnt += GetPlayerMedals(plr);
 	return medal_cnt;
 }

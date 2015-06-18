@@ -67,7 +67,6 @@ public func FxIntMedalDecoratedAwardedMedal(object target, proplist effect, int 
 	if (effect.awarded_medals[plr_id] == nil)
 		effect.awarded_medals[plr_id] = 0;
 	effect.awarded_medals[plr_id]++;
-	//Log("%s has been awarded %i and now has %d medals in this round", GetPlayerName(plr), medal, effect.awarded_medals[plr_id]);
 	// Check whether the number of awarded medals exceeds ten, if so notify rule.
 	if (effect.awarded_medals[plr_id] >= 10)
 	{
