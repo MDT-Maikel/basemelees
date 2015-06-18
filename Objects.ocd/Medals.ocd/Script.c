@@ -230,6 +230,9 @@ private func GetMedalCount(string medal_data, int medal_index)
 // Sets the medal count for a specific medal, in provided medal data.
 private func SetMedalCount(string medal_data, int medal_index, int count)
 {
+	// Safety: medal_data must be string.
+	if (GetType(medal_data) != C4V_String)
+		medal_data = "MEDALS__";
 	// Create a list of chars from the medal data.
 	var char_list = [];
 	for (var i = 0; i < GetLength(medal_data); i++)
