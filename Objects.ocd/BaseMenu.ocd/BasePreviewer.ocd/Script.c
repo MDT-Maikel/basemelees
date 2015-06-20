@@ -121,5 +121,4 @@ public func SaveScenarioObject() { return false; }
 
 /*-- Proplist --*/
 
-local Name = "$Name$";
 local Plane = 250;

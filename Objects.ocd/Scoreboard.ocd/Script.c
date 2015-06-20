@@ -77,7 +77,7 @@ public func CreateScoreboardMenu(object clonk)
 	this.Visibility = VIS_Owner;
 	menu_controller = clonk;
 	
-	// Scoreboard contents;
+	// Scoreboard contents.
 	var entries = [
 		{ icon = Flagpole, team_callback = "GetTeamFlags", plr_callback = "GetPlayerFlags" },
 		{ icon = Medal_Template, team_callback = "GetTeamMedals", plr_callback = "GetPlayerMedals", plr_clickcall = "OnMedalClick" }
@@ -85,7 +85,7 @@ public func CreateScoreboardMenu(object clonk)
 	var name_width = 20;
 	var entry_width = 3;
 
-	// Construction menu proplist.
+	// Scoreboard menu proplist.
 	menu =
 	{
 		Target = this,
@@ -311,8 +311,3 @@ public func OnMedalClick(int plr)
 
 // Don't save the scoreboard.
 public func SaveScenarioObject() { return false; }
-
-
-/*-- Proplist --*/
-
-local Name = "$Name$";

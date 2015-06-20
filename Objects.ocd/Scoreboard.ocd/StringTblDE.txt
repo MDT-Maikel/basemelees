@@ -1,2 +1,0 @@
-Name=Scoreboard
-Description=Scoreboard for base melees.

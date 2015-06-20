@@ -1,2 +1,0 @@
-Name=LogSpecial 
-Description=Special logging system for global messages, visible to all players.

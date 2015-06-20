@@ -99,7 +99,7 @@ private func DisplayMessage(object target, string message, int message_nr)
 	{
 		Target = target,
 		Style = GUI_Multiple,
-		Left = "0%",
+		Left = "1em",
 		Right = Format("%dem", 2 * length),
 		Top = Format("%dem", 10 + 2 * message_nr),
 		Bottom = Format("%dem", 10 + 2 * (message_nr + 1)),
@@ -117,9 +117,3 @@ private func RemoveMessage(proplist menu)
 	GuiClose(menu.ID, nil, menu.Target);
 	return;
 }
-
-
-/*-- Proplist --*/
-
-local Name = "$Name$";
-local Description = "$Description$";
