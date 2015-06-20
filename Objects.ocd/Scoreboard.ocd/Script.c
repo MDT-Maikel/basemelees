@@ -80,7 +80,9 @@ public func CreateScoreboardMenu(object clonk)
 	// Scoreboard contents.
 	var entries = [
 		{ icon = Flagpole, team_callback = "GetTeamFlags", plr_callback = "GetPlayerFlags" },
-		{ icon = Medal_Template, team_callback = "GetTeamMedals", plr_callback = "GetPlayerMedals", plr_clickcall = "OnMedalClick" }
+		{ icon = Medal_Template, team_callback = "GetTeamMedals", plr_callback = "GetPlayerMedals", plr_clickcall = "OnMedalClick" },
+		{ icon = Scoreboard_Death, team_callback = "GetTeamDeaths", plr_callback = "GetPlayerDeaths"},
+		{ icon = Scoreboard_Kill, team_callback = "GetTeamKills", plr_callback = "GetPlayerKills"}
 	];
 	var name_width = 20;
 	var entry_width = 3;
@@ -304,6 +306,38 @@ public func OnMedalClick(int plr)
 	// Open medal menu for the specific player.
 	MedalMenu->CreateMedalMenu(plr);
 	return;
+}
+
+
+/*-- Scoreboard Data: Deaths --*/
+
+private func GetPlayerDeaths(int plr)
+{
+	return Scoreboard_BaseMelee_Data->GetDeaths(plr);
+}
+
+private func GetTeamDeaths(int team)
+{
+	var death_cnt = 0;
+	for (var plr in GetPlayers(nil, team))
+		death_cnt += GetPlayerDeaths(plr);
+	return death_cnt;
+}
+
+
+/*-- Scoreboard Data: Kills --*/
+
+private func GetPlayerKills(int plr)
+{
+	return Scoreboard_BaseMelee_Data->GetKills(plr);
+}
+
+private func GetTeamKills(int team)
+{
+	var kill_cnt = 0;
+	for (var plr in GetPlayers(nil, team))
+		kill_cnt += GetPlayerKills(plr);
+	return kill_cnt;
 }
 
 

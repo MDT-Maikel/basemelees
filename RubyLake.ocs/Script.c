@@ -21,6 +21,9 @@ public func Initialize()
 	CreateObject(Rule_BaseMeleeLogging);
 	CreateObject(Rule_Medals);
 	
+	// Scoreboard.
+	Scoreboard_BaseMelee_Data->Init();
+	
 	// Team initialized variable should be a list.
 	team_init = [false, false];
 	

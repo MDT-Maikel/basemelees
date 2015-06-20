@@ -24,6 +24,9 @@ protected func Initialize()
 	CreateObject(Rule_BaseMeleeLogging);
 	CreateObject(Rule_Medals);
 	
+	// Scoreboard.
+	Scoreboard_BaseMelee_Data->Init();
+	
 	// Rescale island coordinates with map zoom and shuffle them.
 	var mapzoom = GetScenarioVal("MapZoom", "Landscape");
 	for (var island in island_list)
