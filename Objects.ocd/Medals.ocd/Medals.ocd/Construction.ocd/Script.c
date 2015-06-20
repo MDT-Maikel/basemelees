@@ -12,7 +12,7 @@ local Name = "$Name$";
 local Description = "$Description$";
 
 public func IsMedal() { return true; }
-public func GetMedalIndex() { return 12; }
+public func GetMedalIndex() { return 11; }
 public func GetMedalReward() { return 40; }
 
 

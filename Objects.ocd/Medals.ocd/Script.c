@@ -24,6 +24,8 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
+	// Checks all loaded medals for overlapping medal indices. 
+	CheckActiveMedals();
 	// Initialize the local round medals to an empty list.
 	round_medals = [];
 	// Initialize the message board commands.
@@ -185,6 +187,9 @@ public func GetMedals(int plr, bool round_only)
 	return medal_list;
 }
 
+
+/*-- Medal Information --*/
+
 // Returns a list of the currently active medals with their ids.
 public func GetActiveMedals()
 {
@@ -201,6 +206,24 @@ public func GetActiveMedals()
 			PushBack(active_medals, def);
 	}
 	return active_medals;
+}
+
+// Checks all loaded medals for overlapping and non-valid medal indices. 
+private func CheckActiveMedals()
+{
+	var medals = Rule_Medals->GetActiveMedals();
+	// Check for bounds on the medal index.
+	for (var medal in medals)
+		if (!Inside(medal->GetMedalIndex(), 0, 254))
+			Log("$WarningInvalidMedalID$", medal, medal->GetMedalIndex());
+	// Check for overlapping indices.
+	var medal_ids = [];
+	for (var medal in medals)
+		PushBack(medal_ids, medal->GetMedalIndex());
+	var duplicate_cnt = RemoveDuplicates(medal_ids);
+	if (duplicate_cnt > 0)
+		Log("$WarningDuplicateMedalID$");
+	return;
 }
 
 
