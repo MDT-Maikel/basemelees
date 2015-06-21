@@ -24,8 +24,7 @@ protected func InitializePlayer(int plr)
 	if (!team)
 		return LogSpecial(Format("$PlayerJoinedNoTeam$", GetTaggedPlayerName(plr)));
 	// If player is the first in the team, log as team leader.
-	var team_name = GetTaggedTeamName(team);
-	if (GetPlayerCountByTeam(team) <= 1)
+	if (GetPlayerInTeamCount(team) <= 1)
 		return LogSpecial(Format("$PlayerJoinedTeamLeader$", GetTaggedPlayerName(plr), GetTaggedTeamName(team)));
 	// Otherwise log normal team join.
 	LogSpecial(Format("$PlayerJoinedInTeam$", GetTaggedPlayerName(plr), GetTaggedTeamName(team)));
@@ -39,7 +38,7 @@ protected func RemovePlayer(int plr)
 	LogSpecial(Format("$PlayerEliminated$", GetTaggedPlayerName(plr)));
 	// If team has been eliminated, log that as well.	
 	var team = GetPlayerTeam(plr);
-	if (team && GetPlayerCountByTeam(team) <= 1)
+	if (team && GetPlayerInTeamCount(team) <= 1)
 		LogSpecial(Format("$TeamEliminated$", GetTaggedTeamName(team)));
 	return;
 }
@@ -64,16 +63,6 @@ protected func OnClonkDeath(object clonk, int killed_by)
 	// Log normal kill of an enemy.
 	LogSpecial(Format(Translate(Format("KilledByPlayer%d", rand)), GetTaggedPlayerName(plr), crew_name, GetTaggedPlayerName(killed_by)));
 	return;
-}
-
-// Returns the number of players belonging to the given team.
-private func GetPlayerCountByTeam(int team)
-{
-	var count = 0;
-	for (var i = 0; i < GetPlayerCount(); i++)
-		if (GetPlayerTeam(GetPlayerByIndex(i)) == team)
-			count++;
-	return count;
 }
 
 // Callback when a player earns a medal, this will be logged.
@@ -118,11 +107,15 @@ protected func OnFlagpoleDestruction(int owner, int destructor)
 			log = Format("$FlagDestructionTeamN$", GetTaggedTeamName(team_destructor), GetTaggedTeamName(team_owner), nr_flags_remaining);
 	}
 	LogSpecial(log);
+	return;
 }
 
-protected func Activate(int byplr)
+
+/*-- Rule Menu --*/
+
+protected func Activate(int by_plr)
 {
-	MessageWindow("$Description$", byplr);
+	MessageWindow("$Description$", by_plr);
 	return;
 }
 

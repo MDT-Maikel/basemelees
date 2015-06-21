@@ -1,5 +1,5 @@
 Name=Medaillen
-Description=Spieler werden Medaillen verliehen für bestimmte Erfolge.
+Description=Spieler werden Medaillen verliehen für bestimmte Erfolge. You can view the medals achieved by any of the players by typing /medals in the chat window.
 
 # Medal Menu
 MenuPlayerHasMedals=%s hat Medaillen:

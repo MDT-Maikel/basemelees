@@ -45,6 +45,7 @@ public func GetFreeCrew()
 protected func OnClonkDeath(object clonk)
 {
 	var plr = clonk->GetOwner();
+	var clonk_id = clonk->GetID();
 	
 	// Only respawn a clonk if it is the last crew member.
 	if (GetCrewCount(plr) >= 1)
@@ -59,7 +60,7 @@ protected func OnClonkDeath(object clonk)
 		// If free crew just create a clonk at the base.
 		if (free_crew)
 		{
-			var crew = CreateObjectAbove(Clonk, base->GetX() - GetX(), base->GetY() + base->GetDefHeight() / 2 - GetX(), plr);
+			var crew = CreateObjectAbove(clonk_id, base->GetX() - GetX(), base->GetY() + base->GetDefHeight() / 2 - GetX(), plr);
 			crew->MakeCrewMember(plr);
 			SetCursor(plr, crew);
 			// Transfer inventory if turned on.
@@ -68,7 +69,7 @@ protected func OnClonkDeath(object clonk)
 			break;
 		}
 		// Try to buy a crewmember at the base.
-		var crew = base->~DoBuy(Clonk, plr, base->GetOwner(), clonk);
+		var crew = base->~DoBuy(clonk_id, plr, base->GetOwner(), clonk);
 		if (crew && GetType(crew) == C4V_C4Object)
 		{
 			crew->Exit(0, base->GetDefHeight() / 2);
@@ -82,9 +83,12 @@ protected func OnClonkDeath(object clonk)
 	return _inherited(clonk, ...);
 }
 
-protected func Activate(int byplr)
+
+/*-- Rule Menu --*/
+
+protected func Activate(int by_plr)
 {
-	MessageWindow("$Description$", byplr);
+	MessageWindow("$Description$", by_plr);
 	return;
 }
 

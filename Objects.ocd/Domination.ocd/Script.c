@@ -66,11 +66,17 @@ private func TeamHasBase(int team)
 	return false;
 }
 
-protected func Activate(int plr)
+
+/*-- Rule Menu --*/
+
+protected func Activate(int by_plr)
 {
-	MessageWindow(Description, plr);
+	MessageWindow(Description, by_plr);
 	return true;
 }
+
+
+/*-- Proplist --*/
 
 local Name = "$Name$";
 local Description = "$Description$";

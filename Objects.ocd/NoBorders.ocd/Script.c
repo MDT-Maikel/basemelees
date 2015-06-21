@@ -56,6 +56,15 @@ protected func FxIntCheckBordersTimer(object target, proplist effect, int time)
 }
 
 
+/*-- Rule Menu --*/
+
+protected func Activate(int by_plr)
+{
+	MessageWindow("$Description$", by_plr);
+	return;
+}
+
+
 /*-- Proplist --*/
 
 local Name = "$Name$";

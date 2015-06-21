@@ -75,12 +75,6 @@ protected func OnClonkDeath(object clonk, int killed_by)
 	return;
 }
 
-protected func Activate(int byplr)
-{
-	MessageWindow("$Description$", byplr);
-	return;
-}
-
 // Performs the given callback in all loaded medals.
 private func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
 {
@@ -359,6 +353,15 @@ public func ShowPlayerMedals(int plr)
 		return;
 	// Show the medal menu for this player.
 	MedalMenu->CreateMedalMenu(plr);
+	return;
+}
+
+
+/*-- Rule Menu --*/
+
+protected func Activate(int by_plr)
+{
+	MessageWindow("$Description$", by_plr);
 	return;
 }
 

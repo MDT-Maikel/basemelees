@@ -1,5 +1,5 @@
 Name=Medals
-Description=Players are awarded medals for special achievements.
+Description=Players are awarded medals for special achievements. You can view the medals achieved by any of the players by typing /medals in the chat window.
 
 # Medal Menu
 MenuPlayerHasMedals=%s has medals:
