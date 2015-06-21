@@ -155,23 +155,21 @@ func InitializeObjects()
 	var Elevator001 = CreateObjectAbove(Elevator, 239, 431);
 	Elevator001->SetDir(DIR_Right);
 	Elevator001->SetColor(0xfff40000);
-	Elevator001->CreateShaft(289);
 	Elevator001->SetCasePosition(708);
 	var Elevator002 = CreateObjectAbove(Elevator, 177, 431);
 	Elevator002->SetColor(0xfff40000);
-	Elevator002->CreateShaft(289);
 	Elevator002->SetCasePosition(708);
 	Elevator002->LetsBecomeFriends(Elevator001);
+	DrawMaterialQuad("Tunnel-brickback", 184, 430, 232, 430, 232, 720, 184, 720, true);
 	var Elevator003 = CreateObjectAbove(Elevator, 1201, 431);
 	Elevator003->SetColor(0xfff40000);
-	Elevator003->CreateShaft(289);
 	Elevator003->SetCasePosition(708);
 	var Elevator004 = CreateObjectAbove(Elevator, 1263, 431);
 	Elevator004->SetDir(DIR_Right);
 	Elevator004->SetColor(0xfff40000);
-	Elevator004->CreateShaft(289);
 	Elevator004->SetCasePosition(708);
 	Elevator004->LetsBecomeFriends(Elevator003);
+	DrawMaterialQuad("Tunnel-brickback", 1208, 430, 1256, 430, 1256, 720, 1208, 720, true);
 	
 	var StoneDoor001 = CreateObject(StoneDoor, 412, 595);
 	var SpinWheel001 = CreateObjectAbove(SpinWheel, 346, 616);
@@ -188,12 +186,17 @@ func InitializeObjects()
 		
 	CreateObject(StoneDoor, 164, 596)->SetAutoControl();
 	CreateObject(StoneDoor, 388, 516)->SetAutoControl();
-	CreateObject(StoneDoor, 292, 412)->SetAutoControl();
 	CreateObject(StoneDoor, 164, 700)->SetAutoControl();
 	CreateObject(StoneDoor, 1276, 596)->SetAutoControl();
 	CreateObject(StoneDoor, 1052, 516)->SetAutoControl();
-	CreateObject(StoneDoor, 1148, 412)->SetAutoControl();
 	CreateObject(StoneDoor, 1276, 700)->SetAutoControl();
+	
+	CreateObject(BigStoneDoor, 292, 402)->SetAutoControl();
+	DrawMaterialQuad("Tunnel-brickback", 288, 312, 296, 312, 296, 372, 288, 372, true);
+	DrawMaterialQuad("Tunnel-brickback", 272, 372, 312, 372, 312, 380, 272, 380, true);
+	CreateObject(BigStoneDoor, 1148, 402)->SetAutoControl();
+	DrawMaterialQuad("Tunnel-brickback", 1144, 312, 1152, 312, 1152, 372, 1144, 372, true);
+	DrawMaterialQuad("Tunnel-brickback", 1128, 372, 1168, 372, 1168, 380, 1128, 380, true);
 
 	var lorry;
 	lorry = CreateObjectAbove(Lorry, 276, 719);

@@ -1,0 +1,15 @@
+[DefCore]
+id=BigStoneDoor
+Version=6,0
+Category=C4D_Structure
+Width=10
+Height=60
+Offset=-5,-30
+Vertices=2
+VertexX=0,0
+VertexY=-29,29
+VertexCNAT=4,8
+SolidMask=0,0,10,60,0,0
+Mass=1000
+Components=Rock=10;
+HorizontalFix=1
