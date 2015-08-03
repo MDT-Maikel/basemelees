@@ -3,16 +3,6 @@
 # script which creates the release from the basemelees git repos.
 
 
-# print usage, if no argument is specified
-if [ $# -eq 0 ] 
-then
-    echo "Usage: $0 <version>"
-    exit 1
-fi
-
-# get the version
-version=$1
-
 # move to basemelees folder
 cd ../..
 if [ ! -f Title.txt ]
@@ -20,6 +10,14 @@ then
 	echo "Execute from basemelees/misc, currently executed from wrong folder."
 	exit 1
 fi
+
+# check for version file and take version
+if [ ! -f Version.txt ]
+then
+	echo "Version.txt not found, please create this file."
+	exit 1
+fi
+version="`cat Version.txt`"
 
 # create the new scenario folder
 if [ -d BaseMeleesV$version.ocf ] || [ -f BaseMeleesV$version.ocf ]
