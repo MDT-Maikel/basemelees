@@ -45,11 +45,10 @@ protected func InitializePlayer(int plr)
 	if (team == 0)
 		return;
 	
-	//SetFoW(false, plr);
 	// Set a strict zoom range.
 	SetPlayerZoomByViewRange(plr, 800, 600, PLRZOOM_LimitMax);
 	SetPlayerViewLock(plr, true);
-	
+		
 	// Position crew and give them a shovel.
 	var i, crew;
 	for (i = 0; crew = GetCrew(plr, i); ++i)

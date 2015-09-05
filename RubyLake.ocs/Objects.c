@@ -2,47 +2,6 @@
 
 func InitializeObjects()
 {
-	var Torch001 = CreateObjectAbove(Torch, 268, 585);
-	Torch001->AttachToWall(true);
-	var Torch002 = CreateObjectAbove(Torch, 343, 585);
-	Torch002->AttachToWall(true);
-	var Torch003 = CreateObjectAbove(Torch, 72, 578);
-	Torch003->AttachToWall(true);
-	var Torch004 = CreateObjectAbove(Torch, 278, 690);
-	Torch004->AttachToWall(true);
-	var Torch005 = CreateObjectAbove(Torch, 207, 658);
-	Torch005->AttachToWall(true);
-	var Torch006 = CreateObjectAbove(Torch, 208, 480);
-	Torch006->AttachToWall(true);
-	var Torch007 = CreateObjectAbove(Torch, 352, 506);
-	Torch007->AttachToWall(true);
-	var Torch008 = CreateObjectAbove(Torch, 80, 471);
-	Torch008->AttachToWall(true);
-	var Torch009 = CreateObjectAbove(Torch, 257, 376);
-	Torch009->AttachToWall(true);
-	var Torch010 = CreateObjectAbove(Torch, 155, 379);
-	Torch010->AttachToWall(true);
-	var Torch011 = CreateObjectAbove(Torch, 1172, 585);
-	Torch011->AttachToWall(true);
-	var Torch012 = CreateObjectAbove(Torch, 1097, 585);
-	Torch012->AttachToWall(true);
-	var Torch013 = CreateObjectAbove(Torch, 1368, 578);
-	Torch013->AttachToWall(true);
-	var Torch014 = CreateObjectAbove(Torch, 1162, 690);
-	Torch014->AttachToWall(true);
-	var Torch015 = CreateObjectAbove(Torch, 1233, 658);
-	Torch015->AttachToWall(true);
-	var Torch016 = CreateObjectAbove(Torch, 1232, 480);
-	Torch016->AttachToWall(true);
-	var Torch017 = CreateObjectAbove(Torch, 1088, 506);
-	Torch017->AttachToWall(true);
-	var Torch018 = CreateObjectAbove(Torch, 1360, 471);
-	Torch018->AttachToWall(true);
-	var Torch019 = CreateObjectAbove(Torch, 1183, 376);
-	Torch019->AttachToWall(true);
-	var Torch020 = CreateObjectAbove(Torch, 1285, 379);
-	Torch020->AttachToWall(true);
-	
 	var armory;	
 	armory = CreateObjectAbove(Armory, 299, 527);
 	armory->CreateContents(Metal, 6);
