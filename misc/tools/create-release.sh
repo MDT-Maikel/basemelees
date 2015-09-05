@@ -37,8 +37,8 @@ cp Title.txt BaseMeleesV$version.ocf/Title.txt
 cp Title.png BaseMeleesV$version.ocf/Title.png
 cp Version.txt BaseMeleesV$version.ocf/Version.txt
 
-# copy all .ocd's and .ocf's
-for dir in $(find -maxdepth 1 -type d -name "*.ocd" -o -name "*.ocs"); 
+# copy all .ocd's, .ocf's and ocg's
+for dir in $(find -maxdepth 1 -type d -name "*.ocd" -o -name "*.ocs" -o -name "*.ocg"); 
 do
 	rsync -a --exclude=".*" --exclude="*~" $dir BaseMeleesV$version.ocf
 done
