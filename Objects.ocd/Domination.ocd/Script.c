@@ -44,7 +44,7 @@ protected func FxIntCheckBaseTimer(object target, proplist effect, int time)
 // Returns whether the individual player has a base.
 private func PlayerHasBase(int plr)
 {
-	var base = FindObject(Find_Owner(plr), Find_Or(Find_Func("IsBaseBuilding"), Find_Func("IsFlagpole")));
+	var base = FindObject(Find_Owner(plr), Find_Or(Find_Func("IsBaseBuilding")));
 	if (base)
 		return true;
 	return false;
