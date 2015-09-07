@@ -69,6 +69,13 @@ global func GivePlayerNormalBaseMaterial(int plr, bool add_mats)
 		// Additional: Clonks & health.
 		[Clonk,      4,  1],
 		[Bread,      2,  1],
+		// Additional: Materials & mining.
+		[Wood,            2,  1],
+		[Metal,           2,  1],
+		[Rock,            2,  1],
+		[Cloth,           2,  1],
+		[Firestone,       2,  2],
+		[Dynamite,        2,  2],
 		// Additional tools.
 		[Barrel,       2,  1],
 		[MetalBarrel,  2,  1],
@@ -115,6 +122,8 @@ global func GivePlayerAdvancedBaseMaterial(int plr, bool add_mats)
 		[Metal,           4,  2],
 		[Rock,            4,  2],
 		[Cloth,           2,  1],
+		[Firestone,       2,  2],
+		[Dynamite,        2,  2],
 		// Advanced tools.
 		[TeleGlove,       1,  1],
 		[WindBag,         1,  1],
