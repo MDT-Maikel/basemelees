@@ -1,7 +1,8 @@
 /**
 	Skylands
 	Four dynamically generated large sky islands and some smaller islands with 
-	valuable materials.
+	valuable materials. The number of large island depends on the number of 
+	active teams at the start.
 	
 	@authors Maikel
 */
@@ -15,11 +16,15 @@ static island_list;
 // Called be the engine: draw the complete map here.
 protected func InitializeMap(proplist map)
 {
+	// Number of islands and map size depends on the number of active teams.
+	var nr_teams = GetStartupTeamCount();
+	nr_teams = BoundBy(nr_teams, 2, 4);
+	
 	// Set the map size.
-	map->Resize(480, 160);
+	map->Resize(120 * nr_teams, 160);
 	
 	// Calculate the main island positions and return them in terms of rectangles.
-	var main_islands = FindMainIslands(map, 4, 56, 40);
+	var main_islands = FindMainIslands(map, nr_teams, 56, 40);
 	
 	// Store island positions (middle top) in a static variable for the scenario script.
 	island_list = [];

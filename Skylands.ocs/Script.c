@@ -54,6 +54,11 @@ protected func InitializePlayer(int plr)
 	var team = GetPlayerTeam(plr);
 	if (team == 0)
 		return;
+		
+	// Check whether the island is available for this team.
+	// It may not have been generated if this team was not available at startup.
+	if (!island_list[team - 1])
+		return EliminatePlayer(plr);
 	
 	// Set a strict zoom range.
 	SetPlayerZoomByViewRange(plr, 500, 350, PLRZOOM_LimitMax);
@@ -202,7 +207,7 @@ private func InitBlocking(int minutes)
 	if (!minutes)
 		return;
 	// Create a blocking rectangle around each island for n minutes.
-	for (var i = 0; i < 4; i++)
+	for (var i = 0; i < GetLength(island_list); i++)
 	{
 		var island = island_list[i];
 		var x = island[0];
