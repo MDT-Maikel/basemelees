@@ -1,0 +1,2 @@
+# Usage Restriction
+MsgUsageRestricted=Usage of %s is not allowed outside your base area.
