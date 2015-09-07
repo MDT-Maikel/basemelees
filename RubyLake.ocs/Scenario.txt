@@ -10,16 +10,16 @@ Difficulty=1
 Definition1=Objects.ocd
 
 [Player1]
-Crew=Clonk=1
+Crew=Clonk=2
 
 [Player2]
-Crew=Clonk=1
+Crew=Clonk=2
 
 [Player3]
-Crew=Clonk=1
+Crew=Clonk=2
 
 [Player4]
-Crew=Clonk=1
+Crew=Clonk=2
 
 [Landscape]
 TopOpen=1
