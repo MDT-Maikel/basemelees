@@ -33,6 +33,16 @@ allows the placement of certain structures by the team leader.
 * Test the individual medals.
 * Release this new version to Lorry and other platforms.
 
+
+[Versioning]
+The version is only stored in the Version.txt file. This file is read by the release
+scripts to determine the version and append it to the folder name. The scheme for the
+verion is X.Y where X indicates a major release and Y a bugfix release. Bugfix releases
+are developed on the branch of the release by commits cherry-picked from master. The
+version can have an indication in brackets appended, like (Alpha), (Beta) or (RC) which
+indicates that this version is not final.
+
+
 [List of Open Todos]
 * Improve the fancy logging
 * Improve the medal menu (sorting & grouping)
