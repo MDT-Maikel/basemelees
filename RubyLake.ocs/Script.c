@@ -20,6 +20,8 @@ public func Initialize()
 	CreateObject(Rule_TeamAccount);
 	CreateObject(Rule_BaseMeleeLogging);
 	CreateObject(Rule_Medals);
+	var construction_limit = CreateObject(Rule_ConstructionLimit);
+	construction_limit->AddConstructionLimit(Flagpole, 3, true);
 	
 	// Scoreboard.
 	Scoreboard_BaseMelee_Data->Init();

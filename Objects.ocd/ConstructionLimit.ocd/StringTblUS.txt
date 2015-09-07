@@ -1,0 +1,2 @@
+Name=Construction Limit
+Description=This rule limits the amount of structures of a certain type the player is allowed to build.
