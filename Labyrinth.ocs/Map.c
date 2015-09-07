@@ -279,7 +279,7 @@ public func DuplicateLargeCave(proplist orig, proplist onto)
 	for (var x = -orig.Wdt; x < orig.Wdt; x++)
 		for (var y = -orig.Hgt; y < orig.Hgt; y++)
 			if (mask->GetPixel(x + orig.X, y + orig.Y))
-				SetPixel(x + onto.X, y + onto.Y, GetPixel(x + orig.X, y + orig.Y));
+				SetPixel(x + onto.X, y + onto.Y, GetPixel(x + orig.X, y + orig.Y), GetBackPixel(x + orig.X, y + orig.Y));
 	return;
 }
 

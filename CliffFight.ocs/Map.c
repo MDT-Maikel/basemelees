@@ -134,7 +134,7 @@ public func SymmetrizeMap(proplist map)
 	// Loop over all pixels of the left side and copy onto the right side.
 	for (var x = 0; x < map.Wdt / 2; x++)
 		for (var y = 0; y < map.Hgt; y++)
-			map->SetPixel(map.Wdt - x - 1, y, map->GetPixel(x, y));
+			map->SetPixel(map.Wdt - x - 1, y, map->GetPixel(x, y), map->GetBackPixel(x, y));
 	return;
 }
 

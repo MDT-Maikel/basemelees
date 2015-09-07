@@ -124,7 +124,7 @@ public func DuplicateMainIsland(proplist orig, proplist onto)
 	// Loop over all pixels in the original and duplicate onto the new island.
 	for (var x = 0; x < orig.Wdt; x++)
 		for (var y = 0; y < orig.Hgt; y++)
-			SetPixel(x + onto.X, y + onto.Y, GetPixel(x + orig.X, y + orig.Y));
+			SetPixel(x + onto.X, y + onto.Y, GetPixel(x + orig.X, y + orig.Y), GetBackPixel(x + orig.X, y + orig.Y));
 	return;
 }
 
