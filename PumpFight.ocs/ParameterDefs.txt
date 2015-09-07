@@ -1,0 +1,65 @@
+[ParameterDef]
+Name=$AttackBarriers$
+Description=$DescAttackBarriers$
+ID=AttackBarrier
+Default=5
+
+	[Options]
+		
+		[Option]
+		Name=$NoBarrier$
+		Description=$DescNoBarrier$
+		Value=0
+		
+		[Option]
+		Name=$BarrierFive$
+		Description=$DescBarrierFive$
+		Value=5
+		
+		[Option]
+		Name=$BarrierTen$
+		Description=$DescBarrierTen$
+		Value=10		
+
+[ParameterDef]
+Name=$BaseMaterials$
+Description=$DescBaseMaterials$
+ID=BaseMaterials
+Default=0
+
+	[Options]
+		
+		[Option]
+		Name=$MaterialsBasic$
+		Description=$DescMaterialsBasic$
+		Value=0
+		
+		[Option]
+		Name=$MaterialsNormal$
+		Description=$DescMaterialsNormal$
+		Value=1
+		
+		[Option]
+		Name=$MaterialsAdvanced$
+		Description=$DescMaterialsAdvanced$
+		Value=2
+		
+[ParameterDef]
+Name=Liquid Material
+Description=Which liquid material
+ID=LiquidMaterial
+Default=1
+
+	[Options]
+		
+		[Option]
+		Name=Water
+		Value=0
+		
+		[Option]
+		Name=Acid
+		Value=1
+		
+		[Option]
+		Name=Lava
+		Value=2		

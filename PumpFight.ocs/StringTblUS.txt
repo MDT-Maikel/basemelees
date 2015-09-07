@@ -1,0 +1,25 @@
+# Team names
+TeamNameBoompack=Boompack Boys
+TeamNameCatapult=Catapult Cavalry
+TeamNameWindbag=Wind Whisperers
+TeamNameTeleglove=Tele Talkers
+
+# Scenario parameter: attack barrier
+AttackBarriers=Attack Barriers
+DescAttackBarriers=Attack barriers prohibit teams from performing early attacks and allows for building up a small settlement, select the duration for those attack barriers to be present.
+NoBarrier=No Barriers
+DescNoBarrier=There are no barriers preventing early attacks.
+BarrierFive=5 Minutes
+DescBarrierFive=There are barriers preventing early attacks for 5 minutes.
+BarrierTen=10 Minutes
+DescBarrierTen=There are barriers preventing early attacks for 10 minutes.
+
+# Scenario parameter: base materials
+BaseMaterials=Base Materials
+DescBaseMaterials=Players can buy materials, items and weapons at team base flags. This option determines the amount of materials available for purchase.
+MaterialsBasic=Basic Materials
+DescMaterialsBasic=Players can buy Clonks, food, construction materials and basic tools.
+MaterialsNormal=Normal Materials
+DescMaterialsNormal=Players can additionally buy advanced tools and basic weapons.
+MaterialsAdvanced=Advanced Materials
+DescMaterialsAdvanced=Players can additionally buy more advanced tools, advanced weapons and artillery.
