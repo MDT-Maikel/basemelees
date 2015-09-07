@@ -84,8 +84,8 @@ public func CreateScoreboardMenu(object clonk)
 		{ icon = Scoreboard_Death, team_callback = "GetTeamDeaths", plr_callback = "GetPlayerDeaths"},
 		{ icon = Scoreboard_Kill, team_callback = "GetTeamKills", plr_callback = "GetPlayerKills"}
 	];
-	var name_width = 20;
-	var entry_width = 3;
+	var name_width = 10;
+	var entry_width = 2;
 
 	// Scoreboard menu proplist.
 	menu =
@@ -132,7 +132,7 @@ private func GetScoreboardHeader(array entries, int name_width, int entry_width)
 		Target = this,
 		ID = 1,
 		Top = "0em",
-		Bottom = "3em",
+		Bottom = "2em",
 		BackgroundColor = {Std = SRBDMENU_BackgroundColor},	
 	};
 	header.name = 
@@ -161,7 +161,7 @@ private func GetScoreboardHeader(array entries, int name_width, int entry_width)
 
 private func GetScoreboardRows(proplist scoreboard, array entries, int name_width, int entry_width)
 {
-	var total_length = 3;
+	var total_length = 2;
 	for (var team_index = 0; team_index < GetTeamCount(); team_index++)
 	{
 		var team = GetTeamByIndex(team_index);
@@ -174,7 +174,7 @@ private func GetScoreboardRows(proplist scoreboard, array entries, int name_widt
 			Left = "0%",
 			Right = "100%",
 			Top = Format("%dem", total_length),
-			Bottom = Format("%dem", total_length + 3 + 3 * nr_plr),
+			Bottom = Format("%dem", total_length + 2 + 2 * nr_plr),
 		};
 		team_menu.teamrow = MakeTeamRow(team, team_index, entries, name_width, entry_width);
 		for (var plr_index = 0; plr_index < GetLength(team_plrs); plr_index++)
@@ -184,7 +184,7 @@ private func GetScoreboardRows(proplist scoreboard, array entries, int name_widt
 			team_menu[Format("plrrow%d", plr_menu.ID)] = plr_menu;
 		}
 		scoreboard[Format("team%d", team_menu.ID)] = team_menu;
-		total_length += 3 + 3 * nr_plr;
+		total_length += 2 + 2 * nr_plr;
 	}
 	scoreboard.Bottom = Format("%dem", 20 + total_length);
 	return scoreboard;
@@ -198,7 +198,7 @@ private func MakeTeamRow(int team, int team_index, array entries, int name_width
 		Left = "0%",
 		Right = "100%",
 		Top = "0em",
-		Bottom = "3em",
+		Bottom = "2em",
 		BackgroundColor = {Std = SRBDMENU_TeamColor},
 	};
 	row.name = 
@@ -233,8 +233,8 @@ private func MakePlayerRow(int plr, int team_index, int player_index, array entr
 		ID = 1000 * (team_index + 1) + 100 * (player_index + 2),
 		Left = "0%",
 		Right = "100%",
-		Top = Format("%dem", 3 * (player_index + 1)),
-		Bottom = Format("%dem", 3 * (player_index + 2)),
+		Top = Format("%dem", 2 * (player_index + 1)),
+		Bottom = Format("%dem", 2 * (player_index + 2)),
 		BackgroundColor = {Std = SRBDMENU_BackgroundColor},
 	};
 	row.name = 

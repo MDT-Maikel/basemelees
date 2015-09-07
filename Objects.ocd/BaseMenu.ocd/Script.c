@@ -229,8 +229,8 @@ public func MenuAddObjects(proplist struct, object clonk)
 		{
 			Target = this,
 			ID = cnt + 1000,
-			Right = "12em",
-			Bottom = "12em",
+			Right = "6em",
+			Bottom = "6em",
 			BackgroundColor = {Std = 0, Hover = BASEMENU_HoverColor},
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnObjectHover", obj)],
 			OnMouseOut = GuiAction_SetTag("Std"), 

@@ -55,10 +55,10 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		Decoration = GUI_MenuDeco,
-		Left = "50% - 24em",
-		Right = "50% + 24.1em", // 0.1 needed to fit six entries per row.
-		Top = "10em",
-		Bottom = "54em",
+		Left = "50% - 12em",
+		Right = "50% + 12.1em", // 0.1 needed to fit six entries per row.
+		Top = "8%",
+		Bottom = "8%+27em",
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
 	// A header showing the contents of this menu and close button.
@@ -67,22 +67,22 @@ public func OpenMedalMenu(int plr)
 		Target = this,
 		ID = 1,
 		Right = "100%",
-		Bottom = "3em",
+		Bottom = "1.5em",
 		header_text = 
 		{
 			Target = this,
 			ID = 2,
-			Right = "100%-6em",
-			Bottom = "3em",
+			Right = "100%-3em",
+			Bottom = "1.5em",
 			Text = "$MedalMenuCaption$",
 		},
 		header_view = 
 		{
 			Target = this,
 			ID = 3,
-			Left = "100%-6em",
-			Right = "100%-3em",
-			Bottom = "3em",
+			Left = "100%-3em",
+			Right = "100%-1.5em",
+			Bottom = "1.5em",
 			Symbol = Medal_Template,
 			Tooltip = "$MedalMenuSwitch$",
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
@@ -92,8 +92,8 @@ public func OpenMedalMenu(int plr)
 			header_view_tag = {
 				Target = this,
 				ID = 4,
-				Left = "1.4em",
-				Top = "1.4em",
+				Left = "0.7em",
+				Top = "0.7em",
 				Symbol = Icon_Number,
 				GraphicsName = "Sum",
 			}
@@ -102,9 +102,9 @@ public func OpenMedalMenu(int plr)
 		{
 			Target = this,
 			ID = 5,
-			Left = "100%-3em",
+			Left = "100%-1.5em",
 			Right = "100%",
-			Bottom = "3em",
+			Bottom = "1.5em",
 			Symbol = Icon_Cancel,
 			Tooltip = "$MedalMenuClose$",
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
@@ -122,8 +122,8 @@ public func OpenMedalMenu(int plr)
 		ID = 6,
 		Left = "0%",
 		Right = "100%",
-		Top = "3em",
-		Bottom = "4em",
+		Top = "1.5em",
+		Bottom = "2em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
 	// Player choice takes top ten percent.
@@ -133,8 +133,8 @@ public func OpenMedalMenu(int plr)
 		ID = 7,
 		Left = "0%",
 		Right = "100%",
-		Top = "4em",
-		Bottom = "12em",
+		Top = "2em",
+		Bottom = "6em",
 		Style = GUI_GridLayout,
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},	
 	};
@@ -147,8 +147,8 @@ public func OpenMedalMenu(int plr)
 		ID = 8,
 		Left = "0%",
 		Right = "100%",
-		Top = "12em",
-		Bottom = "13em",
+		Top = "6em",
+		Bottom = "6.5em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
 	// Medals take up middle eighty percent.
@@ -158,8 +158,8 @@ public func OpenMedalMenu(int plr)
 		ID = 9,
 		Left = "0%",
 		Right = "100%",
-		Top = "13em",
-		Bottom = "37em",
+		Top = "6.5em",
+		Bottom = "18.5em",
 		Style = GUI_GridLayout,
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
@@ -171,8 +171,8 @@ public func OpenMedalMenu(int plr)
 		ID = 10,
 		Left = "0%",
 		Right = "100%",
-		Top = "37em",
-		Bottom = "38em",
+		Top = "18.5em",
+		Bottom = "19em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
 	// Medal info bottom ten percent.
@@ -182,8 +182,8 @@ public func OpenMedalMenu(int plr)
 		ID = 11,
 		Left = "0%",
 		Right = "100%",
-		Top = "38em",
-		Bottom = "44em",
+		Top = "19em",
+		Bottom = "22em",
 		Text = nil,
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
@@ -200,10 +200,10 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 	{
 		Target = this,
 		ID = 100,
-		Right = "8em",
-		Bottom = "8em",
+		Right = "4em",
+		Bottom = "4em",
 		Priority = 0,
-		Margin = ["0.5em"],
+		Margin = ["0.25em"],
 		BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 		OnMouseIn = GuiAction_SetTag("Hover"),
 		OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -222,10 +222,10 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 		{
 			Target = this,
 			ID = cnt + 100,
-			Right = "8em",
-			Bottom = "8em",
+			Right = "4em",
+			Bottom = "4em",
 			Priority = cnt,
-			Margin = ["0.5em"],
+			Margin = ["0.25em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = GuiAction_SetTag("Hover"),
 			OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -252,9 +252,9 @@ public func MenuShowAllMedals(proplist parent)
 			Target = this,
 			ID = cnt + 1000,
 			Priority = medal_id->GetMedalIndex(),
-			Right = "6em",
-			Bottom = "6em",
-			Margin = ["0.3em"],
+			Right = "3em",
+			Bottom = "3em",
+			Margin = ["0.15em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
 			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
@@ -283,9 +283,9 @@ public func MenuShowPlayerMedals(proplist parent, int plr)
 			Target = this,
 			ID = cnt + 1000,
 			Priority = medal_id->GetMedalIndex(),
-			Right = "6em",
-			Bottom = "6em",
-			Margin = ["0.3em"],
+			Right = "3em",
+			Bottom = "3em",
+			Margin = ["0.15em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
 			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 

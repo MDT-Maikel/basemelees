@@ -99,10 +99,10 @@ private func DisplayMessage(object target, string message, int message_nr)
 	{
 		Target = target,
 		Style = GUI_Multiple,
-		Left = "0.5em",
-		Right = Format("%dem", 2 * length),
-		Top = Format("%dem", 12 + 2 * message_nr),
-		Bottom = Format("%dem", 12 + 2 * (message_nr + 1)),
+		Left = "0.25em",
+		Right = Format("%dem", length),
+		Top = Format("%dem", 6 + message_nr),
+		Bottom = Format("%dem", 6 + (message_nr + 1)),
 		BackgroundColor = {Std = 0x00000000},
 		Text = message,
 	};
