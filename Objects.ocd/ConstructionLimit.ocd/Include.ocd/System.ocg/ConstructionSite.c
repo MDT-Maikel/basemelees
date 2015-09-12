@@ -7,7 +7,8 @@ public func Set(id def, int dir, object stick)
 	// Notify the rule that a construction site has been placed.
 	var by_plr = GetOwner();
 	var rule = FindObject(Find_ID(Rule_ConstructionLimit));
-	rule->RegisterConstruction(def, by_plr);
+	if (rule)
+		rule->RegisterConstruction(def, by_plr);
 	return _inherited(def, dir, stick, ...);
 }
 
@@ -16,6 +17,7 @@ protected func Destruction()
 	// Notify the rule that a construction site has been removed.
 	var by_plr = GetOwner();
 	var rule = FindObject(Find_ID(Rule_ConstructionLimit));
-	rule->UnregisterConstruction(definition, by_plr);
+	if (rule)
+		rule->UnregisterConstruction(definition, by_plr);
 	return _inherited(...);
 }
