@@ -1,6 +1,6 @@
 /**
-	Pump Fight
-	
+	Pump Pressure
+	Teams in different areas need to pump liquids to the other area to keep the pressure on.
 	
 	@authors Maikel
 */
@@ -21,14 +21,15 @@ protected func InitializeMap(proplist map)
 	// Map settings.
 	var base_width = 60;
 	var base_height = 70;
-	var map_height = 100;
+	var map_height = 120;
 	var ground_height = 40;
+	var lake_height = 30;
 	
 	// Set the map size.
 	map->Resize(base_width * nr_teams, map_height);
 	
 	// Construct the underground.
-	DrawUnderground(map, ground_height);
+	DrawUnderground(map, ground_height, lake_height);
 	
 	// Construct the bases.
 	base_list = [];
@@ -75,6 +76,12 @@ public func DrawBase(proplist map, proplist base, int ground_height)
 	// Draw brick border.
 	var border = {Algo = MAPALGO_Border, Left = 4, Right = 4, Top = 2, Op = base};
 	Draw("Brick", border);
+	var border_granite = {Algo = MAPALGO_Rect, X = 0, Y = ground_height + 10, Wdt = map.Wdt, Hgt = map.Hgt - ground_height - 10};
+	border_granite = {Algo = MAPALGO_And, Op = [border_granite, {Algo = MAPALGO_Border, Wdt = -2, Op = border}]};
+	border_granite = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 6, Scale = 6, Iterations = 2, Op = border_granite};
+	Draw("Granite", border_granite);
+	DrawMaterial("Rock", border_granite);
+	DrawMaterial("Rock-rock_cracked", border_granite);
 
 	// Draw side entrances.
 	var brick = {Algo = MAPALGO_Rect, X = base.X + 4, Y = ground_height - 10, Wdt = 3, Hgt = 12};
@@ -92,14 +99,32 @@ public func DrawBase(proplist map, proplist base, int ground_height)
 	// Draw top liquid construction.
 	var topline = {Algo = MAPALGO_Rect, X = base.X, Y = 3, Wdt = base.Wdt, Hgt = 1};
 	Draw("Brick", topline);
-
+	var basin = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 3, Y = 7, Wdt = 6, Hgt = 3};
+	basin = {Algo = MAPALGO_And, Op = [basin, {Algo = MAPALGO_Not, Op = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 2, Y = 7, Wdt = 4, Hgt = 2}}]};
+	Draw("Brick", basin);
 	return;
 }
 
-public func DrawUnderground(proplist map, int ground_height)
+public func DrawUnderground(proplist map, int ground_height, int lake_height)
 {
+	// Draw the standard materials.
 	var underground = {Algo = MAPALGO_Rect, X = 0, Y = ground_height + 10, Wdt = map.Wdt, Hgt = map.Hgt - ground_height - 10};
 	DrawGround(underground);
+	
+	// Draw a liquid lake from the bottom based on the scenario settings.
+	var underground_area = {Algo = MAPALGO_Rect, X = 0, Y = map.Hgt - lake_height, Wdt = map.Wdt, Hgt = lake_height};
+	underground_area = {Algo = MAPALGO_Or, Op = [underground_area, {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 8, Scale = 8, Iterations = 4, Op = underground_area}]};
+	Draw("Tunnel", underground_area);
+	var lake = {Algo = MAPALGO_And, Op = [underground_area, {Algo = MAPALGO_Rect, X = 0, Y = map.Hgt - lake_height + 8, Wdt = map.Wdt, Hgt = lake_height - 8}]};
+	Draw(["Water", "Acid", "DuroLava"][SCENPAR_LiquidMaterial], lake);
+	var lake_islands = {Algo = MAPALGO_RndChecker, Ratio = 32, Wdt = 4, Hgt = 4};
+	lake_islands = {Algo = MAPALGO_Turbulence, Iterations = 4, Op = lake_islands};
+	lake_islands = {Algo = MAPALGO_And, Op = [lake_islands, underground_area]};
+	var lake_roof = {Algo = MAPALGO_Border, Wdt = [-2, 1], Op = underground_area};
+	var granite_area = {Algo = MAPALGO_Or, Op = [lake_roof, lake_islands]};
+	Draw("Granite", granite_area);
+	DrawMaterial("Rock", granite_area);
+	DrawMaterial("Rock-rock_cracked", granite_area);
 	return;
 }
 
@@ -114,6 +139,7 @@ public func DrawGround(proplist ground)
 	DrawMaterial("Firestone", ground, 4, 6);
 	DrawMaterial("Ore", ground, 3, 8);
 	DrawMaterial("Gold", ground, 3, 7);
+	DrawMaterial("Rock", ground, 3, 7);
 	DrawMaterial("Tunnel", ground, 4, 20);
 	DrawMaterial(["Water", "Acid", "DuroLava"][SCENPAR_LiquidMaterial], ground, 4, 6);
 	DrawMaterial("Coal", ground, 3, 8);

@@ -48,7 +48,7 @@ Default=0
 Name=Liquid Material
 Description=Which liquid material
 ID=LiquidMaterial
-Default=1
+Default=2
 
 	[Options]
 		
