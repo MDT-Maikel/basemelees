@@ -1,8 +1,8 @@
 /**
 	Pump Pressure
-	Two opposing teams have their bases in nearby caves, where from the top 
-	acid rains into the caves. Teams can dispose of the acid by pumping it 
-	to the other team, increasing the amount of acid rain on their side. The 
+	Opposing teams have their bases in nearby caves, where from the top 
+	liquids rain into the caves. Teams can dispose of the liquids by pumping it 
+	to the other team, increasing the amount of rain on the enemy's side. The 
 	only connection between the two teams is through a thick granite wall
 	or a deep underground passage.
 
@@ -18,9 +18,9 @@ static team_init;
 protected func Initialize()
 {
 	// Goals & Rules.
-	//CreateObject(Goal_Melee);
+	CreateObject(Goal_Melee);
 	CreateObject(Rule_NoBorders);
-	//CreateObject(Rule_Domination);
+	CreateObject(Rule_Domination);
 	CreateObject(Rule_BaseRespawn);
 	CreateObject(Rule_BuyAtFlagpole);
 	CreateObject(Rule_TeamAccount);
@@ -42,8 +42,10 @@ protected func Initialize()
 	team_init = [false, false, false, false];
 	
 	// Initialize different parts of the scenario.
-	InitVegetation();
-	InitEnvironment();
+	var nr_areas = GetLength(base_list);
+	InitVegetation(nr_areas);
+	InitEnvironment(nr_areas);
+	InitAnimals(nr_areas);
 	InitBlocking(SCENPAR_AttackBarrier);
 	InitLiquidControl();
 	return;
@@ -65,9 +67,8 @@ protected func InitializePlayer(int plr)
 		return EliminatePlayer(plr);
 	
 	// Set a strict zoom range.
-	//SetPlayerZoomByViewRange(plr, 500, 350, PLRZOOM_LimitMax);
-	//SetPlayerViewLock(plr, true);
-	SetFoW(false, plr);
+	SetPlayerZoomByViewRange(plr, 500, 350, PLRZOOM_LimitMax);
+	SetPlayerViewLock(plr, true);
 	
 	// Position crew and give them a shovel.
 	var i, crew;
@@ -120,25 +121,28 @@ protected func InitializePlayer(int plr)
 
 /*-- Scenario Initiliaztion --*/
 
-private func InitVegetation()
+private func InitVegetation(int nr_areas)
 {
 	// Some grass is always nice.
 	PlaceGrass(85);
 	
 	// Some mushrooms to regain health.
-	Mushroom->Place(40);
-	Fern->Place(30);
+	Mushroom->Place(10 * nr_areas);
+	Fern->Place(10 * nr_areas);
+	
+	LargeCaveMushroom->Place(10 * nr_areas, nil, { terraform = false });
+	Tree_Coniferous->Place(10 * nr_areas);
 	
 	// Some objects in the earth.	
-	PlaceObjects(Metal, 15 + Random(10), "Earth");
-	PlaceObjects(Wood, 15 + Random(10), "Earth");
-	PlaceObjects(Firestone, 30 + Random(5), "Earth");
-	PlaceObjects(Rock, 30 + Random(5), "Earth");
-	PlaceObjects(Loam, 30 + Random(5), "Earth");
+	PlaceObjects(Metal, 5 * nr_areas, "Earth");
+	PlaceObjects(Wood, 5 * nr_areas, "Earth");
+	PlaceObjects(Firestone, 10 * nr_areas, "Earth");
+	PlaceObjects(Rock, 10 * nr_areas, "Earth");
+	PlaceObjects(Loam, 10 * nr_areas, "Earth");
 	return;
 }
 
-private func InitEnvironment()
+private func InitEnvironment(int nr_areas)
 {
 	// Make liquids boiling if possible.
 	if (SCENPAR_LiquidMaterial == 1)
@@ -148,12 +152,27 @@ private func InitEnvironment()
 	return;
 }
 
+private func InitAnimals(int nr_areas)
+{
+	// Fish if material is liquid.
+	if (SCENPAR_LiquidMaterial == 0)
+	{
+		Fish->Place(8 * nr_areas);
+		Piranha->Place(2 * nr_areas);	
+	}
+	// Zaps and mosquitos.
+	Mosquito->Place(3 * nr_areas);
+	Zaphive->Place(2 * nr_areas);
+	return;
+}
+
 private func InitBlocking(int minutes)
 {
 	if (!minutes)
 		return;
+	var nr_bases = GetLength(base_list);
 	// Create a blocking rectangle around each base for n minutes.
-	for (var i = 0; i < GetLength(base_list); i++)
+	for (var i = 0; i < nr_bases; i++)
 	{
 		var base = base_list[i];
 		var x = base[0];
@@ -164,6 +183,11 @@ private func InitBlocking(int minutes)
 		AttackBarrier->BlockLine(x - 212, 70 * 8, x - 212, 120 * 8, time);
 		AttackBarrier->BlockLine(x + 212, 70 * 8, x + 212, 120 * 8, time);
 	}
+	// Also create areas where flagpoles can not claim ownership.
+	var wdt = LandscapeWidth();
+	Library_BlockOwnershipArea->BlockRectangle(Rectangle(0, 0, wdt, 100));
+	for (var i = 1; i < nr_bases; i++)
+		Library_BlockOwnershipArea->BlockRectangle(Rectangle(i * wdt / nr_bases - 32, 0, 64, 500));
 	return;
 }
 
@@ -193,7 +217,7 @@ private func InitLiquidControl()
 		for (var x = from_x; x <= to_x; x += 8)
 		{
 			var y = 22;
-			DrawMaterialQuad("Tunnel", x - 1, y, x + 1, y, x + 1, y + 12, x - 1, y + 12);
+			ClearFreeRect(x - 1, y, 2, 12);
 		}
 	}
 	
@@ -220,7 +244,6 @@ global func FxLiquidControlStart(object target, proplist effect, int temporary)
 	for (var index = 0; index < effect.nr_basins; index++)
 	{
 		effect.basins[index] = {x = (2 * index + 1) * wdt / (2 * effect.nr_basins), y = 68};
-		CreateObject(Loam, effect.basins[index].x, effect.basins[index].y);
 		effect.basin_to_area[index] = 0;
 	}
 	return FX_OK;

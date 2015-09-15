@@ -13,6 +13,10 @@ BarrierFive=5 Minutes
 DescBarrierFive=There are barriers preventing early attacks for 5 minutes.
 BarrierTen=10 Minutes
 DescBarrierTen=There are barriers preventing early attacks for 10 minutes.
+BarrierFifteen=15 Minutes
+DescBarrierFifteen=There are barriers preventing early attacks for 15 minutes.
+BarrierTwenty=20 Minutes
+DescBarrierTwenty=There are barriers preventing early attacks for 20 minutes.
 
 # Scenario parameter: base materials
 BaseMaterials=Base Materials

@@ -2,7 +2,7 @@
 Name=$AttackBarriers$
 Description=$DescAttackBarriers$
 ID=AttackBarrier
-Default=5
+Default=10
 
 	[Options]
 		
@@ -19,7 +19,17 @@ Default=5
 		[Option]
 		Name=$BarrierTen$
 		Description=$DescBarrierTen$
-		Value=10		
+		Value=10
+
+		[Option]
+		Name=$BarrierFifteen$
+		Description=$DescBarrierFifteen$
+		Value=15
+
+		[Option]
+		Name=$BarrierTwenty$
+		Description=$DescBarrierTwenty$
+		Value=20
 
 [ParameterDef]
 Name=$BaseMaterials$
@@ -48,7 +58,7 @@ Default=0
 Name=Liquid Material
 Description=Which liquid material
 ID=LiquidMaterial
-Default=2
+Default=0
 
 	[Options]
 		

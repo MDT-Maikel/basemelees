@@ -20,10 +20,10 @@ protected func InitializeMap(proplist map)
 	
 	// Map settings.
 	var base_width = 60;
-	var base_height = 70;
+	var base_height = 72;
 	var map_height = 120;
 	var ground_height = 40;
-	var lake_height = 30;
+	var lake_height = 32;
 	
 	// Set the map size.
 	map->Resize(base_width * nr_teams, map_height);
@@ -117,7 +117,7 @@ public func DrawUnderground(proplist map, int ground_height, int lake_height)
 	Draw("Tunnel", underground_area);
 	var lake = {Algo = MAPALGO_And, Op = [underground_area, {Algo = MAPALGO_Rect, X = 0, Y = map.Hgt - lake_height + 8, Wdt = map.Wdt, Hgt = lake_height - 8}]};
 	Draw(["Water", "Acid", "DuroLava"][SCENPAR_LiquidMaterial], lake);
-	var lake_islands = {Algo = MAPALGO_RndChecker, Ratio = 32, Wdt = 4, Hgt = 4};
+	var lake_islands = {Algo = MAPALGO_RndChecker, Ratio = 28, Wdt = 4, Hgt = 4};
 	lake_islands = {Algo = MAPALGO_Turbulence, Iterations = 4, Op = lake_islands};
 	lake_islands = {Algo = MAPALGO_And, Op = [lake_islands, underground_area]};
 	var lake_roof = {Algo = MAPALGO_Border, Wdt = [-2, 1], Op = underground_area};
@@ -131,19 +131,19 @@ public func DrawUnderground(proplist map, int ground_height, int lake_height)
 public func DrawGround(proplist ground)
 {
 	Draw("Earth", ground);
-	DrawMaterial("Earth-earth_topsoil", ground, 4, 12);
+	DrawMaterial("Earth-earth_topsoil", ground, [5, 2], 12);
 	DrawMaterial("Earth-earth_rough", ground, 2, 16);
 	DrawMaterial("Earth-earth_dry", ground, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", ground, 4, 12);
-	DrawMaterial("Coal", ground, 3, 8);
-	DrawMaterial("Firestone", ground, 4, 6);
-	DrawMaterial("Ore", ground, 3, 8);
-	DrawMaterial("Gold", ground, 3, 7);
-	DrawMaterial("Rock", ground, 3, 7);
-	DrawMaterial("Tunnel", ground, 4, 20);
-	DrawMaterial(["Water", "Acid", "DuroLava"][SCENPAR_LiquidMaterial], ground, 4, 6);
-	DrawMaterial("Coal", ground, 3, 8);
-	DrawMaterial("Firestone", ground, 4, 6);
-	DrawMaterial("Ore", ground, 3, 8);
+	DrawMaterial("Earth-earth_midsoil", ground, [5,2], 12);
+	DrawMaterial("Coal", ground, 3, 5);
+	DrawMaterial("Firestone", ground, 4, 3);
+	DrawMaterial("Ore", ground, 3, 3);
+	DrawMaterial("Gold", ground, 3, 3);
+	DrawMaterial("Rock", ground, [5, 2], 4);
+	DrawMaterial("Tunnel", ground, [7, 4], 20);
+	DrawMaterial(["Water", "Acid", "DuroLava"][SCENPAR_LiquidMaterial], ground, [6,4], 2);
+	DrawMaterial("Coal", ground, 3, 4);
+	DrawMaterial("Firestone", ground, 4, 3);
+	DrawMaterial("Ore", ground, 3, 3);
 	return;
 }
