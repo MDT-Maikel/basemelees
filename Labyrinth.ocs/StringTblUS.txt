@@ -9,10 +9,18 @@ AttackBarriers=Attack Barriers
 DescAttackBarriers=Attack barriers prohibit teams from performing early attacks and allows for building up a small settlement, select the duration for those attack barriers to be present.
 NoBarrier=No Barriers
 DescNoBarrier=There are no barriers preventing early attacks.
-BarrierFive=5 Minutes
-DescBarrierFive=There are barriers preventing early attacks for 5 minutes.
-BarrierTen=10 Minutes
-DescBarrierTen=There are barriers preventing early attacks for 10 minutes.
+Barrier5=5 Minutes
+DescBarrier5=There are barriers preventing early attacks for 5 minutes.
+Barrier10=10 Minutes
+DescBarrier10=There are barriers preventing early attacks for 10 minutes.
+Barrier15=15 Minutes
+DescBarrier15=There are barriers preventing early attacks for 15 minutes.
+Barrier20=20 Minutes
+DescBarrier20=There are barriers preventing early attacks for 20 minutes.
+Barrier25=25 Minutes
+DescBarrier25=There are barriers preventing early attacks for 25 minutes.
+Barrier30=30 Minutes
+DescBarrier30=There are barriers preventing early attacks for 30 minutes.
 
 # Scenario parameter: base materials
 BaseMaterials=Base Materials

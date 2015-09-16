@@ -12,24 +12,34 @@ Default=10
 		Value=0
 		
 		[Option]
-		Name=$BarrierFive$
-		Description=$DescBarrierFive$
+		Name=$Barrier5$
+		Description=$DescBarrier5$
 		Value=5
 		
 		[Option]
-		Name=$BarrierTen$
-		Description=$DescBarrierTen$
+		Name=$Barrier10$
+		Description=$DescBarrier10$
 		Value=10
 
 		[Option]
-		Name=$BarrierFifteen$
-		Description=$DescBarrierFifteen$
+		Name=$Barrier15$
+		Description=$DescBarrier20$
 		Value=15
 
 		[Option]
-		Name=$BarrierTwenty$
-		Description=$DescBarrierTwenty$
+		Name=$Barrier20$
+		Description=$DescBarrier20$
 		Value=20
+
+		[Option]
+		Name=$Barrier25$
+		Description=$DescBarrier25$
+		Value=25
+
+		[Option]
+		Name=$Barrier30$
+		Description=$DescBarrier30$
+		Value=30
 
 [ParameterDef]
 Name=$BaseMaterials$
