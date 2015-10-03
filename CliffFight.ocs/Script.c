@@ -163,5 +163,7 @@ private func InitBlocking(int minutes)
 	// Create a blocking line at each of the sides for n minutes.
 	AttackBarrier->BlockLine(wdt / 3, 0, wdt / 3, hgt, 36 * 60 * minutes);
 	AttackBarrier->BlockLine(2 * wdt / 3, 0, 2 * wdt / 3, hgt, 36 * 60 * minutes);
+	// Create a countdown clock for the players showing when the barriers come down.
+	GUI_Clock->CreateCountdown(60 * minutes);	
 	return;
 }

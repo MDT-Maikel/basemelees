@@ -129,9 +129,21 @@ private func InitVegetation(int nr_areas)
 	// Some mushrooms to regain health.
 	Mushroom->Place(10 * nr_areas);
 	Fern->Place(10 * nr_areas);
+	Branch->Place(5 * nr_areas);
+	Trunk->Place(2 * nr_areas);	
 	
+	// Trees for wood.
 	LargeCaveMushroom->Place(10 * nr_areas, nil, { terraform = false });
-	Tree_Coniferous->Place(10 * nr_areas);
+	Tree_Coniferous->Place(6 * nr_areas);
+	Tree_Coniferous2->Place(2 * nr_areas);
+	Tree_Coniferous3->Place(2 * nr_areas);
+	
+	// If water, place some coral and seaweed.
+	if (SCENPAR_LiquidMaterial == 0)
+	{
+		Seaweed->Place(6 * nr_areas);
+		Coral->Place(4 * nr_areas);
+	}
 	
 	// Some objects in the earth.	
 	PlaceObjects(Metal, 5 * nr_areas, "Earth");
@@ -168,26 +180,29 @@ private func InitAnimals(int nr_areas)
 
 private func InitBlocking(int minutes)
 {
+	var nr_bases = GetLength(base_list);
+	// Create areas where flagpoles can not claim ownership.
+	var wdt = LandscapeWidth();
+	Library_BlockOwnershipArea->BlockRectangle(Rectangle(0, 0, wdt, 100));
+	for (var i = 1; i < nr_bases; i++)
+		Library_BlockOwnershipArea->BlockRectangle(Rectangle(i * wdt / nr_bases - 32, 0, 64, 500));
+	// Don't do blocking if time is zero.
 	if (!minutes)
 		return;
-	var nr_bases = GetLength(base_list);
+	var time = 36 * 60 * minutes;
 	// Create a blocking rectangle around each base for n minutes.
 	for (var i = 0; i < nr_bases; i++)
 	{
 		var base = base_list[i];
 		var x = base[0];
 		var y = base[1];
-		var time = 36 * 60 * minutes;
 		AttackBarrier->BlockLine(x - 188, y - 72, x - 188, y - 24, time);
 		AttackBarrier->BlockLine(x + 188, y - 72, x + 188, y - 24, time);
 		AttackBarrier->BlockLine(x - 212, 70 * 8, x - 212, 120 * 8, time);
 		AttackBarrier->BlockLine(x + 212, 70 * 8, x + 212, 120 * 8, time);
 	}
-	// Also create areas where flagpoles can not claim ownership.
-	var wdt = LandscapeWidth();
-	Library_BlockOwnershipArea->BlockRectangle(Rectangle(0, 0, wdt, 100));
-	for (var i = 1; i < nr_bases; i++)
-		Library_BlockOwnershipArea->BlockRectangle(Rectangle(i * wdt / nr_bases - 32, 0, 64, 500));
+	// Create a countdown clock for the players showing when the barriers come down.
+	GUI_Clock->CreateCountdown(time / 36);
 	return;
 }
 

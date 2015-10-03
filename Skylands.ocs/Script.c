@@ -214,5 +214,7 @@ private func InitBlocking(int minutes)
 		var y = FindHeight(x, island[1]);
 		AttackBarrier->BlockRectangle(x - 300, y - 120, 600, 440, 36 * 60 * minutes);
 	}
+	// Create a countdown clock for the players showing when the barriers come down.
+	GUI_Clock->CreateCountdown(60 * minutes);
 	return;
 }

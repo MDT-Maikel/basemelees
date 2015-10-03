@@ -192,4 +192,7 @@ private func InitBlocking(int minutes)
 		var hgt = cave[3];
 		AttackBarrier->BlockRectangle(x - wdt, y - hgt, 2 * wdt, 2 * hgt, 36 * 60 * minutes);
 	}
+	// Create a countdown clock for the players showing when the barriers come down.
+	GUI_Clock->CreateCountdown(60 * minutes);
+	return;
 }
