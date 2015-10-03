@@ -134,7 +134,7 @@ private func InitVegetation()
 private func InitEnvironment()
 {
 	// Set time to almost night and have stars.	
-	var time = CreateObject(Environment_Time);
+	var time = CreateObject(Time);
 	time->SetTime(Random(24 * 60));
 	time->SetCycleSpeed(120);
 
