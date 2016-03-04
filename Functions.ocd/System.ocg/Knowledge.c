@@ -38,7 +38,7 @@ global func GivePlayerBaseMeleeKnowledge(int plr)
 		// Advanced tools.
 		Ropeladder, TeleGlove, WindBag, GrappleBow, Boompack, Balloon,
 		// Some basic vehicles which aid in the settlement construction.
-		Lorry, Catapult, Cannon, Airship, Plane
+		Lorry, Catapult, Cannon, Airship, Airplane
 	];
 	for (var plan in knowledge)
 		SetPlrKnowledge(plr, plan);
