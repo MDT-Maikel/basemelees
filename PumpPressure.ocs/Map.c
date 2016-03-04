@@ -69,8 +69,8 @@ public func DrawBase(proplist map, proplist base, int ground_height)
 	surface = {Algo = MAPALGO_Or, Op = [surface, {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = [8, 8], Scale = [8, 8], Iterations = 2, Op = surface}]};
 	surface = {Algo = MAPALGO_And, Op = [ground, surface]};
 	Draw("Earth", surface);
-	DrawMaterial("Earth-earth_topsoil", surface, 5, 20);
-	DrawMaterial("Earth-earth_midsoil", surface, 5, 20);
+	DrawMaterial("Earth-earth_root", surface, 5, 20);
+	DrawMaterial("Earth-earth_spongy", surface, 5, 20);
 	DrawMaterial("Sand", surface, 5, 20);
 
 	// Draw brick border.
@@ -81,7 +81,6 @@ public func DrawBase(proplist map, proplist base, int ground_height)
 	border_granite = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 6, Scale = 6, Iterations = 2, Op = border_granite};
 	Draw("Granite", border_granite);
 	DrawMaterial("Rock", border_granite);
-	DrawMaterial("Rock-rock_cracked", border_granite);
 
 	// Draw side entrances.
 	var brick = {Algo = MAPALGO_Rect, X = base.X + 4, Y = ground_height - 10, Wdt = 3, Hgt = 12};
@@ -124,17 +123,14 @@ public func DrawUnderground(proplist map, int ground_height, int lake_height)
 	var granite_area = {Algo = MAPALGO_Or, Op = [lake_roof, lake_islands]};
 	Draw("Granite", granite_area);
 	DrawMaterial("Rock", granite_area);
-	DrawMaterial("Rock-rock_cracked", granite_area);
 	return;
 }
 
 public func DrawGround(proplist ground)
 {
 	Draw("Earth", ground);
-	DrawMaterial("Earth-earth_topsoil", ground, [5, 2], 12);
-	DrawMaterial("Earth-earth_rough", ground, 2, 16);
-	DrawMaterial("Earth-earth_dry", ground, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", ground, [5,2], 12);
+	DrawMaterial("Earth-earth_root", ground, [5, 2], 12);
+	DrawMaterial("Earth-earth_spongy", ground, 2, 16);
 	DrawMaterial("Coal", ground, 3, 5);
 	DrawMaterial("Firestone", ground, 4, 3);
 	DrawMaterial("Ore", ground, 3, 3);

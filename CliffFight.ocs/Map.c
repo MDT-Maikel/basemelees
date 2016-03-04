@@ -44,10 +44,10 @@ public func DrawCliff(proplist map)
 
 	// Draw the inner materials of the cliff.
 	Draw("Earth", cliff);
-	DrawMaterial("Earth-earth_topsoil", cliff, 4, 12);
-	DrawMaterial("Earth-earth_rough", cliff, 2, 16);
-	DrawMaterial("Earth-earth_dry", cliff, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", cliff, 4, 12);
+	DrawMaterial("Earth-earth", cliff, 4, 12);
+	DrawMaterial("Earth-earth_spongy", cliff, 2, 16);
+	DrawMaterial("Earth-earth_root", cliff, 2, 16);
+	DrawMaterial("Earth-earth", cliff, 4, 12);
 	DrawMaterial("Coal", cliff, 3, 8);
 	DrawMaterial("Firestone", cliff, 4, 6);
 	DrawMaterial("Ore", cliff, 3, 8);
@@ -60,16 +60,16 @@ public func DrawCliff(proplist map)
 	// The top border should be earth only.
 	var top = {Algo = MAPALGO_Border, Top = 6, Op = cliff};
 	Draw("Earth", top);
-	DrawMaterial("Earth-earth_topsoil", top, 4, 12);
-	DrawMaterial("Earth-earth_rough", top, 2, 16);
-	DrawMaterial("Earth-earth_dry", top, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", top, 4, 12);
+	DrawMaterial("Earth-earth", top, 4, 12);
+	DrawMaterial("Earth-earth_spongy", top, 2, 16);
+	DrawMaterial("Earth-earth_root", top, 2, 16);
+	DrawMaterial("Earth-earth", top, 4, 12);
 	
 	// The right border of the cliff should be rock and granite.
 	var right = {Algo = MAPALGO_Border, Right = 6, Op = cliff};
 	Draw("Granite", right);
-	DrawMaterial("Rock", right, 4, 20);
-	DrawMaterial("Rock-rock_cracked", right, 4, 20);
+	DrawMaterial("Rock-rock", right, 4, 20);
+	DrawMaterial("Rock-rock", right, 4, 20);
 	
 	return cliff;
 }
@@ -85,10 +85,10 @@ public func DrawSkyIsland(proplist map)
 
 	var island_top = {Algo = MAPALGO_Border, Top = 2, Op = island};
 	Draw("Earth", island_top);
-	DrawMaterial("Earth-earth_topsoil", island_top, 4, 12);
-	DrawMaterial("Earth-earth_rough", island_top, 2, 16);
-	DrawMaterial("Earth-earth_dry", island_top, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", island_top, 4, 12);
+	DrawMaterial("Earth-earth", island_top, 4, 12);
+	DrawMaterial("Earth-earth_spongy", island_top, 2, 16);
+	DrawMaterial("Earth-earth_root", island_top, 2, 16);
+	DrawMaterial("Earth-earth", island_top, 4, 12);
 	return;
 }
 
@@ -105,10 +105,10 @@ public func DrawLake(proplist map, proplist cliff)
 	lake_bottom = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = [16, 16], Scale = [8, 8], Iterations = 1, Op = lake_bottom};
 	lake_bottom = {Algo = MAPALGO_And, Op = [lake_bottom, {Algo = MAPALGO_Not, Op = cliff}]};
 	Draw("Earth", lake_bottom);
-	DrawMaterial("Earth-earth_topsoil", lake_bottom, 4, 12);
-	DrawMaterial("Earth-earth_rough", lake_bottom, 2, 16);
-	DrawMaterial("Earth-earth_dry", lake_bottom, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", lake_bottom, 4, 12);
+	DrawMaterial("Earth-earth", lake_bottom, 4, 12);
+	DrawMaterial("Earth-earth_spongy", lake_bottom, 2, 16);
+	DrawMaterial("Earth-earth_root", lake_bottom, 2, 16);
+	DrawMaterial("Earth-earth", lake_bottom, 4, 12);
 	DrawMaterial("Coal", lake_bottom, 5, 10);
 	DrawMaterial("Firestone", lake_bottom, 6, 8);
 	DrawMaterial("Ore", lake_bottom, 5, 10);

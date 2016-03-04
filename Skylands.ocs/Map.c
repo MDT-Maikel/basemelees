@@ -81,10 +81,8 @@ public func DrawMainIsland(proplist island_largerect)
 	
 	// Draw the island materials.
 	Draw("Earth", island);
-	DrawMaterial("Earth-earth_topsoil", island, 4, 12);
-	DrawMaterial("Earth-earth_rough", island, 2, 16);
-	DrawMaterial("Earth-earth_dry", island, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", island, 4, 12);
+	DrawMaterial("Earth-earth_root", island, 4, 24);
+	DrawMaterial("Earth-earth_spongy", island, 4, 24);
 	DrawMaterial("Coal", island, 3, 8);
 	DrawMaterial("Firestone", island, 4, 6);
 	DrawMaterial("Ore", island, 3, 8);
@@ -106,16 +104,13 @@ public func DrawMainIsland(proplist island_largerect)
 	var island_border = {Algo = MAPALGO_Border, Left = [-1, 1], Right = [-1, 1], Top = 0, Bottom = [-1,2], Op = island};
 	Draw("Granite", island_border);
 	DrawMaterial("Tunnel", island_border, 4, 10);
-	DrawMaterial("Rock", island_border, 4, 20);
-	DrawMaterial("Rock-rock_cracked", island_border, 4, 20);
+	DrawMaterial("Rock", island_border, 4, 40);
 	
 	// Draw the top with earth using another border.
 	var island_top = {Algo = MAPALGO_Border, Left = 0, Right = 0, Top = [-1, 1], Bottom = 0, Op = island};
 	Draw("Earth", island_top);
-	DrawMaterial("Earth-earth_topsoil", island_top, 4, 12);
-	DrawMaterial("Earth-earth_rough", island_top, 2, 16);
-	DrawMaterial("Earth-earth_dry", island_top, 2, 16);
-	DrawMaterial("Earth-earth_midsoil", island_top, 4, 12);
+	DrawMaterial("Earth-earth_root", island_top, 4, 24);
+	DrawMaterial("Earth-earth_spongy", island_top, 2, 32);
 	return;
 }
 
@@ -195,7 +190,8 @@ public func DrawRandomSmallIsland(proplist island)
 		DrawMaterial("Gold", island, 3, 25);
 		var border = {Algo = MAPALGO_Border, Top = 1, Op = island};
 		Draw("Earth", border);
-		DrawMaterial("Earth-earth_midsoil", border, 4, 20);
+		DrawMaterial("Earth-earth_root", border, 4, 20);
+		DrawMaterial("Earth-earth_spongy", border, 4, 20);
 		return;
 	}
 	Draw("Earth", island);
