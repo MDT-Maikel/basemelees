@@ -14,11 +14,11 @@ local show_rect;
 // Creates the base menu for the given clonk, objects and rectangle.
 global func CreateBaseMenu(object clonk, array objects, proplist rect)
 {
-	var menu = CreateObject(BaseMenu, 0, 0, clonk->GetOwner());
-	menu->SetBaseObjects(objects);
-	menu->SetBaseRectangle(rect);
-	menu->OpenBaseMenu(clonk);
-	return menu;
+	var base_menu = CreateObject(BaseMenu, 0, 0, clonk->GetOwner());
+	base_menu->SetBaseObjects(objects);
+	base_menu->SetBaseRectangle(rect);
+	base_menu->OpenBaseMenu(clonk);
+	return base_menu;
 }
 
 protected func Initialize()
