@@ -31,3 +31,17 @@ MaterialsNormal=Normal Materials
 DescMaterialsNormal=Players can additionally buy advanced tools and basic weapons.
 MaterialsAdvanced=Advanced Materials
 DescMaterialsAdvanced=Players can additionally buy more advanced tools, advanced weapons and artillery.
+
+# Scenario parameter: liquid type
+LiquidType=Liquid Material
+DescLiquidType=This material will be in the landscape and will be the type of rain in this round.
+LiquidTypeWater=Water
+LiquidTypeAcid=Acid
+LiquidTypeLava=Lava
+
+# Scenario parameter: liquid amount
+LiquidAmount=Liquid Amount
+DescLiquidAmount=The strength of the rain in this round. More rain will make it harder to settle and battle.
+LiquidAmountLittle=Little
+LiquidAmountMedium=Medium
+LiquidAmountAlot=A lot

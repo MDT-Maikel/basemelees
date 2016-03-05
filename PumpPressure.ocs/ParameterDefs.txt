@@ -2,7 +2,7 @@
 Name=$AttackBarriers$
 Description=$DescAttackBarriers$
 ID=AttackBarrier
-Default=10
+Default=15
 
 	[Options]
 		
@@ -65,21 +65,41 @@ Default=0
 		Value=2
 		
 [ParameterDef]
-Name=Liquid Material
-Description=Which liquid material
-ID=LiquidMaterial
-Default=0
+Name=$LiquidType$
+Description=$DescLiquidType$
+ID=LiquidType
+Default=1
 
 	[Options]
 		
 		[Option]
-		Name=Water
+		Name=$LiquidTypeWater$
 		Value=0
 		
 		[Option]
-		Name=Acid
+		Name=$LiquidTypeAcid$
 		Value=1
 		
 		[Option]
-		Name=Lava
-		Value=2		
+		Name=$LiquidTypeLava$
+		Value=2
+		
+[ParameterDef]
+Name=$LiquidAmount$
+Description=$DescLiquidAmount$
+ID=LiquidAmount
+Default=50
+
+	[Options]
+		
+		[Option]
+		Name=$LiquidAmountLittle$
+		Value=25
+		
+		[Option]
+		Name=$LiquidAmountMedium$
+		Value=50
+		
+		[Option]
+		Name=$LiquidAmountAlot$
+		Value=75

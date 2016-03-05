@@ -38,6 +38,7 @@ protected func Initialize()
 		base[1] *= mapzoom;	
 	}
 	ShuffleArray(base_list);
+
 	// Team initialized variable should be a list.
 	team_init = [false, false, false, false];
 	
@@ -83,14 +84,14 @@ protected func InitializePlayer(int plr)
 	
 	// Base startup objects.
 	var base_objects = [
-		{def = Flagpole, amount = 1},
-		{def = WindGenerator, amount = 1},
-		{def = ToolsWorkshop, amount = 1, contents = [[Wood, 8], [Metal, 4]]},
-		{def = ChemicalLab, amount = 1, contents = [[Firestone, 8], [Wood, 4], [Metal, 2]]},
-		{def = Foundry, amount = 1, contents = [[Metal, 6]]},
-		{def = Elevator, amount = 1},
-		{def = Pump, amount = 1},
-		{def = Lorry, amount = 1, contents = [[Wood, 6], [Metal, 6], [Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2], [Pipe, 2]]}
+		{def = Flagpole, amount = 1, basement = true},
+		{def = WindGenerator, amount = 1, basement = true},
+		{def = ToolsWorkshop, amount = 1, basement = true, contents = [[Wood, 8], [Metal, 8], [Rock, 8]]},
+		{def = ChemicalLab, amount = 1, basement = true, contents = [[Firestone, 8], [Coal, 4], [Wood, 4]]},
+		{def = Elevator, amount = 1, basement = true},
+		{def = Pump, amount = 1, basement = true},
+		{def = Lorry, amount = 1, contents = [[Wood, 6], [Metal, 4], [Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2], [Pipe, 2], [WallKit, 1]]},
+		{def = Cannon, amount = 1, contents = [[PowderKeg, 1]]}
 	];
 	
 	// If team not yet initialize, do the startup objects and flagpole creation.
@@ -101,9 +102,18 @@ protected func InitializePlayer(int plr)
 		var x = base[0];
 		var y = base[1];
 		SetWealth(plr, 100);
-		CreateConstruction(Flagpole, x, y, plr, 100, true);	
-		CreateObjectAbove(StoneDoor, x - 196, y, plr)->SetAutoControl();
-		CreateObjectAbove(StoneDoor, x + 196, y, plr)->SetAutoControl();
+		// Give a flagpole to prevent elimination.
+		var flag = CreateConstruction(Flagpole, x, y, plr, 100, true);
+		var basement = CreateObject(Basement, x, flag->GetY() + flag->GetBottom() + 4, plr);
+		basement->SetParent(flag);
+		// Create doors which autmatically open.
+		var door;
+		door = CreateObjectAbove(StoneDoor, x - 196, y, plr);
+		door->SetAutoControl();
+		ClearFreeRect(door->GetX() - 4, door->GetY() - 52, 8, 72);
+		door = CreateObjectAbove(StoneDoor, x + 196, y, plr);
+		door->SetAutoControl();
+		ClearFreeRect(door->GetX() - 4, door->GetY() - 52, 8, 72);
 		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 240, y - 240, 480, 480));
 	}	
 	
@@ -139,7 +149,7 @@ private func InitVegetation(int nr_areas)
 	Tree_Coniferous3->Place(2 * nr_areas);
 	
 	// If water, place some coral and seaweed.
-	if (SCENPAR_LiquidMaterial == 0)
+	if (SCENPAR_LiquidType == 0)
 	{
 		Seaweed->Place(6 * nr_areas);
 		Coral->Place(4 * nr_areas);
@@ -157,21 +167,31 @@ private func InitVegetation(int nr_areas)
 private func InitEnvironment(int nr_areas)
 {
 	// Make liquids boiling if possible.
-	if (SCENPAR_LiquidMaterial == 1)
+	if (SCENPAR_LiquidType == 1)
 		BoilingAcid->Place();
-	if (SCENPAR_LiquidMaterial == 2)
+	if (SCENPAR_LiquidType == 2)
 		BoilingLava->Place();
+	// Adjust sky according to liquid type.
+	if (SCENPAR_LiquidType == 1)
+		SetSkyAdjust(RGBa(225, 255, 205, 191), RGB(63, 200, 0));
+	if (SCENPAR_LiquidType == 2)
+		SetSkyAdjust(RGBa(255, 185, 185, 191), RGB(220, 43, 0));
 	return;
 }
 
 private func InitAnimals(int nr_areas)
 {
 	// Fish if material is liquid.
-	if (SCENPAR_LiquidMaterial == 0)
+	if (SCENPAR_LiquidType == 0)
 	{
 		Fish->Place(8 * nr_areas);
 		Piranha->Place(2 * nr_areas);	
 	}
+	// Chippies if material is acid.
+	if (SCENPAR_LiquidType == 1)
+	{
+		//Chippie_Egg->Place(4 * nr_areas, Rectangle(0, LandscapeHeight() / 2, LandscapeWidth(), LandscapeHeight() / 2));
+	}	
 	// Zaps and mosquitos.
 	Mosquito->Place(3 * nr_areas);
 	Zaphive->Place(2 * nr_areas);
@@ -213,12 +233,14 @@ private func InitLiquidControl()
 {
 	// Add an effect to control liquid flows.
 	var effect = AddEffect("LiquidControl", nil, 100, 1);
+	// Type of rain according to the scenario parameter.
 	effect.rain_mat = "Water";
-	if (SCENPAR_LiquidMaterial == 1)
+	if (SCENPAR_LiquidType == 1)
 		effect.rain_mat = "Acid";
-	if (SCENPAR_LiquidMaterial == 2)
+	if (SCENPAR_LiquidType == 2)
 		effect.rain_mat = "DuroLava";
-	effect.rain_amount = 10;
+	// Amount of rain according to the scenario parameter.
+	effect.rain_amount = SCENPAR_LiquidAmount;
 
 	// Add holes to the ceiling to allow for rain.
 	var nr_areas = 2 * BoundBy(GetStartupTeamCount(), 2, 4);

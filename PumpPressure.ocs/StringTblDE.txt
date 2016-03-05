@@ -26,8 +26,22 @@ DescBarrier30=There are barriers preventing early attacks for 30 minutes.
 BaseMaterials=Base Materials
 DescBaseMaterials=Players can buy materials, items and weapons at team base flags. This option determines the amount of materials available for purchase.
 MaterialsBasic=Basic Materials
-DescMaterialsBasic=Players can buy Clonks, food, construction materials and basic tools.
+DescMaterialsBasic=Players can buy clonks, food, construction materials and basic tools.
 MaterialsNormal=Normal Materials
 DescMaterialsNormal=Players can additionally buy advanced tools and basic weapons.
 MaterialsAdvanced=Advanced Materials
 DescMaterialsAdvanced=Players can additionally buy more advanced tools, advanced weapons and artillery.
+
+# Scenario parameter: liquid type
+LiquidType=Liquid Material
+DescLiquidType=This material will be in the landscape and will be the type of rain in this round.
+LiquidTypeWater=Water
+LiquidTypeAcid=Acid
+LiquidTypeLava=Lava
+
+# Scenario parameter: liquid amount
+LiquidAmount=Liquid Amount
+DescLiquidAmount=The strength of the rain in this round. More rain will make it harder to settle and battle.
+LiquidAmountLittle=Little
+LiquidAmountMedium=Medium
+LiquidAmountAlot=A lot
