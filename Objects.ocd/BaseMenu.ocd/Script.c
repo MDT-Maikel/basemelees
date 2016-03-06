@@ -323,32 +323,32 @@ public func FxControlBasePreviewStart(object clonk, effect, int temp, proplist o
 	effect.preview->Set(clonk, effect.obj, base_rect);
 }
 
-// Called by Control2Effect
 public func FxControlBasePreviewControl(object clonk, effect, int ctrl, int x, int y, int strength, bool repeat, bool release)
 {
 	if (ctrl != CON_Aim)
 	{
-		// CON_Use is accept
+		// Use is accept and place base object.
 		if (ctrl == CON_Use)
+		{
 			if (effect.preview->CreateBaseObject())
 			{
 				// substract from original list.
 				RemoveFromBaseObjects(effect.obj);
 			}
-		// movement is not allowed
+		}
+		// Movement is not allowed.
 		else if (IsMovementControl(ctrl))
+		{
 			return true;
-		// Flipping
-		// this is actually realized twice. Once as an Extra-Interaction in the clonk, and here. We don't want the Clonk to get any non-movement controls though, so we handle it here too.
-		// (yes, this means that actionbar-hotkeys wont work for it. However clicking the button will.)
+		}
+		// Flipping on interaction control.
 		else if (IsInteractionControl(ctrl))
 		{
 			if (release)
 				effect.preview->Flip();
 			return true;
 		}
-
-		// everything else declines
+		// Everything else declines.
 		RemoveEffect("ControlBasePreview", clonk, effect);
 		return true;
 	}

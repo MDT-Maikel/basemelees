@@ -91,6 +91,9 @@ public func CreateBaseObject()
 		for(c in obj.contents)
 			created->CreateContents(c[0], c[1]);
 			
+	if (direction)
+		created->SetDir(direction);
+			
 	if (obj.basement)
 	{
 		var basement = CreateObject(Basement, AbsX(created->GetX()), AbsY(created->GetY()) + created->GetBottom() + 4, GetOwner());
@@ -99,10 +102,6 @@ public func CreateBaseObject()
 			basement->SetPosition(basement->GetX() + offset[0], basement->GetY() + offset[1]);
 		basement->SetParent(created);	
 	}
-
-	if (direction)
-		created->SetDir(direction);
-
 	return true;
 }
 
