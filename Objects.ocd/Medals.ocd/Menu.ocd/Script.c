@@ -58,7 +58,7 @@ public func OpenMedalMenu(int plr)
 		Left = "50% - 12em",
 		Right = "50% + 12.1em", // 0.1 needed to fit six entries per row.
 		Top = "8%",
-		Bottom = "8%+27em",
+		Bottom = "8%+22em",
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
 	// A header showing the contents of this menu and close button.

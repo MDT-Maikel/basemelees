@@ -27,21 +27,17 @@ public func PlayerControl(int plr, int ctrl, int x, int y, int strength, bool re
 // Definition call: opens scoreboard for the player.
 public func OpenScoreboard(int plr)
 {
-	var clonk = GetCursor(plr);
-	if (!clonk)
-		return;
 	var controller = CreateObject(Scoreboard_BaseMelee, nil, nil, plr);
-	controller->CreateScoreboardMenu(clonk);
+	controller->CreateScoreboardMenu();
 	return;
 }
 
 // Definition call: closes scoreboard for the player.
 public func CloseScoreboard(int plr)
 {
-	var clonk = GetCursor(plr);
-	if (!clonk)
+	var controller = FindObject(Find_ID(Scoreboard_BaseMelee), Find_Owner(plr));
+	if (!controller)
 		return;
-	var controller = clonk->GetMenu();
 	controller->CloseScoreboardMenu();
 	return;
 }
@@ -49,13 +45,10 @@ public func CloseScoreboard(int plr)
 // Definition call: tells whether the player has a scoreboard open.
 public func HasScoreboardOpen(int plr)
 {
-	var clonk = GetCursor(plr);
-	if (!clonk)
-		return false;
-	var controller = clonk->GetMenu();
+	var controller = FindObject(Find_ID(Scoreboard_BaseMelee), Find_Owner(plr));
 	if (!controller)
 		return false;
-	return controller->~IsScoreboardMenu();
+	return controller->~IsScoreboardMenuOpen();
 }
 
 
@@ -66,16 +59,15 @@ static const SRBDMENU_BackgroundColor = 0x77000000;
 static const SRBDMENU_HoverColor = 0x99ffffff;
 static const SRBDMENU_TeamColor = 0x99888888;
 
-local menu, menu_id, menu_controller;
+local menu, menu_id;
 
-public func CreateScoreboardMenu(object clonk)
+public func CreateScoreboardMenu()
 {
 	// If the menu is already open, don't open another instance.
-	if (clonk->GetMenu() && clonk->GetMenu().ID == menu_id)
+	if (IsScoreboardMenuOpen())
 		return;
 	// This object functions as menu target and for visibility.
 	this.Visibility = VIS_Owner;
-	menu_controller = clonk;
 	
 	// Scoreboard contents.
 	var entries = [
@@ -86,24 +78,25 @@ public func CreateScoreboardMenu(object clonk)
 	];
 	var name_width = 10;
 	var entry_width = 2;
-
+	var margin = 10;
+	
 	// Scoreboard menu proplist.
 	menu =
 	{
 		Target = this,
+		Style = GUI_Multiple,
+		Priority = 1,
 		Decoration = GUI_MenuDeco,
-		Left = Format("50%%%s", ToEmString((name_width + entry_width * GetLength(entries)) * -5)),
-		Right = Format("50%%%s", ToEmString((name_width + entry_width * GetLength(entries)) * 5)),
-		Top = "20em",
-		Bottom = "23em",
+		Left = Format("100%%%s", ToEmString(-10 * (name_width + entry_width * GetLength(entries)) - margin)),
+		Right = Format("100%%%s", ToEmString(-margin)),
+		Top = ToEmString(margin),
+		Bottom = ToEmString(margin + 30),
 	};
 	menu.header = GetScoreboardHeader(entries, name_width, entry_width);
-	menu = GetScoreboardRows(menu, entries, name_width, entry_width);
+	menu = GetScoreboardRows(menu, entries, name_width, entry_width, margin);
 		
 	// Menu ID.
 	menu_id = GuiOpen(menu);
-	// Notify the clonk.
-	clonk->SetMenu(this);
 	return;
 }
 
@@ -112,15 +105,12 @@ public func CloseScoreboardMenu()
 	// Close the menu and inform the controller.
 	GuiClose(menu_id, nil, this);
 	menu_id = nil;
-	if (menu_controller)
-		menu_controller->MenuClosed();
-	menu_controller = nil;
 	return;
 }
 
 public func Close() { return RemoveObject(); }
 
-public func IsScoreboardMenu() { return true; }
+public func IsScoreboardMenuOpen() { return menu_id != nil; }
 
 
 /*-- Scoreboard Contents --*/
@@ -142,7 +132,7 @@ private func GetScoreboardHeader(array entries, int name_width, int entry_width)
 		Left = "0%",
 		Right = Format("%dem", name_width),
 		Style = GUI_TextVCenter,
-		Text = "Teams/Players",
+		Text = "$MsgTeamsPlayers$",
 	};
 	for (var index = 0; index < GetLength(entries); index++)
 	{
@@ -159,7 +149,7 @@ private func GetScoreboardHeader(array entries, int name_width, int entry_width)
 	return header;
 }
 
-private func GetScoreboardRows(proplist scoreboard, array entries, int name_width, int entry_width)
+private func GetScoreboardRows(proplist scoreboard, array entries, int name_width, int entry_width, int margin)
 {
 	var total_length = 2;
 	for (var team_index = 0; team_index < GetTeamCount(); team_index++)
@@ -186,7 +176,7 @@ private func GetScoreboardRows(proplist scoreboard, array entries, int name_widt
 		scoreboard[Format("team%d", team_menu.ID)] = team_menu;
 		total_length += 2 + 2 * nr_plr;
 	}
-	scoreboard.Bottom = Format("%dem", 20 + total_length);
+	scoreboard.Bottom = ToEmString(margin + 10 * total_length);
 	return scoreboard;
 }
 
@@ -302,7 +292,6 @@ private func GetTeamMedals(int team)
 
 public func OnMedalClick(int plr)
 {
-	CloseScoreboardMenu();
 	// Open medal menu for the specific player.
 	MedalMenu->CreateMedalMenu(plr);
 	return;
@@ -345,3 +334,8 @@ private func GetTeamKills(int team)
 
 // Don't save the scoreboard.
 public func SaveScenarioObject() { return false; }
+
+
+/*-- Properties --*/
+
+local Plane = 1000;
