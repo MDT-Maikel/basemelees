@@ -127,7 +127,7 @@ public func AwardMedal(id medal, int plr)
 	SetRoundMedalData(plr, round_metal_data);
 	
 	// Play a global sound when a medal is rewarded.
-	Sound("MedalAward", true, 80);
+	Sound("Rule_Medals::MedalAward", true, 80);
 	
 	// Give the player its reward for obtaining the medal in clunkers.
 	var reward = medal->~GetMedalReward();
