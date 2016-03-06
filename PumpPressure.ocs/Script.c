@@ -307,11 +307,14 @@ global func FxLiquidControlTimer(object target, proplist effect, int time)
 		var mat;
 		while ((mat = ExtractLiquid(basin.x, basin.y)) != -1)
 		{
-			// Determine area in which to insert the liquid.
+			// Determine area in which to insert the liquid. Cycle through the enemy basins.
+			effect.basin_to_area[basin_nr]++;
 			if (effect.basin_to_area[basin_nr] == basin_nr)
 				effect.basin_to_area[basin_nr]++;
 			if (effect.basin_to_area[basin_nr] >= effect.nr_basins)
 				effect.basin_to_area[basin_nr] = 0;
+			if (effect.basin_to_area[basin_nr] == basin_nr)
+				effect.basin_to_area[basin_nr]++;
 			var area = effect.areas[effect.basin_to_area[basin_nr]];
 			var x = RandomX(area.from_x, area.to_x);
 			var y = 20;
