@@ -1,0 +1,2 @@
+Name=Klempner
+Description=Awarded for pumping a certain amount of liquid.

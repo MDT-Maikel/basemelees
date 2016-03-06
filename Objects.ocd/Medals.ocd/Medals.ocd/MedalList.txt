@@ -21,3 +21,4 @@ Medal_Heroic            8         40
 Medal_ChainReaction     9         20
 Medal_Rocketeer        10         25
 Medal_Construction     11         40
+Medal_Plumber          12         20

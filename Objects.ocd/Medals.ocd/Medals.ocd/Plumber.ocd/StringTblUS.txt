@@ -1,0 +1,2 @@
+Name=Plumber
+Description=Awarded for pumping a certain amount of liquid.
