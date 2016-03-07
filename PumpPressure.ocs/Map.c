@@ -122,6 +122,11 @@ public func DrawUnderground(proplist map, int ground_height, int lake_height)
 	var granite_area = {Algo = MAPALGO_Or, Op = [lake_roof, lake_islands]};
 	Draw("Granite", granite_area);
 	DrawMaterial("Rock", granite_area);
+	// Draw some gems to provide more clunkers to the players.
+	var gems = {Algo = MAPALGO_Rect, X = 0, Y = map.Hgt - lake_height / 2, Wdt = map.Wdt, Hgt = lake_height / 2};
+	gems = {Algo = MAPALGO_And, Op = [gems, granite_area]};
+	DrawMaterial("Ruby", gems, [6, 4], 20);
+	DrawMaterial("Amethyst", gems, [6, 4], 20);
 	return;
 }
 
