@@ -1,1 +1,7 @@
 Skylands
+
+Description
+
+Goal: Destroy all enemy flagpoles.
+
+Hints:

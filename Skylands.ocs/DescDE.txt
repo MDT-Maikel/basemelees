@@ -1,1 +1,7 @@
 Luftinseln
+
+Beschreibung.
+
+Ziel: Vernichte alle Flaggen der Gegner.
+
+Tipps:

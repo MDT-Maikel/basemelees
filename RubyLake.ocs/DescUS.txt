@@ -1,1 +1,7 @@
 Ruby Lake
+
+Description
+
+Goal: Destroy all enemy flagpoles.
+
+Hints:
