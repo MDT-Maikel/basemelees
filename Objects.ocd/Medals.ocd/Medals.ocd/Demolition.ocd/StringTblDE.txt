@@ -1,2 +1,2 @@
-Name=Zerstörung
-Description=Wird verliehen für die Zerstörung von zehn Gebäude.
+Name=ZerstÃ¶rung
+Description=Wird verliehen fÃ¼r die ZerstÃ¶rung von zehn GebÃ¤uden.

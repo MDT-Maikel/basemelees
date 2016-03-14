@@ -1,2 +1,2 @@
-Name=Heroic
-Description=Awarded when a crew member survives more than 250 damage points.
+Name=Heroisch
+Description=Wird verliehen wenn ein Mannschaftsmitglied mehr als 250 Schadenspunkte überlebt.

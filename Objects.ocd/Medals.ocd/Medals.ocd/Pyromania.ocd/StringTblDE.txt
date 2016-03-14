@@ -1,2 +1,2 @@
 Name=Pyromanie
-Description=Awarded for setting 100 objects on fire in a single round.
+Description=Wird verliehen für das anzünden von 100 Objekten.

@@ -1,2 +1,2 @@
 Name=Kettenreaktion
-Description=Awarded for setting of a chain reaction of firestone explosions.
+Description=Wird verliehen wenn eine Kettenreaktion von Feuerstein-Explosionen ausgelöst wurde.

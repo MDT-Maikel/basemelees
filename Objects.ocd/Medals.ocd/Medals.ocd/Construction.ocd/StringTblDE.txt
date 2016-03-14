@@ -1,2 +1,2 @@
 Name=Konstruktion
-Description=Awarded for aiding in the construction of ten buildings.
+Description=Wird verliehen für das Helfen bei der Konstruktion von zehn Gebäuden.

@@ -1,2 +1,2 @@
 Name=Critical Hit
-Description=Awarded for dealing more than 40 damage in a single hit.
+Description=Wird verliehen wenn man mehr als 40 Schaden in einem Treffer zufügt.

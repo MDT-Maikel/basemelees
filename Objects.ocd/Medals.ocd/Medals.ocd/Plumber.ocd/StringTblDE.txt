@@ -1,2 +1,2 @@
 Name=Klempner
-Description=Awarded for pumping a certain amount of liquid.
+Description=Wird verliehen wenn eine bestimmte Menge Flüssigkeit abgepumpt wurde.

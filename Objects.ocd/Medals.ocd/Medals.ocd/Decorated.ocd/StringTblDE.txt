@@ -1,2 +1,2 @@
-Name=Decorated
-Description=Awarded when you get awarded with more than ten medals in a single round.
+Name=Dekoriert
+Description=Wird verliehen wenn man mehr als zehn Medaillen in dieser Runde verliehen wurde.

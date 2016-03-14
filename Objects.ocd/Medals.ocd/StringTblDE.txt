@@ -1,8 +1,5 @@
 Name=Medaillen
-Description=Spieler werden Medaillen verliehen für bestimmte Erfolge. You can view the medals achieved by any of the players by typing /medals in the chat window.
-
-# Medal Menu
-MenuPlayerHasMedals=%s hat Medaillen:
+Description=Spieler werden Medaillen verliehen für bestimmte Erfolge. Die Medaillen die den Spielern verliehen wurden kann man sich anschauen indem man /medals im Chat-Fenster eingibt.
 
 # Script Warnings
 WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.

@@ -1,2 +1,2 @@
-Name=Template
-Description=Vorlage für eine Medaille.
+Name=Vorlage
+Description=Vorlage fÃ¼r eine Medaille.
