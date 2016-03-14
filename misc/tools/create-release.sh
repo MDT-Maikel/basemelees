@@ -29,8 +29,8 @@ mkdir BaseMeleesV$version.ocf
 
 # copy standard files into the folder
 cp Authors.txt BaseMeleesV$version.ocf/Authors.txt
-cp DescDE.rtf BaseMeleesV$version.ocf/DescDE.rtf
-cp DescUS.rtf BaseMeleesV$version.ocf/DescUS.rtf
+cp DescDE.txt BaseMeleesV$version.ocf/DescDE.txt
+cp DescUS.txt BaseMeleesV$version.ocf/DescUS.txt
 cp Folder.txt BaseMeleesV$version.ocf/Folder.txt
 cp License.txt BaseMeleesV$version.ocf/License.txt
 cp Title.txt BaseMeleesV$version.ocf/Title.txt
