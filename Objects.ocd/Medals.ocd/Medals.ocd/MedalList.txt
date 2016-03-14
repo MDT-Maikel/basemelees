@@ -23,3 +23,4 @@ Medal_Rocketeer        10         25
 Medal_Construction     11         40
 Medal_Plumber          12         20
 Medal_Slasher          13         20
+Medal_Berserker        14         40

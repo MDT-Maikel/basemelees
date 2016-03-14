@@ -1,0 +1,2 @@
+Name=Berserker
+Description=Awarded when a player deals a lot of damage points in a short time window.

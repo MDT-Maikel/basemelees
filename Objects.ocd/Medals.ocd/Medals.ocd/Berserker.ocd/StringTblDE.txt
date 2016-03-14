@@ -1,0 +1,2 @@
+Name=Berserker
+Description=Wird verliehen wenn ein Spieler in kürzer Zeit seinen Gegnern viel Schaden zufügt.
