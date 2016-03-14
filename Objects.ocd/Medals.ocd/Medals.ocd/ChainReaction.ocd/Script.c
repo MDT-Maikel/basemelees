@@ -20,7 +20,7 @@ public func GetMedalReward() { return 20; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_ChainReaction.c script for handling the explosion of firestones.
+// See Firestone.c script for handling the explosion of firestones.
 
 // Called when the round starts, technically when the rule is created.
 public func OnRoundStart()
@@ -82,7 +82,7 @@ public func FxIntMedalChainReactionOnDestruction(object target, proplist effect,
 		return FX_OK;
 	var delay = FrameCounter() - effect.created_firestones[plr_id][index].time;
 	RemoveArrayIndex(effect.created_firestones[plr_id], index);
-	// Only process firestones which have their explosion with three seconds of creation.
+	// Only process firestones which have their explosion within three seconds of creation.
 	if (delay > 36 * 3)
 		return FX_OK;
 	// Get the location where chained explosions are stored.

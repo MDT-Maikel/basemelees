@@ -22,7 +22,7 @@ protected func OnEnergyChange(int change, int cause, int by_plr)
 	else
 		this.medal_heroic_damage += damage;
 
-	// If the damage dealt is more than
+	// If the damage dealt is more than the required amount notify the effect to award the medal.
 	if (this.medal_heroic_damage >= 250)
 	{
 		EffectCall(nil, effect, "WasHeroic", GetOwner());

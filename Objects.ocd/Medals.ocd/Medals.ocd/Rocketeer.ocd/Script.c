@@ -18,7 +18,7 @@ public func GetMedalReward() { return 25; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_Rocketeer.c script for handling the explosion of firestones.
+// See RocketExplode.c script for handling the explosion of firestones.
 
 // Called when the round starts, technically when the rule is created.
 public func OnRoundStart()

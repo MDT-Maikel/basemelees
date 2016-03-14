@@ -18,7 +18,7 @@ public func GetMedalReward() { return 40; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_Heroic.c script for handling energy loss of the crew member.
+// See ClonkHit.c script for handling energy loss of the crew member.
 
 // Called when the round starts, technically when the rule is created.
 public func OnRoundStart()

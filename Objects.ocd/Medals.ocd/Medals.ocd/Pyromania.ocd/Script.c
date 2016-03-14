@@ -18,7 +18,7 @@ public func GetMedalReward() { return 40; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_Pyromania.c script for handling overloading the Incinerate function.
+// See Incineration.c script for handling overloading the Incinerate function.
 
 // Called when the round starts, technically when the rule is created.
 public func OnRoundStart()

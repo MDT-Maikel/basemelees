@@ -19,7 +19,7 @@ public func GetMedalReward() { return 50; }
 
 /*-- Medal Scripts --*/
 
-// See Medal_Miner.c script for handling the selling of the resources.
+// See OnSell.c script for handling the selling of the resources.
 // This medal adds an effect which keeps track of the players' progress.
 
 // Called when the round starts, technically when the rule is created.
