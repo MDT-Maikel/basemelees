@@ -1,0 +1,2 @@
+Name=Schläger
+Description=Wird verliehen für das umbringen der Gegner mit ein Schwertschlag mitten in der Luft.

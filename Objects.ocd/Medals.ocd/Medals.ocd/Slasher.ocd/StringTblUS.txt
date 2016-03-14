@@ -1,0 +1,2 @@
+Name=Slasher
+Description=Awarded for killing an enemy with an in-air sword strike from above.
