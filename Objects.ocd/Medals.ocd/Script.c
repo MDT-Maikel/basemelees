@@ -15,6 +15,8 @@
 
 // Variable to store the awarded medals for this round.
 local round_medals;
+// Variable to store whether the medal rule logs, inactive by default.
+local logging_active;
 
 
 /*-- Callbacks --*/
@@ -24,6 +26,8 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
+	// Set logging to inactive.
+	logging_active = false;	
 	// Checks all loaded medals for overlapping medal indices. 
 	CheckActiveMedals();
 	// Initialize the local round medals to an empty list.
@@ -103,9 +107,12 @@ public func AwardMedal(id medal, int plr)
 	// Safety check: player may not equal NO_OWNER;
 	if (plr == NO_OWNER)	
 		return;
+	
+	// Get the active medal rule.
+	var active_rule = FindObject(Find_ID(Rule_Medals));
 		
 	// Make sure the medal rule is still active, otherwise warn scripter.
-	if (!FindObject(Find_ID(Rule_Medals)))
+	if (!active_rule)
 	{
 		Log("$WarningRuleNotActive$", medal, plr);
 		Log("$WarningFixMedalScript$");
@@ -128,6 +135,10 @@ public func AwardMedal(id medal, int plr)
 	
 	// Play a global sound when a medal is rewarded.
 	Sound("Rule_Medals::MedalAward", true, 80);
+	
+	// If logging is active log the rewarding of the medal.
+	if (active_rule->GetLogging())
+		LogMedalReward(medal, plr);
 	
 	// Give the player its reward for obtaining the medal in clunkers.
 	var reward = medal->~GetMedalReward();
@@ -332,6 +343,27 @@ public func SetRoundPlayerMedalData(int plr, string data)
 {
 	var plr_id = GetPlayerID(plr);
 	round_medals[plr_id] = data;
+	return;
+}
+
+
+/*-- Medal Logging --*/
+
+public func SetLogging(bool active)
+{
+	logging_active = active;
+	return;
+}
+
+public func GetLogging()
+{
+	return logging_active;
+}
+
+// Logs the rewarding of a medal to a player.
+private func LogMedalReward(id medal, int to_plr)
+{
+	Log(Format("$LogAwardedMedal$", medal, GetPlayerName(to_plr), medal.Name));
 	return;
 }
 

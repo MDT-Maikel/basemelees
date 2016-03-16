@@ -1,6 +1,9 @@
 Name=Medals
 Description=Players are awarded medals for special achievements. You can view the medals achieved by any of the players by typing /medals in the chat window.
 
+# Log Messages
+LogAwardedMedal={{%i}} %s has been awarded the %s medal.
+
 # Script Warnings
 WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.
 WarningFixMedalScript=WARNING: Fix medal script to award medals only while rule is active.
