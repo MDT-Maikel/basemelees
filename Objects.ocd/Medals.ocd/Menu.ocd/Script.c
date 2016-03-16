@@ -270,7 +270,7 @@ public func MenuShowAllMedals(proplist parent)
 public func MenuShowPlayerMedals(proplist parent, int plr)
 {
 	// Show all the medals this player has.
-	var medals = Rule_Medals->GetMedals(plr, view_round_only);
+	var medals = Rule_Medals->GetPlayerMedals(plr, view_round_only);
 	var cnt = 0;
 	for (var medal in medals)
 	{

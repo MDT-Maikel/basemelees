@@ -52,6 +52,10 @@ protected func Destruction()
 {
 	// Perform "OnRoundFinish" callback for all loaded medals.
 	PerformMedalCallbacks("OnRoundFinish");
+	// When this rule is removed no more medals will be awarded and it
+	// is time to add information about the rewarded medals to the round
+	// evaluation data.
+	AddMedalEvaluationData();
 	return;
 }
 
@@ -67,6 +71,8 @@ protected func InitializePlayer(int plr)
 
 protected func RemovePlayer(int plr)
 {
+	// When a player is eliminated or removed add its evaluation data. 
+	AddPlayerMedalEvaluationData(plr);
 	// Perform "OnRemovePlayer" callback for all loaded medals.
 	PerformMedalCallbacks("OnRemovePlayer", plr);
 	return;
@@ -100,7 +106,10 @@ public func AwardMedal(id medal, int plr)
 {
 	// Safety check: this is a definition call.
 	if (this != Rule_Medals)
+	{
+		Log("$WarningDefinitionCall$", "AwardMedal", "AwardMedal");
 		return;
+	}
 	// Safety check: is the passed medal really a medal?
 	if (!medal->~IsMedal())
 		return;
@@ -158,7 +167,10 @@ public func ClearMedals(int plr)
 {
 	// Safety check: this is a definition call.
 	if (this != Rule_Medals)
+	{
+		Log("$WarningDefinitionCall$", "ClearMedals", "ClearMedals");
 		return;
+	}
 	// Clear both the stored player data and the round data.
 	SetMedalData(plr, "MEDALS__");
 	SetRoundMedalData(plr, "MEDALS__");
@@ -167,11 +179,14 @@ public func ClearMedals(int plr)
 
 // Returns a list of the players medals in the format [medal_id, medal_cnt].
 // If round_only is true, the medals awarded during this round are returned.
-public func GetMedals(int plr, bool round_only)
+public func GetPlayerMedals(int plr, bool round_only)
 {
 	// Safety check: this is a definition call.
 	if (this != Rule_Medals)
+	{
+		Log("$WarningDefinitionCall$", "GetPlayerMedals", "GetPlayerMedals");
 		return;
+	}
 	var medal_list = [];
 	// Medal data taken from round medals if requested.
 	var medal_data = GetMedalData(plr);
@@ -192,6 +207,29 @@ public func GetMedals(int plr, bool round_only)
 	return medal_list;
 }
 
+// Returns the total amount of medals earned by the player.
+// If round_only is true, the medals awarded during this round are returned.
+public func GetPlayerMedalCount(int plr, bool round_only)
+{
+	// Safety check: this is a definition call.
+	if (this != Rule_Medals)
+	{
+		Log("$WarningDefinitionCall$", "GetPlayerMedalCount", "GetPlayerMedalCount");
+		return;
+	}
+	// Medal data taken from round medals if requested.
+	var medal_data = GetMedalData(plr);
+	if (round_only)
+		medal_data = GetRoundMedalData(plr);
+	// Count the number of medals by the player.
+	var medal_count = 0;
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsMedal())
+			medal_count += GetMedalCount(medal_data, def->GetMedalIndex());
+	return medal_count;
+}
+
 
 /*-- Medal Information --*/
 
@@ -200,7 +238,10 @@ public func GetActiveMedals()
 {
 	// Safety check: this is a definition call.
 	if (this != Rule_Medals)
+	{
+		Log("$WarningDefinitionCall$", "GetActiveMedals", "GetActiveMedals");
 		return;
+	}
 	var active_medals = [];
 	// Loop over all loaded medals and add them to the list.
 	// Except for the template medal which is not a real medal.
@@ -386,6 +427,46 @@ public func ShowPlayerMedals(int plr)
 	// Show the medal menu for this player.
 	MedalMenu->CreateMedalMenu(plr);
 	return;
+}
+
+/*-- Evaluation Data --*/
+
+private func AddMedalEvaluationData()
+{
+	// Get rid of settlement score to not cluther the displaying of the medals.
+	HideSettlementScoreInEvaluation(true);
+	// Loop over all active players and add their evaluation data.
+	var best_plr = NO_OWNER;
+	var most_medals = 0;
+	for (var plr in GetPlayers(C4PT_User))
+	{
+		var medals_awarded = AddPlayerMedalEvaluationData(plr);
+		if (medals_awarded > most_medals)
+		{
+			best_plr = plr;
+			most_medals = medals_awarded;
+		}		
+	}
+	// Add evaluation data only if there is a best player.
+	if (best_plr != NO_OWNER)
+	{
+		var total_medals = Rule_Medals->GetPlayerMedalCount(plr);
+		var eval_msg = Format("$EvalDataMostMedals$", GetPlayerName(best_plr), most_medals, Medal_Template, total_medals, Medal_Template);
+		AddEvaluationData(eval_msg, 0);
+	}
+	return;
+}
+
+// Adds the evaluation data for this player.
+private func AddPlayerMedalEvaluationData(int plr)
+{
+	var medals_awarded = Rule_Medals->GetPlayerMedalCount(plr, true);
+	var plr_id = GetPlayerID(plr);
+	var eval_msg = "$EvalDataNoMedals$";
+	if (medals_awarded > 0)
+		eval_msg = Format("$EvalDataGotMedals$", medals_awarded, Medal_Template);
+	AddEvaluationData(eval_msg, plr_id);
+	return medals_awarded;
 }
 
 

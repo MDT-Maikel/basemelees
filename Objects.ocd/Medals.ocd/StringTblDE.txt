@@ -4,7 +4,13 @@ Description=Spieler werden Medaillen verliehen für bestimmte Erfolge. Die Medai
 # Log Messages
 LogAwardedMedal={{%i}} %s wurde der %s Medaille verliehen.
 
+# Evaluation Data
+EvalDataMostMedals=%s war der mutigste und hat %d {{%i}} gewonnen, er hat jetzt %d {{%i}} insgesamt.
+EvalDataNoMedals=Wurde keine Medaillen verliehen.
+EvalDataGotMedals=Wurde %d {{%i}} verliehen.
+
 # Script Warnings
+WarningDefinitionCall=WARNING: %s is a definition call and should be called as Rule_Medals->%s().
 WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.
 WarningFixMedalScript=WARNING: Fix medal script to award medals only while rule is active.
 WarningInvalidMedalID=WARNING: Medal %i has an invalid medal ID (%d), it should be between 0 and 254.

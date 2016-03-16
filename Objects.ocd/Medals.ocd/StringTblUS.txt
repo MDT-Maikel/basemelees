@@ -4,7 +4,13 @@ Description=Players are awarded medals for special achievements. You can view th
 # Log Messages
 LogAwardedMedal={{%i}} %s has been awarded the %s medal.
 
+# Evaluation Data
+EvalDataMostMedals=%s was the most courageous and obtained %d {{%i}} and now has %d {{%i}} in total.
+EvalDataNoMedals=Got awarded no medals.
+EvalDataGotMedals=Got awarded %d {{%i}}.
+
 # Script Warnings
+WarningDefinitionCall=WARNING: %s is a definition call and should be called as Rule_Medals->%s().
 WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.
 WarningFixMedalScript=WARNING: Fix medal script to award medals only while rule is active.
 WarningInvalidMedalID=WARNING: Medal %i has an invalid medal ID (%d), it should be between 0 and 254.
