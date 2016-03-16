@@ -11,6 +11,8 @@ EvalDataGotMedals=Wurde %d {{%i}} verliehen.
 
 # Script Warnings
 WarningDefinitionCall=WARNING: %s is a definition call and should be called as Rule_Medals->%s().
+WarningDefinitionNotMedal=WARNING: definition %i is not a medal in call to AwardMedal(id medal, int plr).
+WarningInvalidPlayerNumber=WARNING: int %d is not a valid player number in call to AwardMedal(id medal, int plr).
 WarningRuleNotActive=WARNING: Medal rule not activated while trying to award medal %i to player %d, awarding failed.
 WarningFixMedalScript=WARNING: Fix medal script to award medals only while rule is active.
 WarningInvalidMedalID=WARNING: Medal %i has an invalid medal ID (%d), it should be between 0 and 254.

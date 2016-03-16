@@ -112,10 +112,16 @@ public func AwardMedal(id medal, int plr)
 	}
 	// Safety check: is the passed medal really a medal?
 	if (!medal->~IsMedal())
+	{
+		Log("$WarningDefinitionNotMedal$", medal);
 		return;
+	}
 	// Safety check: player may not equal NO_OWNER;
 	if (plr == NO_OWNER)	
+	{
+		Log("$WarningInvalidPlayerNumber$", plr);
 		return;
+	}
 	
 	// Get the active medal rule.
 	var active_rule = FindObject(Find_ID(Rule_Medals));
