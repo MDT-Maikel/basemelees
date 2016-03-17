@@ -281,6 +281,32 @@ private func CheckActiveMedals()
 
 /*-- Medal Data Handling --*/
 
+// Returns the scenario or folder specific medal data identifier.
+// This is of the form Medals*, where * is the specific string.
+private func GetMedalDataStoreIdentifier()
+{
+	var add_string = "";
+	// First check if the global setting is used.
+	var global_id = Global->Call("~GetMedalDataIdentifier");
+	if (global_id)
+	{
+		if (GetType(global_id) == C4V_String)
+			add_string = global_id;
+		else
+			Log("$WarningMedalIdentifierNoString$", global_id);
+	}
+	// Then check if the scenario local settings is used and overwrite global setting is needed.
+	var scenario_id = GameCall("GetMedalDataIdentifier");
+	if (scenario_id)
+	{
+		if (GetType(scenario_id) == C4V_String)
+			add_string = scenario_id;
+		else
+			Log("$WarningMedalIdentifierNoString$", scenario_id);
+	}
+	return Format("%s%s", "Medals", add_string);
+}
+
 // Returns the medal count for a specific medal, taken from medal data.
 private func GetMedalCount(string medal_data, int medal_index)
 {
@@ -336,7 +362,7 @@ private func GetMedalData(int plr)
 	// If there is a league try to retrieve it from the league.
 
 	// Not in a league so get via player extra data.
-	data = GetPlrExtraData(plr, "Medals");
+	data = GetPlrExtraData(plr, GetMedalDataIdentifier());
 	// Check whether it is a string starting with "MEDALS__".
 	var correct_string = "MEDALS__";
 	if (GetType(data) != C4V_String)
@@ -355,7 +381,7 @@ private func SetMedalData(int plr, string data)
 	// If there is a league try to set data in the league.
 
 	// Not in a league so set via player extra data.
-	SetPlrExtraData(plr, "Medals", data);
+	SetPlrExtraData(plr, GetMedalDataStoreIdentifier(), data);
 	return;
 }
 
