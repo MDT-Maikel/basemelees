@@ -1,0 +1,2 @@
+Name=Superman
+Description=Wird verliehen wenn ein Mannschaftsmitglied lange in der Luft fliegt.

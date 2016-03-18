@@ -1,0 +1,2 @@
+Name=Superman
+Description=Awarded when a crew member stays in mid-air for a long time.
