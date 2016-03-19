@@ -86,7 +86,7 @@ protected func OnClonkDeath(object clonk, int killed_by)
 }
 
 // Performs the given callback in all loaded medals.
-private func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
+public func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
 {
 	// Add "~" to the callback. 
 	callback = Format("~%s", callback);
@@ -362,7 +362,7 @@ private func GetMedalData(int plr)
 	// If there is a league try to retrieve it from the league.
 
 	// Not in a league so get via player extra data.
-	data = GetPlrExtraData(plr, GetMedalDataIdentifier());
+	data = GetPlrExtraData(plr, GetMedalDataStoreIdentifier());
 	// Check whether it is a string starting with "MEDALS__".
 	var correct_string = "MEDALS__";
 	if (GetType(data) != C4V_String)
