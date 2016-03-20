@@ -55,10 +55,7 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		Decoration = GUI_MenuDeco,
-		Left = "50% - 12em",
-		Right = "50% + 12.1em", // 0.1 needed to fit six entries per row.
-		Top = "8%",
-		Bottom = "8%+22em",
+		Margin = ["1em", "2em"],
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
 	// A header showing the contents of this menu and close button.
@@ -66,14 +63,14 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 1,
-		Right = "100%",
+		//Right = "100%",
 		Bottom = "1.5em",
 		header_text = 
 		{
 			Target = this,
 			ID = 2,
 			Right = "100%-3em",
-			Bottom = "1.5em",
+			//Bottom = "1.5em",
 			Text = "$MedalMenuCaption$",
 		},
 		header_view = 
@@ -114,14 +111,12 @@ public func OpenMedalMenu(int plr)
 		},
 	};
 	if (view_round_only)
-		menu.header.headerview.header_view_tag.Symbol = Icon_Cancel;
+		menu.header.headerview.header_view_tag.Symbol = Icon_World;
 	// Bar between header and player choice.
 	menu.bar1 = 
 	{
 		Target = this,
 		ID = 6,
-		Left = "0%",
-		Right = "100%",
 		Top = "1.5em",
 		Bottom = "2em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
@@ -131,8 +126,6 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 7,
-		Left = "0%",
-		Right = "100%",
 		Top = "2em",
 		Bottom = "6em",
 		Style = GUI_GridLayout,
@@ -145,21 +138,17 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 8,
-		Left = "0%",
-		Right = "100%",
 		Top = "6em",
 		Bottom = "6.5em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
-	// Medals take up middle eighty percent.
+	// Medals take up roughly the middle or the remaining space.
 	var medals = 
 	{
 		Target = this,
 		ID = 9,
-		Left = "0%",
-		Right = "100%",
 		Top = "6.5em",
-		Bottom = "18.5em",
+		Bottom = "100%-3.5em",
 		Style = GUI_GridLayout,
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
@@ -169,10 +158,8 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 10,
-		Left = "0%",
-		Right = "100%",
-		Top = "18.5em",
-		Bottom = "19em",
+		Top = "100%-3.5em",
+		Bottom = "100%-3em",
 		BackgroundColor = {Std = MEDALMENU_BarColor},
 	};
 	// Medal info bottom ten percent.
@@ -180,10 +167,7 @@ public func OpenMedalMenu(int plr)
 	{
 		Target = this,
 		ID = 11,
-		Left = "0%",
-		Right = "100%",
-		Top = "19em",
-		Bottom = "22em",
+		Top = "100%-3em",
 		Text = nil,
 		BackgroundColor = {Std = MEDALMENU_BackgroundColor},
 	};
@@ -203,7 +187,6 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 		Right = "4em",
 		Bottom = "4em",
 		Priority = 0,
-		Margin = ["0.25em"],
 		BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 		OnMouseIn = GuiAction_SetTag("Hover"),
 		OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -225,7 +208,6 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 			Right = "4em",
 			Bottom = "4em",
 			Priority = cnt,
-			Margin = ["0.25em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = GuiAction_SetTag("Hover"),
 			OnMouseOut = GuiAction_SetTag("Std"), 		
@@ -254,7 +236,6 @@ public func MenuShowAllMedals(proplist parent)
 			Priority = medal_id->GetMedalIndex(),
 			Right = "3em",
 			Bottom = "3em",
-			Margin = ["0.15em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
 			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
@@ -285,7 +266,6 @@ public func MenuShowPlayerMedals(proplist parent, int plr)
 			Priority = medal_id->GetMedalIndex(),
 			Right = "3em",
 			Bottom = "3em",
-			Margin = ["0.15em"],
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
 			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnMedalHoverIn", medal_id)],
 			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnMedalHoverOut", medal_id)], 
@@ -344,12 +324,15 @@ public func OnMedalHoverIn(id medal_id)
 {
 	// Update the description of the medal.
 	menu.medalinfo.Text = Format("<c %x>%s (%d</c>{{Icon_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
+	menu.medalinfo.for_medal = medal_id;
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }
 
 public func OnMedalHoverOut(id medal_id)
 {
+	if (menu.medalinfo.for_medal != medal_id)
+		return;
 	// Remove the description of the medal.
 	menu.medalinfo.Text = nil;
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
