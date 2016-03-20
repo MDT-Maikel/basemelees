@@ -1,6 +1,6 @@
 Basenmelees
 
-Dieser Rundenordner enthält melees mit einem Schwerpunkt auf Siedlung und Strategie. Base melees are longer rounds where teams fight each other from their bases. Gameplay is focused around building up the base, defending the base and attacking opponents. A team wins if all other teams are not controlling a base anymore, which is marked with flags. Each of the rounds in this folder offers a wide variety of strategic and creative tactics depending on its landscape. Some specific additions to improve base melees have been made and they are described one by one:
+Dieser Rundenordner enthält melees mit einem Schwerpunkt auf Siedlung und Strategie. Basenmelees sind längere Runden in dem Teams sich von ihren Basen aus bekämpfen. Gameplay is focused around building up the base, defending the base and attacking opponents. A team wins if all other teams are not controlling a base anymore, which is marked with flags. Each of the rounds in this folder offers a wide variety of strategic and creative tactics depending on its landscape. Some specific additions to improve base melees have been made and they are described one by one:
 
 - Medals are awarded for original or courageous actions, the player gains some wealth which can be spent on warfare. Get aware of what medals you can aim for to gain an advantage over your enemies.
 

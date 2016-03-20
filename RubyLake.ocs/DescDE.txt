@@ -1,7 +1,9 @@
 Rubinsee
 
-Beschreibung.
+Two opposing teams are separated by large ruby stalagmite which grew over Ruby Lake. As the stalagmite is incredibly valuable the two teams have build up large bases to battle for the rubies.
 
 Ziel: Vernichte alle Flaggen der Gegner.
 
 Tipps:
+- If possible mine rubies from the center stalagmite for clunkers.
+- Alternatively clunkers can be mined from gold mines underground.

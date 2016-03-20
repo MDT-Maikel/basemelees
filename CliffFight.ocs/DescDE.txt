@@ -1,6 +1,6 @@
 Klippenkampf
 
-Beschreibung.
+A large lake is surrounded by cliffs high and steep cliffs. Two opposing teams have their bases on these cliffs and battle for the control of the region..
 
 Ziel: Vernichte alle Flaggen der Gegner.
 
