@@ -275,7 +275,7 @@ private func GetTeamFlags(int team)
 
 private func GetPlayerMedals(int plr)
 {
-	var medals = Rule_Medals->GetMedals(plr, true);
+	var medals = Rule_Medals->GetPlayerMedals(plr, true);
 	var medal_cnt = 0;
 	for (var medal in medals)
 		medal_cnt += medal[1];	
