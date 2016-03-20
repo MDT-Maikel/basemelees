@@ -4,3 +4,5 @@ Description=Zeigt der Spieler seine Medaillen oder die Medaillen der ausgewählt
 MedalMenuCaption=Zeigt die Medaillen der ausgewählter Spieler.
 MedalMenuSwitch=Schalte die Anzeige zwischen alle Medaillen oder die in diese Runde erreichte Medaillen.
 MedalMenuClose=Schließe das Medaillen-Menü.
+MedalMenuAllMedals=Zeigt alle Medaillen die in diese Runde für mutige Aktionen verliehen werden, insgesamt sind es %d unterschiedliche.
+MedalMenuPlrMedals=Zeigt alle Medaillen von %s, insgesamt sind es %d.

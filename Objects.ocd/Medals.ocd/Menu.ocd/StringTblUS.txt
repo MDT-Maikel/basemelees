@@ -4,3 +4,5 @@ Description=Shows the player its medals or the medals of the selected player in 
 MedalMenuCaption=Shows the medals achieved by the selected player.
 MedalMenuSwitch=Switch view between all medals or medals achieved in this round.
 MedalMenuClose=Close the medal menu.
+MedalMenuAllMedals=Show all medals which can be awarded in this round for courageous actions, there are %d different ones in total.
+MedalMenuPlrMedals=Show all medals owned by %s, which are %d in total.

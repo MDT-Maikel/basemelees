@@ -188,9 +188,9 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 		Bottom = "4em",
 		Priority = 0,
 		BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
-		OnMouseIn = GuiAction_SetTag("Hover"),
-		OnMouseOut = GuiAction_SetTag("Std"), 		
-		OnClick = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerClick", nil)],
+		OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerHoverIn", NO_OWNER)],
+		OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnPlayerHoverOut", NO_OWNER)],		
+		OnClick = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerClick", NO_OWNER)],
 		Text = "All Medals",
 		Style = GUI_TextHCenter,
 		Symbol = Medal_Template,
@@ -209,8 +209,8 @@ public func MenuShowPlayers(proplist parent, int for_plr)
 			Bottom = "4em",
 			Priority = cnt,
 			BackgroundColor = {Std = 0, Hover = MEDALMENU_HoverColor},
-			OnMouseIn = GuiAction_SetTag("Hover"),
-			OnMouseOut = GuiAction_SetTag("Std"), 		
+			OnMouseIn = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerHoverIn", plr)],
+			OnMouseOut = [GuiAction_SetTag("Std"), GuiAction_Call(this, "OnPlayerHoverOut", plr)],		
 			OnClick = [GuiAction_SetTag("Hover"), GuiAction_Call(this, "OnPlayerClick", plr)],
 			Text = GetTaggedPlayerName(plr),
 			Style = GUI_TextHCenter,
@@ -312,19 +312,41 @@ public func OnPlayerClick(int plr)
 		index++;
 	}
 	// Then re-init the medals for the new player and update the menu.
-	if (plr != nil)
-		menu.medals = MenuShowPlayerMedals(menu.medals, plr);
-	else
+	if (plr == NO_OWNER)
 		menu.medals = MenuShowAllMedals(menu.medals);
+	else
+		menu.medals = MenuShowPlayerMedals(menu.medals, plr);
 	GuiUpdate(menu.medals, menu_id, menu.medals.ID, this);
+	return;
+}
+
+public func OnPlayerHoverIn(int plr)
+{
+	// Update the description of the medal.
+	menu.medalinfo.for_medal = plr;
+	if (plr == NO_OWNER)
+		menu.medalinfo.Text = Format("$MedalMenuAllMedals$", GetLength(Rule_Medals->GetActiveMedals()));
+	else
+		menu.medalinfo.Text = Format("$MedalMenuPlrMedals$", GetPlayerName(plr), Rule_Medals->GetPlayerMedalCount(plr, view_round_only));
+	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
+	return;
+}
+
+public func OnPlayerHoverOut(int plr)
+{
+	if (menu.medalinfo.for_medal != plr)
+		return;
+	// Remove the description of the medal.
+	menu.medalinfo.Text = nil;
+	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }
 
 public func OnMedalHoverIn(id medal_id)
 {
 	// Update the description of the medal.
-	menu.medalinfo.Text = Format("<c %x>%s (%d</c>{{Icon_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
 	menu.medalinfo.for_medal = medal_id;
+	menu.medalinfo.Text = Format("<c %x>%s (%d</c>{{Icon_Wealth}}<c %x>):</c> %s", 0xffff0000, medal_id.Name, medal_id->GetMedalReward(), 0xffff0000, medal_id.Description);
 	GuiUpdate(menu.medalinfo, menu_id, menu.medalinfo.ID, this);
 	return;
 }
