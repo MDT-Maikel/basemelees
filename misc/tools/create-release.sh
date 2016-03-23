@@ -3,6 +3,9 @@
 # script which creates the release from the basemelees git repos.
 
 
+# get list of scenarios to release
+scen_list=`cat scenario_list.txt`
+
 # move to basemelees folder
 cd ../..
 if [ ! -f Title.txt ]
@@ -37,9 +40,17 @@ cp Title.txt BaseMeleesV$version.ocf/Title.txt
 cp Title.png BaseMeleesV$version.ocf/Title.png
 cp Version.txt BaseMeleesV$version.ocf/Version.txt
 
-# copy all .ocd's, .ocf's and ocg's
-for dir in $(find -maxdepth 1 -type d -name "*.ocd" -o -name "*.ocs" -o -name "*.ocg"); 
+# copy all .ocd's and .ocg's in the main folder
+for dir in $(find -maxdepth 1 -type d -name "*.ocd" -o -name "*.ocg"); 
 do
+	# exclude hidden and temporary files
+	rsync -a --exclude=".*" --exclude="*~" $dir BaseMeleesV$version.ocf
+done
+
+# copy selected scenarios which are ready to release
+for dir in $scen_list
+do
+	# exclude hidden and temporary files
 	rsync -a --exclude=".*" --exclude="*~" $dir BaseMeleesV$version.ocf
 done
 
