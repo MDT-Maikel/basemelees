@@ -85,15 +85,16 @@ public func CreateBaseObject()
 {
 	if (!AdjustPreview())
 		return false;
-
+	// Create the object at the location of the previewer.
 	var created = CreateObjectAbove(obj.def, 0, obj.def->GetDefHeight() / 2, GetOwner());
+	// Fill with contents if specified.
 	if (obj.contents)
 		for(c in obj.contents)
 			created->CreateContents(c[0], c[1]);
-			
+	// Set direction if specified.		
 	if (direction)
 		created->SetDir(direction);
-			
+	// Add a basement if specified.	
 	if (obj.basement)
 	{
 		var basement = CreateObject(Basement, AbsX(created->GetX()), AbsY(created->GetY()) + created->GetBottom() + 4, GetOwner());
@@ -102,6 +103,9 @@ public func CreateBaseObject()
 			basement->SetPosition(basement->GetX() + offset[0], basement->GetY() + offset[1]);
 		basement->SetParent(created);	
 	}
+	// Do scenario call back if specified.
+	if (obj.scen_callback)
+		GameCall(obj.scen_callback, created, GetOwner());
 	return true;
 }
 
