@@ -203,7 +203,7 @@ private func InitBlocking(int minutes)
 	var nr_bases = GetLength(base_list);
 	// Create areas where flagpoles can not claim ownership.
 	var wdt = LandscapeWidth();
-	Library_BlockOwnershipArea->BlockRectangle(Rectangle(0, 0, wdt, 100));
+	Library_BlockOwnershipArea->BlockRectangle(Rectangle(0, 0, wdt, 80));
 	for (var i = 1; i < nr_bases; i++)
 		Library_BlockOwnershipArea->BlockRectangle(Rectangle(i * wdt / nr_bases - 32, 0, 64, 500));
 	// Don't do blocking if time is zero.
@@ -242,29 +242,18 @@ private func InitLiquidControl()
 	// Amount of rain according to the scenario parameter.
 	effect.rain_amount = SCENPAR_LiquidAmount;
 
-	// Add holes to the ceiling to allow for rain.
+	// Add areas to liquid control effect.
 	var nr_areas = 2 * BoundBy(GetStartupTeamCount(), 2, 4);
 	var exclude_width = 80;
 	var include_width = LandscapeWidth() / nr_areas - exclude_width;
-
-	for (var index = 0; index < nr_areas; index++)
-	{
-		var from_x = exclude_width / 2 + index * (include_width + exclude_width);
-		var to_x = from_x + include_width;
-		for (var x = from_x; x <= to_x; x += 8)
-		{
-			var y = 22;
-			ClearFreeRect(x - 1, y, 2, 12);
-		}
-	}
-	
-	// Add areas to liquid control effect.
 	effect.areas = [];
 	for (var index = 0; index < (nr_areas / 2); index++)
 	{
-		var set_from_x = exclude_width / 2 + index * 2 * (include_width + exclude_width);
-		var set_to_x = set_from_x + 2 * include_width + exclude_width;
-		effect.areas[index] = {from_x = set_from_x, to_x = set_to_x};
+		var set_from = exclude_width / 2 + index * 2 * (include_width + exclude_width);
+		var set_to_middle = set_from + include_width + exclude_width / 2 - 32;
+		var set_from_middle = set_from + include_width + exclude_width / 2 + 32;
+		var set_to = set_from + 2 * include_width + exclude_width;
+		effect.areas[index] = {from = set_from, to_middle = set_to_middle, from_middle = set_from_middle, to = set_to};
 	}
 	return;
 }
@@ -293,7 +282,9 @@ global func FxLiquidControlTimer(object target, proplist effect, int time)
 	{
 		for (var area in effect.areas)
 		{
-			var x = RandomX(area.from_x, area.to_x);
+			var x = RandomX(area.from, area.to_middle);
+			if (!Random(2))
+				x = RandomX(area.from_middle, area.to);
 			var y = 20;
 			InsertMaterial(Material(effect.rain_mat), x, y);
 		}
@@ -316,7 +307,9 @@ global func FxLiquidControlTimer(object target, proplist effect, int time)
 			if (effect.basin_to_area[basin_nr] == basin_nr)
 				effect.basin_to_area[basin_nr]++;
 			var area = effect.areas[effect.basin_to_area[basin_nr]];
-			var x = RandomX(area.from_x, area.to_x);
+			var x = RandomX(area.from, area.to_middle);
+			if (!Random(2))
+				x = RandomX(area.from_middle, area.to);
 			var y = 20;
 			InsertMaterial(mat, x, y);
 		}

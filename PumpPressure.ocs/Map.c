@@ -95,10 +95,8 @@ public func DrawBase(proplist map, proplist base, int ground_height)
 	Draw("Granite", granite);
 	
 	// Draw top liquid construction.
-	var topline = {Algo = MAPALGO_Rect, X = base.X, Y = 3, Wdt = base.Wdt, Hgt = 1};
-	Draw("Brick", topline);
-	var basin = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 3, Y = 7, Wdt = 6, Hgt = 3};
-	basin = {Algo = MAPALGO_And, Op = [basin, {Algo = MAPALGO_Not, Op = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 2, Y = 7, Wdt = 4, Hgt = 2}}]};
+	var basin = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 3, Y = 5, Wdt = 6, Hgt = 3};
+	basin = {Algo = MAPALGO_And, Op = [basin, {Algo = MAPALGO_Not, Op = {Algo = MAPALGO_Rect, X = base.X + base.Wdt / 2 - 2, Y = 5, Wdt = 4, Hgt = 2}}]};
 	Draw("Brick", basin);
 	return;
 }
