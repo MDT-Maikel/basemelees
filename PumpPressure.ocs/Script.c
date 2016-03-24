@@ -269,7 +269,7 @@ global func FxLiquidControlStart(object target, proplist effect, int temporary)
 	effect.basin_to_area = [];
 	for (var index = 0; index < effect.nr_basins; index++)
 	{
-		effect.basins[index] = {x = (2 * index + 1) * wdt / (2 * effect.nr_basins), y = 68};
+		effect.basins[index] = {x = (2 * index + 1) * wdt / (2 * effect.nr_basins), y = 52};
 		effect.basin_to_area[index] = 0;
 	}
 	return FX_OK;
