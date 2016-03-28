@@ -89,7 +89,7 @@ protected func InitializePlayer(int plr)
 		{def = ToolsWorkshop, amount = 1, basement = true, contents = [[Wood, 8], [Metal, 8], [Rock, 8]]},
 		{def = ChemicalLab, amount = 1, basement = true, contents = [[Firestone, 8], [Coal, 4], [Wood, 4]]},
 		{def = Elevator, amount = 1, basement = true},
-		{def = Pump, amount = 1, basement = true},
+		{def = Pump, amount = 1, basement = true, scen_callback = "OnPumpPlacement"},
 		{def = Lorry, amount = 1, contents = [[Wood, 6], [Metal, 4], [Rock, 4], [Loam, 3], [Hammer, 2], [Axe, 2], [Pipe, 2], [WallKit, 1]]},
 		{def = Cannon, amount = 1, contents = [[PowderKeg, 1]]}
 	];
@@ -128,6 +128,26 @@ protected func InitializePlayer(int plr)
 	return;	
 }
 
+public func OnPumpPlacement(object placed, int plr)
+{
+	// Place a source pipe at the base of the pump.
+	var source = placed->CreateObjectAbove(Pipe, 0, placed->GetBottom());
+	source->ControlUse(placed);
+	// Place a drain pipe and put it in the basin.
+	var nr_areas = BoundBy(GetStartupTeamCount(), 2, 4);
+	var area_nr = nr_areas * placed->GetX() / LandscapeWidth();
+	var x = (2 * area_nr + 1) * LandscapeWidth() / (2 * nr_areas);
+	var y = 52;	
+	var drain = placed->CreateObjectAbove(Pipe, 0, placed->GetBottom());
+	drain->ControlUse(placed);
+	drain->SetPosition(x, y);
+	var dir = Sign(placed->GetX() - x);
+	var pipe = FindObject(Find_ID(PipeLine), Find_Func("IsConnectedTo", drain));
+	pipe->AddVertex(x, y);
+	ScheduleCall(pipe, "InsertVertex", 5, 0, 1, x + dir * 16, y - 12);
+	ScheduleCall(pipe, "InsertVertex", 6, 0, 2, x + dir * 24, y - 12);
+	return;
+}
 
 /*-- Scenario Initiliaztion --*/
 
