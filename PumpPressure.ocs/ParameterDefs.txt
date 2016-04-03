@@ -103,3 +103,7 @@ Default=50
 		[Option]
 		Name=$LiquidAmountAlot$
 		Value=75
+
+		[Option]
+		Name=$LiquidAmountMaximal$
+		Value=100

@@ -45,3 +45,4 @@ DescLiquidAmount=The strength of the rain in this round. More rain will make it 
 LiquidAmountLittle=Little
 LiquidAmountMedium=Medium
 LiquidAmountAlot=A lot
+LiquidAmountMaximal=Maximal
