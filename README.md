@@ -11,13 +11,14 @@ Ingame Screenshots
 ------------------
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/RubyLake.ocs/Title.png" width=180>
-    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/CliffFight.ocs/Title.png" width=180>
-    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Skylands.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/RubyLake.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/CliffFight.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Skylands.ocs/Title.png" width=180>
 </p>
 <p align="center">
-    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Labyrinth.ocs/Title.png" width=180>
-    <img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/PumpPressure.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/Labyrinth.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/PumpPressure.ocs/Title.png" width=180>
+	<img src="https://raw.githubusercontent.com/MDT-Maikel/basemelees/master/GoldenSkies.ocs/Title.png" width=180>
 </p>
 
 

@@ -1,0 +1,22 @@
+[Teams]
+TeamColors=true
+
+	[Team]
+	id=1
+	Name=Team 1
+	MaxPlayer=8
+
+	[Team]
+	id=2
+	Name=Team 2
+	MaxPlayer=8
+	
+	[Team]
+	id=3
+	Name=Team 3
+	MaxPlayer=8
+	
+	[Team]
+	id=4
+	Name=Team 4
+	MaxPlayer=8
