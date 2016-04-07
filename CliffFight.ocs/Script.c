@@ -119,7 +119,7 @@ private func InitAnimals()
 private func InitVegetation()
 {
 	// Some grass is always nice.
-	PlaceGrass(85);
+	Grass->Place(85);
 	
 	// Pine trees provide wood.
 	Tree_Coniferous->Place(80);

@@ -111,7 +111,7 @@ private func InitAnimals()
 private func InitVegetation()
 {
 	// Some grass is always nice.
-	PlaceGrass(85);
+	Grass->Place(85);
 	
 	// Some vegetation and mushrooms to regain health.
 	Mushroom->Place(40);
@@ -154,6 +154,5 @@ private func InitBlocking(int minutes)
 	AttackBarrier->BlockLine(2 * wdt / 3, 0, 2 * wdt / 3, hgt, 36 * 60 * minutes);
 	// Create a countdown clock for the players showing when the barriers come down.
 	GUI_Clock->CreateCountdown(60 * minutes);
-	return;
 	return;
 }

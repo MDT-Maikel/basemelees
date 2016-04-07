@@ -154,7 +154,7 @@ public func OnPumpPlacement(object placed, int plr)
 private func InitVegetation(int nr_areas)
 {
 	// Some grass is always nice.
-	PlaceGrass(85);
+	Grass->Place(85);
 	
 	// Some mushrooms to regain health.
 	Mushroom->Place(10 * nr_areas);

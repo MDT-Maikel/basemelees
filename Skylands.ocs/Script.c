@@ -123,7 +123,7 @@ private func FindHeight(int x, int y)
 private func InitVegetation()
 {
 	// Some grass is always nice.
-	PlaceGrass(85);
+	Grass->Place(85);
 	
 	// Cave mushrooms and coconut trees provide wood.
 	LargeCaveMushroom->Place(30, nil, { terraform = false });
