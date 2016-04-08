@@ -19,7 +19,7 @@ protected func InitializeMap(proplist map)
 	nr_teams = BoundBy(nr_teams, 2, 4);
 	
 	// Map settings.
-	var base_width = 100;
+	var base_width = 128;
 	var map_height = 92;
 	var gold_height = 16;
 	
@@ -40,7 +40,7 @@ protected func InitializeMap(proplist map)
 	CreateGoldenSky(map, gold_height);
 	
 	// Construct some small islands.
-	CreateIslands(map, base_list, nr_teams * 5);
+	CreateIslands(map, base_list, nr_teams * 6, gold_height);
 
 	// Return true to tell the engine a map has been successfully created.
 	return true;
@@ -86,14 +86,14 @@ public func CreateGoldenSky(proplist map, int height)
 	return;
 }
 
-public func CreateIslands(proplist map, array base_list, int amount)
+public func CreateIslands(proplist map, array base_list, int amount, int gold_height)
 {
 	// Prepare a mask out of the map and the bases.
 	var mask = map->CreateLayer();
 	mask->Draw("Rock");
 	for (var base in base_list)
 		mask->Draw("Tunnel", {Algo = MAPALGO_Rect, X = base[0] - 25, Y = base[1] - 30, Wdt = 50, Hgt = 54});
-	mask->Draw("Tunnel", {Algo = MAPALGO_Rect, X = 0, Y = 0, Wdt = map.Wdt, Hgt = 26});	
+	mask->Draw("Tunnel", {Algo = MAPALGO_Rect, X = 0, Y = 0, Wdt = map.Wdt, Hgt = gold_height + 12});	
 	
 	var border = 6;
 	var island_dist = 26;
