@@ -17,6 +17,8 @@
 local round_medals;
 // Variable to store whether the medal rule logs, inactive by default.
 local logging_active;
+// Variable to store whether clunker reward is active, true by default.
+local reward_active;
 
 
 /*-- Callbacks --*/
@@ -27,7 +29,9 @@ protected func Initialize()
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
 	// Set logging to inactive.
-	logging_active = false;	
+	logging_active = false;
+	// Set clunker rewarding to active by default.
+	reward_active = true;
 	// Checks all loaded medals for overlapping medal indices. 
 	CheckActiveMedals();
 	// Initialize the local round medals to an empty list.
@@ -156,9 +160,12 @@ public func AwardMedal(id medal, int plr)
 		LogMedalReward(medal, plr);
 	
 	// Give the player its reward for obtaining the medal in clunkers.
-	var reward = medal->~GetMedalReward();
-	if (reward)
-		DoWealth(plr, reward);
+	if (reward_active)
+	{
+		var reward = medal->~GetMedalReward();
+		if (reward)
+			DoWealth(plr, reward);
+	}
 	
 	// Perform "OnMedalAwarded" callback for all loaded medals.
 	PerformMedalCallbacks("OnMedalAwarded", medal, plr);
@@ -438,6 +445,20 @@ private func LogMedalReward(id medal, int to_plr)
 {
 	Log(Format("$LogAwardedMedal$", medal, GetPlayerName(to_plr), medal.Name));
 	return;
+}
+
+
+/*-- Medal Rewards --*/
+
+public func SetRewarding(bool active)
+{
+	reward_active = active;
+	return;
+}
+
+public func GetRewarding()
+{
+	return reward_active;
 }
 
 
