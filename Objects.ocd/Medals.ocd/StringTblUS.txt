@@ -9,7 +9,7 @@ LogAwardedMedalFirstType=It is the first medal of this type for %s.
 LogAwardedMedalAllMedals=Amazing, %s has been rewarded all medals!
 
 # Evaluation Data
-EvalDataMostMedals=%s was the most courageous and obtained %d {{Medal_Template}} and now has %d {{Medal_Template}} in total.
+EvalDataMostMedals=%s was the most courageous this round and obtained %d {{Medal_Template}} and now has %d {{Medal_Template}} in total.
 EvalDataNoMedals=Got awarded no medals.
 EvalDataGotMedals=Got awarded %d {{Medal_Template}}.
 

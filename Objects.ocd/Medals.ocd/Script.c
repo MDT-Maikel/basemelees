@@ -15,6 +15,8 @@
 
 // Variable to store the awarded medals for this round.
 local round_medals;
+// Variable to store the medal evaluation data summary.
+local round_eval_data;
 // Variable to store whether the medal rule logs, inactive by default.
 local logging_active;
 // Variable to store whether clunker reward is active, true by default.
@@ -36,6 +38,8 @@ protected func Initialize()
 	CheckActiveMedals();
 	// Initialize the local round medals to an empty list.
 	round_medals = [];
+	// Initialize the local round eval data.
+	round_eval_data = { most_medals = 0, best_plr = NO_OWNER };
 	// Initialize the message board commands.
 	InitMedalMessageBoard();		
 	// Perform "OnRoundStart" callback for all loaded medals.
@@ -510,22 +514,12 @@ private func AddMedalEvaluationData()
 	// Get rid of settlement score to not cluther the displaying of the medals.
 	HideSettlementScoreInEvaluation(true);
 	// Loop over all active players and add their evaluation data.
-	var best_plr = NO_OWNER;
-	var most_medals = 0;
 	for (var plr in GetPlayers(C4PT_User))
-	{
-		var medals_awarded = AddPlayerMedalEvaluationData(plr);
-		if (medals_awarded > most_medals)
-		{
-			best_plr = plr;
-			most_medals = medals_awarded;
-		}		
-	}
+		AddPlayerMedalEvaluationData(plr);
 	// Add evaluation data only if there is a best player.
-	if (best_plr != NO_OWNER)
+	if (round_eval_data.best_plr != NO_OWNER)
 	{
-		var total_medals = Rule_Medals->GetPlayerMedalCount(plr);
-		var eval_msg = Format("$EvalDataMostMedals$", GetPlayerName(best_plr), most_medals, total_medals);
+		var eval_msg = Format("$EvalDataMostMedals$", round_eval_data.player_name, round_eval_data.most_medals, round_eval_data.total_medals);
 		AddEvaluationData(eval_msg, 0);
 	}
 	return;
@@ -534,13 +528,23 @@ private func AddMedalEvaluationData()
 // Adds the evaluation data for this player.
 private func AddPlayerMedalEvaluationData(int plr)
 {
+	// Gather info relevant for evaluation data.
 	var medals_awarded = Rule_Medals->GetPlayerMedalCount(plr, true);
+	// Set the eval data of this player.
 	var plr_id = GetPlayerID(plr);
 	var eval_msg = "$EvalDataNoMedals$";
 	if (medals_awarded > 0)
 		eval_msg = Format("$EvalDataGotMedals$", medals_awarded);
 	AddEvaluationData(eval_msg, plr_id);
-	return medals_awarded;
+	// Update best player if he has the most medals.
+	if (medals_awarded > round_eval_data.most_medals)
+	{
+		round_eval_data.most_medals = medals_awarded;
+		round_eval_data.best_plr = plr;
+		round_eval_data.total_medals = Rule_Medals->GetPlayerMedalCount(plr);
+		round_eval_data.player_name = GetTaggedPlayerName(plr);
+	}
+	return;
 }
 
 
