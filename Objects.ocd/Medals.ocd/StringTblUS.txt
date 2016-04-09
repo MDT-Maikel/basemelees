@@ -3,11 +3,15 @@ Description=Players are awarded medals for special achievements. You can view th
 
 # Log Messages
 LogAwardedMedal={{%i}} %s has been awarded the %s medal.
+LogAwardedMedalFirst=This is the first medal for %s!
+LogAwardedMedalFirstRound=This is the first medal in this round for %s!
+LogAwardedMedalFirstType=It is the first medal of this type for %s.
+LogAwardedMedalAllMedals=Amazing, %s has been rewarded all medals!
 
 # Evaluation Data
-EvalDataMostMedals=%s was the most courageous and obtained %d {{%i}} and now has %d {{%i}} in total.
+EvalDataMostMedals=%s was the most courageous and obtained %d {{Medal_Template}} and now has %d {{Medal_Template}} in total.
 EvalDataNoMedals=Got awarded no medals.
-EvalDataGotMedals=Got awarded %d {{%i}}.
+EvalDataGotMedals=Got awarded %d {{Medal_Template}}.
 
 # Script Warnings
 WarningDefinitionCall=WARNING: %s is a definition call and should be called as Rule_Medals->%s().

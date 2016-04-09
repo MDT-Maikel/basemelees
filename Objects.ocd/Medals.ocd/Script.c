@@ -152,13 +152,6 @@ public func AwardMedal(id medal, int plr)
 	round_metal_data = SetMedalCount(round_metal_data, medal_index, round_metal_count + 1);
 	SetRoundMedalData(plr, round_metal_data);
 	
-	// Play a global sound when a medal is rewarded.
-	Sound("Rule_Medals::MedalAward", true, 80);
-	
-	// If logging is active log the rewarding of the medal.
-	if (active_rule->GetLogging())
-		LogMedalReward(medal, plr);
-	
 	// Give the player its reward for obtaining the medal in clunkers.
 	if (reward_active)
 	{
@@ -172,6 +165,13 @@ public func AwardMedal(id medal, int plr)
 	
 	// Also perform "OnMedalAwarded" callback in scenario scripts & rules.
 	GameCallEx("OnMedalAwarded", medal, plr, reward);
+	
+	// Play a global sound when a medal is rewarded.
+	Sound("Rule_Medals::MedalAward", true, 80);
+	
+	// If logging is active log the rewarding of the medal.
+	if (active_rule->GetLogging())
+		LogMedalReward(medal, plr);
 	return;
 }
 
@@ -222,7 +222,8 @@ public func GetPlayerMedals(int plr, bool round_only)
 
 // Returns the total amount of medals earned by the player.
 // If round_only is true, the medals awarded during this round are returned.
-public func GetPlayerMedalCount(int plr, bool round_only)
+// If for_medal is specified this will only return the count of that medal.
+public func GetPlayerMedalCount(int plr, bool round_only, id for_medal)
 {
 	// Safety check: this is a definition call.
 	if (this != Rule_Medals)
@@ -238,7 +239,8 @@ public func GetPlayerMedalCount(int plr, bool round_only)
 	var medal_count = 0;
 	var index = 0, def;
 	while (def = GetDefinition(index++))
-		if (def->~IsMedal())
+		// Add the count if the definition is a medal equal to for_medal if specified.
+		if (def->~IsMedal() && (for_medal == nil || def == for_medal))
 			medal_count += GetMedalCount(medal_data, def->GetMedalIndex());
 	return medal_count;
 }
@@ -443,8 +445,27 @@ public func GetLogging()
 // Logs the rewarding of a medal to a player.
 private func LogMedalReward(id medal, int to_plr)
 {
-	Log(Format("$LogAwardedMedal$", medal, GetPlayerName(to_plr), medal.Name));
-	return;
+	// Basic rewarding message.
+	var medal_msg = Format("$LogAwardedMedal$", medal, GetTaggedPlayerName(to_plr), medal.Name);
+	// Get all the relevant medal data.
+	var nr_medals = Rule_Medals->GetPlayerMedalCount(to_plr);
+	var nr_medals_round = Rule_Medals->GetPlayerMedalCount(to_plr, true);
+	var nr_active_medals = GetLength(Rule_Medals->GetActiveMedals());
+	var nr_unique_medals = GetLength(Rule_Medals->GetPlayerMedals(to_plr));
+	var nr_medals_thistype = Rule_Medals->GetPlayerMedalCount(to_plr, false, medal);
+	// Add extra message if first medal ever or first medal of this round.
+	if (nr_medals == 1)
+		medal_msg = Format("%s $LogAwardedMedalFirst$", medal_msg, GetTaggedPlayerName(to_plr));
+	else if (nr_medals_round == 1)
+		medal_msg = Format("%s $LogAwardedMedalFirstRound$", medal_msg, GetTaggedPlayerName(to_plr));
+	// Add extra message if the player got awarded all medals, however, at least one.
+	else if (nr_unique_medals == nr_active_medals && nr_unique_medals >= 1)
+		medal_msg = Format("%s $LogAwardedMedalAllMedals$", medal_msg, GetTaggedPlayerName(to_plr));
+	// Add extra message if it is the first medal of this type.
+	else if (nr_medals_thistype == 1)
+		medal_msg = Format("%s $LogAwardedMedalFirstType$", medal_msg, GetTaggedPlayerName(to_plr));
+	// Log the full message.
+	return Log(medal_msg);
 }
 
 
@@ -504,7 +525,7 @@ private func AddMedalEvaluationData()
 	if (best_plr != NO_OWNER)
 	{
 		var total_medals = Rule_Medals->GetPlayerMedalCount(plr);
-		var eval_msg = Format("$EvalDataMostMedals$", GetPlayerName(best_plr), most_medals, Medal_Template, total_medals, Medal_Template);
+		var eval_msg = Format("$EvalDataMostMedals$", GetPlayerName(best_plr), most_medals, total_medals);
 		AddEvaluationData(eval_msg, 0);
 	}
 	return;
@@ -517,7 +538,7 @@ private func AddPlayerMedalEvaluationData(int plr)
 	var plr_id = GetPlayerID(plr);
 	var eval_msg = "$EvalDataNoMedals$";
 	if (medals_awarded > 0)
-		eval_msg = Format("$EvalDataGotMedals$", medals_awarded, Medal_Template);
+		eval_msg = Format("$EvalDataGotMedals$", medals_awarded);
 	AddEvaluationData(eval_msg, plr_id);
 	return medals_awarded;
 }
