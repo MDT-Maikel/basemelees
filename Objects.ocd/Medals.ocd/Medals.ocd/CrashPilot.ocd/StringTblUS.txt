@@ -1,0 +1,2 @@
+Name=Crash Pilot
+Description=Awarded for surviving a self-caused plane crash.

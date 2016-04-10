@@ -1,0 +1,2 @@
+Name=Bruchlandungspilot
+Description=Wird verliehen wenn man eine selbst-verursachte Flugzeug-Bruchlandung überlebt.  
