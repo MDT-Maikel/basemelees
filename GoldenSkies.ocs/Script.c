@@ -143,6 +143,10 @@ private func InitVegetation(int nr_areas)
 	Cotton->Place(2 * nr_areas);
 	Wheat->Place(6 * nr_areas);
 	
+	// Vines on the islands and the gold.
+	Vine->Place(14 * nr_areas);
+	Vine->Place(3 * nr_areas, nil, {min_dist = 80, attach_material = Loc_Material("Gold")});
+	
 	// Some objects in the earth.	
 	PlaceObjects(Metal, 3 * nr_areas, "Earth");
 	PlaceObjects(Wood, 3 * nr_areas, "Earth");

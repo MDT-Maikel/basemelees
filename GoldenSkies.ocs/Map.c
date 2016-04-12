@@ -78,11 +78,16 @@ public func CreateGoldenSky(proplist map, int height)
 {
 	var base = {Algo = MAPALGO_Rect, X = 0, Y = 0, Wdt = map.Wdt, Hgt = height / 2};
 	base = {Algo = MAPALGO_Or, Op = [base, {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 12, Scale = 8, Iterations = 4, Op = base}]};
-	var lines = {Algo = MAPALGO_Lines, X = 8, Y = 0, Wdt = 4};
+	var lines = {Algo = MAPALGO_Lines, X = 8, Y = 0, Distance = 16};
 	lines = {Algo = MAPALGO_And, Op = [lines, {Algo = MAPALGO_Rect, X = 0, Y = 0, Wdt = map.Wdt, Hgt = height}]};
 	lines = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 12, Scale = 8, Iterations = 4, Op = lines};
 	var total = {Algo = MAPALGO_Or, Op = [base, lines]};
 	Draw("Gold", total);
+	var rock_lines = {Algo = MAPALGO_Lines, X = 3, Y = 0, Distance = 18};
+	rock_lines = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 12, Scale = 8, Iterations = 4, Op = rock_lines};
+	rock_lines = {Algo = MAPALGO_And, Op = [rock_lines, total]};
+	Draw("Rock", rock_lines);
+	DrawMaterial("Granite", rock_lines, 4, 40);
 	return;
 }
 
