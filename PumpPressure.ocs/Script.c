@@ -12,8 +12,8 @@
 
 // List for storing the different bases.
 static base_list;
-// List for storing whether a team has been initialized already.
-static team_init;
+// List for storing whether a base has been initialized already.
+static base_init;
 
 protected func Initialize()
 {
@@ -39,8 +39,8 @@ protected func Initialize()
 	}
 	ShuffleArray(base_list);
 
-	// Team initialized variable should be a list.
-	team_init = [false, false, false, false];
+	// Base initialized variable should be a list.
+	base_init = [false, false, false, false];
 	
 	// Initialize different parts of the scenario.
 	var nr_areas = GetLength(base_list);
@@ -61,10 +61,13 @@ protected func InitializePlayer(int plr)
 	var team = GetPlayerTeam(plr);
 	if (team == 0)
 		return;
+	
+	// Get the team base.
+	var base_nr = TeamToBase(team);
 		
 	// Check whether the island is available for this team.
 	// It may not have been generated if this team was not available at startup.
-	if (!base_list[team - 1])
+	if (!base_list[base_nr])
 		return EliminatePlayer(plr);
 	
 	// Set a strict zoom range.
@@ -75,7 +78,7 @@ protected func InitializePlayer(int plr)
 	var i, crew;
 	for (i = 0; crew = GetCrew(plr, i); ++i)
 	{
-		var base = base_list[team - 1];
+		var base = base_list[base_nr];
 		var x = base[0] + RandomX(-50, 50);
 		var y = base[1] - 11;
 		crew->SetPosition(x, y);
@@ -95,10 +98,10 @@ protected func InitializePlayer(int plr)
 	];
 	
 	// If team not yet initialize, do the startup objects and flagpole creation.
-	if (!team_init[team - 1])
+	if (!base_init[base_nr])
 	{
-		team_init[team - 1] = true;
-		var base = base_list[team - 1];
+		base_init[base_nr] = true;
+		var base = base_list[base_nr];
 		var x = base[0];
 		var y = base[1];
 		SetWealth(plr, 100);
