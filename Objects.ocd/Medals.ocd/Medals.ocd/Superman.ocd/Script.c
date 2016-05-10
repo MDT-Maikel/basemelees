@@ -44,7 +44,7 @@ public func OnRoundFinish()
 /*-- Medal Effects --*/
 
 // Medal superman effect keeps track of whether the medal may be awarded.
-public func FxIntMedalSupermancStart(object target, proplist effect, int temporary)
+public func FxIntMedalSupermanStart(object target, proplist effect, int temporary)
 {
 	if (temporary)
 		return FX_OK;
