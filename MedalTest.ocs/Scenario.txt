@@ -1,0 +1,5 @@
+[Head]
+Title=MedalTest
+
+[Landscape]
+NoScan=1
