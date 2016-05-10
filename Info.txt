@@ -20,7 +20,8 @@ allows the placement of certain structures by the team leader.
 [Release Steps]
 * Make sure the version of objects and scenarios is correct.
 * Make sure the version has been increased and is up to date.
-* Use misc/create-release.sh to generate the packed scenario folder.
+* Update the list (misc/tools/scenario_list.txt) of scenarios to be released.
+* Use misc/tools/create-release.sh to generate the packed scenario folder.
 * Test a few games from the packed scenario folder for script errors.
 * Release this new version to Lorry and other platforms.
 * Create a release branch for future bugfixes (git branch v1).
@@ -48,3 +49,9 @@ indicates that this version is not final.
 * Improve the medal menu (sorting & grouping)
 * Improve the medal menu (update on changed medal count and removed player)
 * Option for medal menu to compare between players.
+* Fix the scaling of the base menu.
+* Airplane fixes:
+	* implement correct ejection seat with boompack as contents.
+	* Also fix the Ejection() mess by Ringwall.
+	* Maybe implement boompack shooting (forward) and boompack dropping.
+	* Boompack explosion strength can depend on remaining gunpowder.
