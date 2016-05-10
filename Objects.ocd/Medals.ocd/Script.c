@@ -267,9 +267,14 @@ public func GetActiveMedals()
 	var index = 0, def;
 	while (def = GetDefinition(index++))
 	{
-		if (def->~IsMedal() && def->~GetMedalIndex() > 0)
-			PushBack(active_medals, def);
+		var medal_index = def->~GetMedalIndex();
+		if (def->~IsMedal() && medal_index > 0)
+			PushBack(active_medals, {medal = def, index = medal_index});
 	}
+	// Sort the list according to medal index and then only get the medal id's
+	SortArrayByProperty(active_medals, "index");
+	for (var index = 0; index < GetLength(active_medals); index++)
+		active_medals[index] = active_medals[index].medal;
 	return active_medals;
 }
 
