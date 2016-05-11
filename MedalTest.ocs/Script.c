@@ -56,6 +56,17 @@ public func GetMedalDataIdentifier() { return "BaseMelees::MedalTest"; }
 
 /*-- Test Effect --*/
 
+global func LaunchTest(id medal)
+{
+	if (!medal->~IsMedal())
+		return;
+	
+	RemoveEffect("IntTestControl");
+	InitTest();
+	Call(Format("~Test_%i", medal), GetCrew(plr_medalist), GetCrew(plr_victim));
+	return;
+}
+
 global func FxIntTestControlStart(object target, effect fx, int temporary)
 {
 	if (temporary)
@@ -185,15 +196,21 @@ global func Test_Medal_HatTrick(object medalist, object victim)
 
 global func Test_Medal_Miner(object medalist, object victim)
 {
-	//var flag = medalist->CreateObject(Flagpole);
-	//ScheduleCall(medalist, "CreateContents", 2, 1000, GoldBar);
-	//ScheduleCall(medalist, "SetCommand", 2, 1000, "Put", flag, nil, nil, nil, GoldBar);
-	return false;
+	var flag = medalist->CreateObjectAbove(Flagpole, 0, medalist->GetBottom(), plr_medalist);
+	
+	var nr_bars = Medal_Miner->GetMiningWealthGoal() / GoldBar->GetValue();
+	for (var cnt = 0; cnt < nr_bars; cnt++)
+	{
+		var bar = medalist->CreateContents(GoldBar);
+		ScheduleCall(bar, "Exit", 10, 0);
+		ScheduleCall(flag, "Collect", 10, 0, bar, true);
+	}
+	return true;
 }
 
 global func Test_Medal_Decorated(object medalist, object victim)
 {
-	Schedule(nil, Format("Rule_Medals->AwardMedal(Medal_HatTrick, %d)", plr_medalist), 2, 10);
+	Schedule(nil, Format("Rule_Medals->AwardMedal(Medal_HatTrick, %d)", plr_medalist), 2, Medal_Decorated->GetDecorationGoal());
 	return true;
 }
 
@@ -213,8 +230,8 @@ global func Test_Medal_Pyromania(object medalist, object victim)
 {
 	victim->SetPosition(200, 150);
 	
-	for (var cnt = 0; cnt < 100; cnt ++)
-		CreateObjectAbove(Wood, RandomX(90, 110), 160);
+	for (var cnt = 0; cnt < Medal_Pyromania->GetIncinerationGoal(); cnt++)
+		CreateObjectAbove(Wood, RandomX(100, 120), 160);
 	
 	var lantern = medalist->CreateContents(Lantern);
 	medalist->ObjectCommand("Throw", lantern, 20, -10);
@@ -231,7 +248,7 @@ global func Test_Medal_CriticalHit(object medalist, object victim)
 
 global func Test_Medal_Demolition(object medalist, object victim)
 {
-	for (var cnt = 0; cnt < 10; cnt++)
+	for (var cnt = 0; cnt < Medal_Demolition->GetDemolitionGoal(); cnt++)
 		victim->CreateObjectAbove(ToolsWorkshop, 0, victim->GetBottom())->DoDamage(60);
 	
 	var firestone = medalist->CreateContents(Firestone);
@@ -268,7 +285,20 @@ global func Test_Medal_Rocketeer(object medalist, object victim)
 
 global func Test_Medal_Construction(object medalist, object victim)
 {
-	return false;
+	var nr_structures = Medal_Construction->GetConstructionGoal();
+	
+	var wood_pieces = [];
+	for (var cnt = 0; cnt < 2 * nr_structures; cnt++)
+		PushBack(wood_pieces, medalist->CreateContents(Wood));
+	
+	for (var cnt = 0; cnt < nr_structures; cnt++)
+	{
+		var site = medalist->CreateObjectAbove(ConstructionSite, 0, medalist->GetBottom());
+		site->Set(Chest);
+		ScheduleCall(PopBack(wood_pieces), "Enter", 10, 0, site);
+		ScheduleCall(PopBack(wood_pieces), "Enter", 10, 0, site);
+	}
+	return true;
 }
 
 global func Test_Medal_Plumber(object medalist, object victim)

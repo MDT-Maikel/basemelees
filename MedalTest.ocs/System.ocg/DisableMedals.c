@@ -17,7 +17,7 @@
 //#appendto Medal_Slasher
 //#appendto Medal_Berserker
 //#appendto Medal_Superman
-//#appendto Medal_CrashPilot
+#appendto Medal_CrashPilot
 
 // Overloading the IsMedal function to return false suffices.
 public func IsMedal() { return false; }
