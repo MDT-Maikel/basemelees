@@ -16,6 +16,12 @@ public func GetMedalIndex() { return 3; }
 public func GetMedalReward() { return 50; }
 
 
+/*-- Medal Settings --*/
+
+// This is the number of medals that need to be rewarded for achieving this medal.
+private func GetDecorationGoal() { return 10; }
+
+
 /*-- Medal Scripts --*/
 
 // Called when the round starts, technically when the rule is created.
@@ -53,6 +59,7 @@ public func FxIntMedalDecoratedStart(object target, proplist effect, int tempora
 		return FX_OK;
 	// Create a variable which keeps track of the awarded medals per player.
 	effect.awarded_medals = [];
+	effect.decoration_goal = Medal_Decorated->GetDecorationGoal();
 	return FX_OK;
 }
 
@@ -68,7 +75,7 @@ public func FxIntMedalDecoratedAwardedMedal(object target, proplist effect, int 
 		effect.awarded_medals[plr_id] = 0;
 	effect.awarded_medals[plr_id]++;
 	// Check whether the number of awarded medals exceeds ten, if so notify rule.
-	if (effect.awarded_medals[plr_id] >= 10)
+	if (effect.awarded_medals[plr_id] >= effect.decoration_goal)
 	{
 		// Reset the awarded medals so that a player can reach the medal again.
 		effect.awarded_medals[plr_id] = 0; 

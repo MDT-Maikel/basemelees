@@ -17,6 +17,12 @@ public func GetMedalIndex() { return 2; }
 public func GetMedalReward() { return 50; }
 
 
+/*-- Medal Settings --*/
+
+// This is the amount of clunkers that needs to be mined to achieve the medal.
+private func GetMiningWealthGoal() { return 1000; }
+
+
 /*-- Medal Scripts --*/
 
 // See OnSale.c script for handling the selling of the resources.
@@ -47,6 +53,7 @@ public func FxIntMedalMinerStart(object target, proplist effect, int temporary)
 		return FX_OK;
 	// Create a variable which keeps track of the mined wealth per player.
 	effect.mined_wealth = [];
+	effect.mining_goal = Medal_Miner->GetMiningWealthGoal();
 	return FX_OK;
 }
 
@@ -61,8 +68,8 @@ public func FxIntMedalMinerHasMined(object target, proplist effect, int plr, id 
 	if (effect.mined_wealth[plr_id] == nil)
 		effect.mined_wealth[plr_id] = 0;
 	effect.mined_wealth[plr_id] += value;
-	// Check whether the wealth exceeds a thousand clunkers, if so notify rule.
-	if (effect.mined_wealth[plr_id] >= 1000)
+	// Check whether the wealth exceeds the mining goal, if so notify rule.
+	if (effect.mined_wealth[plr_id] >= effect.mining_goal)
 	{
 		Rule_Medals->~AwardMedal(Medal_Miner, plr);
 		// Reset the mined wealth so that a player can reach the medal again.

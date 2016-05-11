@@ -16,6 +16,12 @@ public func GetMedalIndex() { return 5; }
 public func GetMedalReward() { return 40; }
 
 
+/*-- Medal Settings --*/
+
+// This is the number of objects that need to be set on fire to be awarded the medal.
+private func GetIncinerationGoal() { return 100; }
+
+
 /*-- Medal Scripts --*/
 
 // See Incineration.c script for handling overloading the Incinerate function.
@@ -45,6 +51,7 @@ public func FxIntMedalPyromaniaStart(object target, proplist effect, int tempora
 		return FX_OK;
 	// Create a variable which keeps track of the mined wealth per player.
 	effect.incinerated_counts = [];
+	effect.incineration_goal = Medal_Pyromania->GetIncinerationGoal();
 	return FX_OK;
 }
 
@@ -57,7 +64,7 @@ public func FxIntMedalPyromaniaOnIncineration(object target, proplist effect, in
 		effect.incinerated_counts[plr_id] = 0;
 	effect.incinerated_counts[plr_id]++;
 	// Check whether the incinerated count exceeds 100, if so award medal.
-	if (effect.incinerated_counts[plr_id] >= 100)
+	if (effect.incinerated_counts[plr_id] >= effect.incineration_goal)
 	{
 		Rule_Medals->~AwardMedal(Medal_Pyromania, plr);
 		// Reset the incinerated count so that a player can reach the medal again.

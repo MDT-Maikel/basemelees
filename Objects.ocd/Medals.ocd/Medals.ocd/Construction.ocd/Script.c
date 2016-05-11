@@ -16,6 +16,12 @@ public func GetMedalIndex() { return 11; }
 public func GetMedalReward() { return 40; }
 
 
+/*-- Medal Settings --*/
+
+// This is the number of constructions that need to be aided with for achieving the medal.
+private func GetConstructionGoal() { return 10; }
+
+
 /*-- Medal Scripts --*/
 
 // See ConstructionAid.c script for handling the construction of structures.
@@ -43,6 +49,7 @@ public func FxIntMedalConstructionStart(object target, proplist effect, int temp
 		return FX_OK;
 	// Create a variable which keeps track of the constructed structures per player.
 	effect.constructed_structures = [];
+	effect.construction_goal = Medal_Construction->GetConstructionGoal();
 	return FX_OK;
 }
 
@@ -55,7 +62,7 @@ public func FxIntMedalConstructionHasAided(object target, proplist effect, int p
 		effect.constructed_structures[plr_id] = 0;
 	effect.constructed_structures[plr_id]++;
 	// Check whether the constructed structures exceed ten, if so notify rule.
-	if (effect.constructed_structures[plr_id] >= 10)
+	if (effect.constructed_structures[plr_id] >= effect.construction_goal)
 	{
 		Rule_Medals->~AwardMedal(Medal_Construction, plr);
 		// Reset the constructed structures so that a player can reach the medal again.

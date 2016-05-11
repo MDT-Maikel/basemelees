@@ -15,6 +15,7 @@ public func IsMedal() { return true; }
 public func GetMedalIndex() { return 15; }
 public func GetMedalReward() { return 25; }
 
+
 /*-- Medal Settings --*/
 
 // This is the mid-air duration target which a crew member needs to achieve.

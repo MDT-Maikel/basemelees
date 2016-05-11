@@ -16,6 +16,12 @@ public func GetMedalIndex() { return 7; }
 public func GetMedalReward() { return 50; }
 
 
+/*-- Medal Settings --*/
+
+// This is the number of structures that need to be destroyed to achieve the medal.
+private func GetDemolitionGoal() { return 10; }
+
+
 /*-- Medal Scripts --*/
 
 // See StructureDamage.c script for handling the destroying of structures.
@@ -43,6 +49,7 @@ public func FxIntMedalDemolitionStart(object target, proplist effect, int tempor
 		return FX_OK;
 	// Create a variable which keeps track of the destroyed structures per player.
 	effect.destroyed_structures = [];
+	effect.demolition_goal = Medal_Demolition->GetDemolitionGoal();
 	return FX_OK;
 }
 
@@ -55,7 +62,7 @@ public func FxIntMedalDemolitionHasDestroyed(object target, proplist effect, int
 		effect.destroyed_structures[plr_id] = 0;
 	effect.destroyed_structures[plr_id]++;
 	// Check whether the destroyed structures exceed ten, if so notify rule.
-	if (effect.destroyed_structures[plr_id] >= 10)
+	if (effect.destroyed_structures[plr_id] >= effect.demolition_goal)
 	{
 		Rule_Medals->~AwardMedal(Medal_Demolition, plr);
 		// Reset the destroyed structures so that a player can reach the medal again.
