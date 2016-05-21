@@ -26,3 +26,4 @@ Medal_Slasher          13         20
 Medal_Berserker        14         40
 Medal_Superman         15         25
 Medal_CrashPilot       16         25
+Medal_Energizer        17         20

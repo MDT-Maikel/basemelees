@@ -125,7 +125,7 @@ global func FxIntTestControlStop(object target, effect fx, int reason, bool temp
 global func FxIntTestControlOnMedalAwarded(object target, effect fx, id medal, int plr)
 {
 	// Log the result if it is the correct medal for the medalist.
-	if (Format("%i", medal) == fx.current_medal && plr == plr_medalist)
+	if (Format("%i", medal) == fx.current_medal && plr == plr_medalist && fx.launched)
 	{
 		Log("%s: test passed.", fx.current_medal);
 		fx.launched = false;
@@ -366,4 +366,23 @@ global func Test_Medal_Superman(object medalist, object victim)
 global func Test_Medal_CrashPilot(object medalist, object victim)
 {
 	return false;
+}
+
+global func Test_Medal_Energizer(object medalist, object victim)
+{
+	CreateObjectAbove(SteamEngine, 100, 160, plr_medalist)->CreateContents(Coal, 10);
+	CreateObjectAbove(SteamEngine, 200, 160, plr_medalist)->CreateContents(Coal, 10);
+	CreateObjectAbove(SteamEngine, 300, 160, plr_medalist)->CreateContents(Coal, 10);
+	CreateObjectAbove(SteamEngine, 400, 160, plr_medalist)->CreateContents(Coal, 10);
+	CreateObjectAbove(SteamEngine, 500, 160, plr_medalist)->CreateContents(Coal, 10);	
+			
+	for (var index = 0; index < 10; index++)
+	{	
+		var workshop = CreateObjectAbove(ToolsWorkshop, 60 * (index + 1), 160, plr_medalist);
+		workshop->CreateContents(Wood, 20);
+		workshop->CreateContents(Metal, 20);
+		workshop->AddToQueue(Shovel, 20);
+		workshop.Plane = workshop.Plane = 1;
+	}
+	return true;
 }

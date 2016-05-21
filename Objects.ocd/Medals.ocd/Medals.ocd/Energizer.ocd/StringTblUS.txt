@@ -1,0 +1,2 @@
+Name=Energizer
+Description=Awarded for producing and consuming a certain amount of energy.

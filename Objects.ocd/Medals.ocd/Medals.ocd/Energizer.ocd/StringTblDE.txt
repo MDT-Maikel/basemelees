@@ -1,0 +1,2 @@
+Name=Energizer
+Description=Wird verliehen wenn eine bestimmte Menge an Strom produziert und verwendet wurde.
