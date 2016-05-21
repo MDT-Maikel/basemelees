@@ -2,7 +2,7 @@
 Name=$AttackBarriers$
 Description=$DescAttackBarriers$
 ID=AttackBarrier
-Default=5
+Default=10
 
 	[Options]
 		
