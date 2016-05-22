@@ -36,7 +36,7 @@ global func GivePlayerBasicBaseMaterial(int plr, bool add_mats)
 		[Wood,           10,  4],
 		[Metal,          10,  4],
 		[Rock,           10,  4],
-		[Cloth,           4,  2],
+		[Cloth,           2,  1],
 		[Loam,            4,  2],
 		[Firestone,       4,  2],
 		[Dynamite,        4,  2],
@@ -46,20 +46,7 @@ global func GivePlayerBasicBaseMaterial(int plr, bool add_mats)
 		[Axe,             2,  1],
 		[Pickaxe,         2,  1]
 	];
-	for (var mat in base_mats)
-	{
-		if (!add_mats)
-		{
-			SetBaseMaterial(plr, mat[0], mat[1]);
-			SetBaseProduction(plr, mat[0], mat[2]);
-		}
-		else
-		{
-			DoBaseMaterial(plr, mat[0], mat[1]);
-			DoBaseProduction(plr, mat[0], mat[2]);
-		}
-	}
-	return;
+	return GivePlayerSpecificBaseMaterial(plr, base_mats, add_mats);
 }
 
 // Gives the player the normal base materials.
@@ -73,7 +60,7 @@ global func GivePlayerNormalBaseMaterial(int plr, bool add_mats)
 		[Wood,            2,  1],
 		[Metal,           2,  1],
 		[Rock,            2,  1],
-		[Cloth,           2,  1],
+		[Cloth,           2,  0],
 		[Firestone,       2,  2],
 		[Dynamite,        2,  2],
 		[DynamiteBox,     2,  1],
@@ -83,7 +70,7 @@ global func GivePlayerNormalBaseMaterial(int plr, bool add_mats)
 		[Bucket,          2,  1],
 		[Torch,           2,  1],
 		[Pipe,            2,  1],
-		[WallKit,         2,  1],
+		[WallKit,         1,  1],
 		// Weapons & explosives.
 		[Bow,             2,  1],
 		[Arrow,           2,  1],
@@ -95,20 +82,7 @@ global func GivePlayerNormalBaseMaterial(int plr, bool add_mats)
 		[GrappleBow,      2,  1],
 		[Balloon,         2,  1]
 	];
-	for (var mat in base_mats)
-	{
-		if (!add_mats)
-		{
-			SetBaseMaterial(plr, mat[0], mat[1]);
-			SetBaseProduction(plr, mat[0], mat[2]);
-		}
-		else
-		{
-			DoBaseMaterial(plr, mat[0], mat[1]);
-			DoBaseProduction(plr, mat[0], mat[2]);
-		}
-	}
-	return;
+	return GivePlayerSpecificBaseMaterial(plr, base_mats, add_mats);
 }
 
 // Gives the player the advanced base materials.
@@ -122,7 +96,7 @@ global func GivePlayerAdvancedBaseMaterial(int plr, bool add_mats)
 		[Wood,            4,  2],
 		[Metal,           4,  2],
 		[Rock,            4,  2],
-		[Cloth,           2,  1],
+		[Cloth,           2,  0],
 		[Firestone,       2,  2],
 		[Dynamite,        2,  2],
 		// Additional: weapons.
@@ -147,18 +121,5 @@ global func GivePlayerAdvancedBaseMaterial(int plr, bool add_mats)
 		[PowderKeg,       2,  1],
 		[Cannon,          1,  1]
 	];
-	for (var mat in base_mats)
-	{
-		if (!add_mats)
-		{
-			SetBaseMaterial(plr, mat[0], mat[1]);
-			SetBaseProduction(plr, mat[0], mat[2]);
-		}
-		else
-		{
-			DoBaseMaterial(plr, mat[0], mat[1]);
-			DoBaseProduction(plr, mat[0], mat[2]);
-		}
-	}
-	return;
+	return GivePlayerSpecificBaseMaterial(plr, base_mats, add_mats);
 }
