@@ -157,7 +157,7 @@ public func AwardMedal(id medal, int plr)
 	SetRoundMedalData(plr, round_metal_data);
 	
 	// Give the player its reward for obtaining the medal in clunkers.
-	if (reward_active)
+	if (active_rule->GetRewarding())
 	{
 		var reward = medal->~GetMedalReward();
 		if (reward)
