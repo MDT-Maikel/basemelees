@@ -7,7 +7,7 @@
 
 
 // Called then the player hits a control with Scoreboard_BaseMelee as spec_id, in this case CON_Scoreboard.
-public func PlayerControl(int plr, int ctrl, int x, int y, int strength, bool repeat, bool release)
+public func ForwardedPlayerControl(int plr, int ctrl, int x, int y, int strength, bool repeat, bool release)
 {
 	if (release)
 		return;

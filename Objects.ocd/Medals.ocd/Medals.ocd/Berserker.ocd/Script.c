@@ -105,7 +105,7 @@ private func RemoveOldDamageEvents(array damage_list, int time)
 private func CountDamageInEvents(array damage_list)
 {
 	var total_damage = 0;
-	for (event in damage_list)
+	for (var event in damage_list)
 		total_damage += event.damage;
 	return total_damage;
 }

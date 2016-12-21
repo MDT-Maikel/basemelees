@@ -44,7 +44,7 @@ public func FxIntMedalPlumberStart(object target, proplist effect, int temporary
 	// Create a variable which keeps track of the amount pumped per player.
 	effect.pumped_amount = [];
 	// The required amount is operating a single pump at full capacity for 5 minutes.
-	effect.required_amount = Pump->GetPumpSpeed() * 36 * 5 * 60 / 30;
+	effect.required_amount = Pump.PumpSpeed * 36 * 5 * 60 / 30;
 	return FX_OK;
 }
 
