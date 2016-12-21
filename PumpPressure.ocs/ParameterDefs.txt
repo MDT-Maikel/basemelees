@@ -84,6 +84,10 @@ Default=1
 		Name=$LiquidTypeLava$
 		Value=2
 		
+		[Option]
+		Name=$LiquidTypeOil$
+		Value=3	
+		
 [ParameterDef]
 Name=$LiquidAmount$
 Description=$DescLiquidAmount$

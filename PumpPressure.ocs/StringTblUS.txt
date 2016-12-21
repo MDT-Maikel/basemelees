@@ -38,6 +38,7 @@ DescLiquidType=This material will be in the landscape and will be the type of ra
 LiquidTypeWater=Water
 LiquidTypeAcid=Acid
 LiquidTypeLava=Lava
+LiquidTypeOil=Oil
 
 # Scenario parameter: liquid amount
 LiquidAmount=Liquid Amount

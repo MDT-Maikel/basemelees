@@ -35,9 +35,10 @@ DescMaterialsAdvanced=Players can additionally buy more advanced tools, advanced
 # Scenario parameter: liquid type
 LiquidType=Liquid Material
 DescLiquidType=This material will be in the landscape and will be the type of rain in this round.
-LiquidTypeWater=Water
-LiquidTypeAcid=Acid
+LiquidTypeWater=Wasser
+LiquidTypeAcid=Säure
 LiquidTypeLava=Lava
+LiquidTypeOil=Öl
 
 # Scenario parameter: liquid amount
 LiquidAmount=Liquid Amount

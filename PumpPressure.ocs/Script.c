@@ -262,6 +262,8 @@ private func InitLiquidControl()
 		effect.rain_mat = "Acid";
 	if (SCENPAR_LiquidType == 2)
 		effect.rain_mat = "DuroLava";
+	if (SCENPAR_LiquidType == 3)
+		effect.rain_mat = "Oil";
 	// Amount of rain according to the scenario parameter.
 	effect.rain_amount = SCENPAR_LiquidAmount;
 

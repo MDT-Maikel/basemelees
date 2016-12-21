@@ -112,7 +112,7 @@ public func DrawUnderground(proplist map, int ground_height, int lake_height)
 	underground_area = {Algo = MAPALGO_Or, Op = [underground_area, {Algo = MAPALGO_Turbulence, Seed = Random(65536), Amplitude = 8, Scale = 8, Iterations = 4, Op = underground_area}]};
 	Draw("Tunnel", underground_area);
 	var lake = {Algo = MAPALGO_And, Op = [underground_area, {Algo = MAPALGO_Rect, X = 0, Y = map.Hgt - lake_height + 8, Wdt = map.Wdt, Hgt = lake_height - 8}]};
-	Draw(["Water", "Acid", "DuroLava"][SCENPAR_LiquidType], lake);
+	Draw(["Water", "Acid", "DuroLava", "Oil"][SCENPAR_LiquidType], lake);
 	var lake_islands = {Algo = MAPALGO_RndChecker, Ratio = 28, Wdt = 4, Hgt = 4};
 	lake_islands = {Algo = MAPALGO_Turbulence, Iterations = 4, Op = lake_islands};
 	lake_islands = {Algo = MAPALGO_And, Op = [lake_islands, underground_area]};
@@ -139,7 +139,7 @@ public func DrawGround(proplist ground)
 	DrawMaterial("Gold", ground, 3, 3);
 	DrawMaterial("Rock", ground, [5, 2], 4);
 	DrawMaterial("Tunnel", ground, [7, 4], 20);
-	DrawMaterial(["Water", "Acid", "DuroLava"][SCENPAR_LiquidType], ground, [6,4], 2);
+	DrawMaterial(["Water", "Acid", "DuroLava", "Oil"][SCENPAR_LiquidType], ground, [6,4], 2);
 	DrawMaterial("Coal", ground, 3, 4);
 	DrawMaterial("Firestone", ground, 4, 3);
 	DrawMaterial("Ore", ground, 3, 3);
