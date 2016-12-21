@@ -25,7 +25,7 @@ protected func Initialize()
 {
 	base_objects = [];
 	base_rect = Rectangle(0, 0, LandscapeWidth(), LandscapeHeight());
-	show_rect = {};	
+	//show_rect = {};	
 	return;
 }
 
@@ -61,10 +61,10 @@ public func SetBaseRectangle(proplist rect)
 {
 	base_rect = rect;
 	// Center player view to the rectangle.
-	SetPosition(base_rect.x + base_rect.w / 2, base_rect.y + base_rect.h / 2 - 50);
+	SetPosition(base_rect.x + base_rect.wdt / 2, base_rect.y + base_rect.hgt / 2 - 50);
 	SetPlrView(GetOwner(), this);
-	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.w / 10, 11 * base_rect.h / 10, PLRZOOM_LimitMax);
-	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.w / 10, 11 * base_rect.h / 10, PLRZOOM_Direct);
+	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.wdt / 10, 11 * base_rect.hgt / 10, PLRZOOM_LimitMax);
+	SetPlayerZoomByViewRange(GetOwner(), 11 * base_rect.wdt / 10, 11 * base_rect.hgt / 10, PLRZOOM_Direct);
 	SetPlayerViewLock(GetOwner(), true);
 	// Show base rectangle.
 	ShowBaseRect();
@@ -77,22 +77,23 @@ public func SetBaseRectangle(proplist rect)
 public func ShowBaseRect()
 {
 	var x1 = base_rect.x, y1 = base_rect.y; 
-	var x2 = base_rect.x + base_rect.w, y2 = base_rect.y; 
-	var x3 = base_rect.x + base_rect.w, y3 = base_rect.y + base_rect.h; 
-	var x4 = base_rect.x, y4 = base_rect.y + base_rect.h; 	
+	var x2 = base_rect.x + base_rect.wdt, y2 = base_rect.y; 
+	var x3 = base_rect.x + base_rect.wdt, y3 = base_rect.y + base_rect.hgt; 
+	var x4 = base_rect.x, y4 = base_rect.y + base_rect.hgt; 	
 	var clr = 0xffff0000;
-	show_rect.top = DebugLine->Create(x1, y1, x2, y2, clr);
-	show_rect.right = DebugLine->Create(x2, y2, x3, y3, clr);
-	show_rect.bottom = DebugLine->Create(x3, y3, x4, y4, clr);
-	show_rect.left = DebugLine->Create(x4, y4, x1, y1, clr);
+	show_rect = CreateObject(BaseRect);
+	show_rect->SetVertex(0, VTX_X, x1);
+	show_rect->SetVertex(0, VTX_Y, y1);
+	show_rect->AddVertex(x2, y2);
+	show_rect->AddVertex(x3, y3);
+	show_rect->AddVertex(x4, y4);
+	show_rect->AddVertex(x1, y1);
+	show_rect.LineColors = [clr, clr];
 }
 
 public func DeleteBaseRect()
 {
-	show_rect.top->RemoveObject();
-	show_rect.right->RemoveObject();
-	show_rect.bottom->RemoveObject();
-	show_rect.left->RemoveObject();
+	show_rect->RemoveObject();
 }
 
 
@@ -279,7 +280,7 @@ public func OnObjectHover(proplist obj)
 	var content_str = "";
 	if (obj.contents)
 	{
-		for (c in obj.contents)
+		for (var c in obj.contents)
 			content_str = Format("%s %dx{{%i}}", content_str, c[1], c[0]);	
 		content_str	= Format("$MsgSpawnContents$ %s", 0xffff0000, content_str);
 	}

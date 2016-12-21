@@ -117,7 +117,7 @@ protected func InitializePlayer(int plr)
 		door = CreateObjectAbove(StoneDoor, x + 196, y, plr);
 		door->SetAutoControl();
 		ClearFreeRect(door->GetX() - 4, door->GetY() - 52, 8, 72);
-		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 240, y - 240, 480, 480));
+		CreateBaseMenu(GetCrew(plr, 0), base_objects, Rectangle(x - 240, y - 240, 480, 400));
 	}	
 	
 	// Give player their knowledge.

@@ -70,8 +70,8 @@ public func AdjustPreview(bool look_up, bool no_call)
 // x and y are refined mouse coordinates so always centered at the clonk.
 public func Reposition(int x, int y)
 {
-	x = BoundBy(x, base_rect.x - clonk->GetX(), base_rect.x + base_rect.w - clonk->GetX());
-	y = BoundBy(y, base_rect.y - clonk->GetY(), base_rect.y + base_rect.h - clonk->GetY());
+	x = BoundBy(x, base_rect.x - clonk->GetX(), base_rect.x + base_rect.wdt - clonk->GetX());
+	y = BoundBy(y, base_rect.y - clonk->GetY(), base_rect.y + base_rect.hgt - clonk->GetY());
 		
 	x = clonk->GetX() + x;
 	y = clonk->GetY() + y;
@@ -89,7 +89,7 @@ public func CreateBaseObject()
 	var created = CreateObjectAbove(obj.def, 0, obj.def->GetDefHeight() / 2, GetOwner());
 	// Fill with contents if specified.
 	if (obj.contents)
-		for(c in obj.contents)
+		for(var c in obj.contents)
 			created->CreateContents(c[0], c[1]);
 	// Set direction if specified.		
 	if (direction)
