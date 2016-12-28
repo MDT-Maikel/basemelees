@@ -3,19 +3,19 @@
 #appendto Firestone
 
 
-protected func Construction(object constructor)
+protected func Construction()
 {
 	var owner = GetOwner();
 	var controller = GetController();
 	// Only notify the chain reaction effect if the controller is a player and the owner is none.
 	// This is the case for a firestone created from an explosion.
 	if (owner != NO_OWNER || controller == NO_OWNER)
-		return _inherited(constructor, ...);
+		return _inherited(...);
 	// Notify the effect that keeps track of the chain reaction that a firestone has been created.
 	var effect = GetEffect("IntMedalChainReaction", nil);
 	if (effect)
 		EffectCall(nil, effect, "OnCreation", controller, this);	
-	return _inherited(constructor, ...);
+	return _inherited(...);
 }
 
 protected func Destruction()
