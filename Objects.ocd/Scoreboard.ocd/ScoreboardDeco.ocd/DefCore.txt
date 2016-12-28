@@ -1,6 +1,5 @@
 [DefCore]
-id=Medal_CrashPilot
+id=GUI_ScoreboardDeco
 Version=6,0
 Category=C4D_StaticBack
-Picture=0,0,128,128
 HideInCreator=true
