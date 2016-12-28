@@ -115,10 +115,12 @@ global func FxIntTestControlStop(object target, effect fx, int reason, bool temp
 	if (temporary)
 		return FX_OK;
 	Log("=====================================");
+	Log("%d medals have been tested.", GetLength(fx.medals));
 	if (fx.success)
 		Log("All tests have been completed!");
 	else
-		Log("Some tests are missing of failed.");
+		Log("Some tests are missing of failed.");	
+	Log("=====================================");	
 	return FX_OK;
 }
 
@@ -365,7 +367,18 @@ global func Test_Medal_Superman(object medalist, object victim)
 
 global func Test_Medal_CrashPilot(object medalist, object victim)
 {
-	return false;
+	DrawMaterialQuad("Brick", 600, 0, LandscapeWidth(), 0, LandscapeWidth(), LandscapeHeight(), 600, LandscapeHeight());
+	
+	var plane = CreateObjectAbove(Airplane, 100, 60);
+	plane->FaceRight();
+	plane->PlaneMount(medalist);
+	medalist->Enter(plane);
+	medalist->SetAction("Walk");
+	plane->StartInstantFlight(85, 15);
+	plane->DoDamage(plane.HitPoints - 5);
+	
+	ScheduleCall(medalist, "Exit", 90, 0);
+	return true;
 }
 
 global func Test_Medal_Energizer(object medalist, object victim)

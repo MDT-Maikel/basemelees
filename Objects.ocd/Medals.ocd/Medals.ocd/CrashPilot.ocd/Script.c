@@ -39,44 +39,44 @@ public func OnRoundFinish()
 /*-- Medal Effects --*/
 
 // Medal crash pilot effect keeps track of which players crashed their planes.
-public func FxIntMedalCrashPilotStart(object target, proplist effect, int temporary)
+public func FxIntMedalCrashPilotStart(object target, proplist fx, int temporary)
 {
 	if (temporary)
 		return FX_OK;
 	// Create ejections list.
-	effect.ejections = [];
+	fx.ejections = [];
 	return FX_OK;
 }
 
 // Effect callback made by the plane on pilot ejection.
-public func FxIntMedalCrashPilotOnEjection(object target, proplist effect, object plane, object pilot, int controller)
+public func FxIntMedalCrashPilotOnEjection(object target, proplist fx, object plane, object pilot, int controller)
 {
 	// Store the airplane, pilot and controller in a proplist.
 	var ejection = {plane = plane, pilot = pilot, controller = controller, frame = FrameCounter()};
 	// Check if the existing ejections already contain this airplane then reset.
 	var existing = false;
-	for (var index = 0; index < GetLength(effect.ejections); index++)
+	for (var index = 0; index < GetLength(fx.ejections); index++)
 	{
-		if (effect.ejections[index].plane == plane)
+		if (fx.ejections[index].plane == plane)
 		{
-			effect.ejections[index] = ejection;
+			fx.ejections[index] = ejection;
 			existing = true;
 			break;
 		}
 	}
 	// Otherwise add ejection to the list.
 	if (!existing)
-		PushBack(effect.ejections, ejection);
+		PushBack(fx.ejections, ejection);
 	return FX_OK;
 }
 
 // Effect callback made by the plane on its crash.
-public func FxIntMedalCrashPilotOnCrash(object target, proplist effect, object plane, object pilot, int controller)
+public func FxIntMedalCrashPilotOnCrash(object target, proplist fx, object plane, object pilot, int controller)
 {
 	// Scan through the list of ejections to see if this plane had one.
-	for (var index = 0; index < GetLength(effect.ejections); index++)
+	for (var index = 0; index < GetLength(fx.ejections); index++)
 	{
-		var ejection = effect.ejections[index];
+		var ejection = fx.ejections[index];
 		if (ejection.plane == plane)
 		{
 			// Check if there is no pilot, the controller is the same and if the ejection was less than five seconds ago.
@@ -86,7 +86,7 @@ public func FxIntMedalCrashPilotOnCrash(object target, proplist effect, object p
 				Rule_Medals->AwardMedal(Medal_CrashPilot, controller);
 			}
 			// Always remove this entry from the list since the plane died.
-			RemoveArrayIndex(effect.ejections, index);
+			RemoveArrayIndex(fx.ejections, index);
 			break;		
 		}
 	}
@@ -95,7 +95,7 @@ public func FxIntMedalCrashPilotOnCrash(object target, proplist effect, object p
 }
 
 // Medal crash pilot effect keeps track of which players crashed their planes.
-public func FxIntMedalCrashPilotStop(object target, proplist effect, int reason, bool temporary)
+public func FxIntMedalCrashPilotStop(object target, proplist fx, int reason, bool temporary)
 {
 	if (temporary)
 		return FX_OK;
