@@ -58,6 +58,9 @@ protected func OnGameOver()
 
 protected func Destruction()
 {
+	// Don't do anything if not the last medal rule.
+	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
+		return;
 	// Perform "OnRoundFinish" callback for all loaded medals.
 	PerformMedalCallbacks("OnRoundFinish");
 	// When this rule is removed no more medals will be awarded and it
