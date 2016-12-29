@@ -10,7 +10,7 @@
 
 
 // List for storing the different large caves.
-static cave_list;
+//static cave_list; // defined in Script.c
 
 // Called be the engine: draw the complete map here.
 protected func InitializeMap(proplist map)

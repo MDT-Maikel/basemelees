@@ -11,7 +11,7 @@
 
 
 // List for storing the different main islands.
-static island_list;
+//static island_list; // defined in Script.c
 
 // Called be the engine: draw the complete map here.
 protected func InitializeMap(proplist map)
