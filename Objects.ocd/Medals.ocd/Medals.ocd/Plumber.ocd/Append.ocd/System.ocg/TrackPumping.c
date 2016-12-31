@@ -4,8 +4,10 @@
 global func ExtractLiquidAmount(int x, int y, int amount, bool distant_first)
 {
 	var result = _inherited(x, y, amount, distant_first, ...);
+	if (!this || GetType(this) != C4V_C4Object)
+		return result;
 	// Only do something if this is a pipe and there was some liquid extracted.
-	if (this && result && result[1] > 0 && this->GetID() == Pipe)
+	if (result && result[1] > 0 && this->GetID() == Pipe)
 	{
 		// Find line and check whether the pipe was connected to a pump.
 		var line = FindObject(Find_Func("IsConnectedTo", this));
