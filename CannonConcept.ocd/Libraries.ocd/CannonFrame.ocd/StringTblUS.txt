@@ -1,0 +1,4 @@
+MsgNoCannonMounted=No cannon mounted.
+MsgCannonMounting=Cannon Mounting
+MsgDismount=Dismount %s.
+MsgMount=Mount %s.
