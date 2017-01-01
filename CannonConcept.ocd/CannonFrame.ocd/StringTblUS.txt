@@ -1,0 +1,2 @@
+Name=Cannon Frame
+Description=Portable frame that can hold any type of cannon.
