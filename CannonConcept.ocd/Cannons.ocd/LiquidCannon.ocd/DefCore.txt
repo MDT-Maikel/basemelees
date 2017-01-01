@@ -1,0 +1,17 @@
+[DefCore]
+id=LiquidCannon
+Version=6,0
+Category=C4D_Vehicle
+Width=14
+Height=6
+Offset=-7,-3
+Vertices=4
+VertexX=-6,6,-6,6
+VertexY=-2,-2,2,2
+VertexCNAT=5,6,9,10
+VertexFriction=40,40,40,40
+Value=20
+Mass=50
+GrabPutGet=C4D_GrabGet|C4D_GrabPut
+Rotate=30
+UprightAttach=8
