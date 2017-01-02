@@ -1,5 +1,6 @@
 /**
-	Cannons
+	Cannon Test
+	Test scenario for all the cannon types.
 	
 	@author Maikel
 */
@@ -33,8 +34,13 @@ protected func InitializePlayer(int plr)
 	var gatling_gun = CreateObjectAbove(GatlingGun, 120, 140);
 	gatling_gun->CreateContents(LeadBullet, 10);
 	var liquid_cannon = CreateObjectAbove(LiquidCannon, 60, 140);
-	liquid_cannon->MountCannon(frame);
-	
+	//liquid_cannon->MountCannon(frame);
+	var crossbow = CreateObjectAbove(Crossbow, 40, 140);
+	crossbow->CreateContents(Arrow);
+	crossbow->CreateContents(FireArrow);	
+	crossbow->CreateContents(BombArrow);
+	crossbow->MountCannon(frame);
+		
 	var pump = CreateObjectAbove(Pump, 84, 160, plr);
 	var source = CreateObjectAbove(Pipe, 168, 292, plr);
 	source->ConnectPipeTo(pump, PIPE_STATE_Source);
