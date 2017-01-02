@@ -78,6 +78,8 @@ local FxGatlingGun = new Effect
 		this.shooter = clonk;
 		this.aim_angle = angle;
 		this.aim_prec = angle_prec;
+		// Perform the first shot.
+		this->Timer(0);
 	},
 	UpdateAimingAngle = func(int new_angle)
 	{
@@ -89,7 +91,7 @@ local FxGatlingGun = new Effect
 		var ammo = FindObject(Find_Container(Target), Find_Func("IsBullet"));
 		if (!ammo)
 			return FX_Execute_Kill;
-		Target->FireBullet(ammo, this.shooter, this.aim_angle, this.aim_prec);
+		Target->FireBullet(ammo, this.aim_angle, this.aim_prec);
 		return FX_OK;
 	}
 };
