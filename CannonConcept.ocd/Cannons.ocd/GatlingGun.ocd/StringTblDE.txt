@@ -1,0 +1,3 @@
+Name=Gatling-Gun
+Description=Schießt Kugeln in erstaunlichen Tempo.
+MsgNeedsAmmo=Die Gatling-Gun hat keine Munition.

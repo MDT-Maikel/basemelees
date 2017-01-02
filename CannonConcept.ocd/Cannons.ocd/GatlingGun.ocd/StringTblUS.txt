@@ -1,0 +1,3 @@
+Name=Gatling Gun
+Description=Shoots bullets at an incredible rate.
+MsgNeedsAmmo=Gatling gun has no ammo.
