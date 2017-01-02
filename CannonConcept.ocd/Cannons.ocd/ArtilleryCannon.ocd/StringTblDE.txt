@@ -1,0 +1,4 @@
+Name=Kanone
+Description=Halte [Benutzen] gedrückt, um den Gegenstand in deiner Hand zu verschießen. Benötigt ein Pulverfass.
+MsgNeedsAmmo=Die Kanone hat keine Munition.
+MsgNeedsPowderKeg=Die Kanone hat kein Schießpulver.

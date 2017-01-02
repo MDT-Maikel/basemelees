@@ -1,0 +1,4 @@
+Name=Artillery Cannon
+Description=Needs a powder keg to operate, Hold [Use] to aim and shoot about anything.
+MsgNeedsAmmo=Cannon has no ammo.
+MsgNeedsPowderKeg=Cannon has no gunpowder.
