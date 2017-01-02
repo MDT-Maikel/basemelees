@@ -97,3 +97,5 @@ protected func Activate(int by_plr)
 
 local Name = "$Name$";
 local Description = "$Description$";
+local Visibility = VIS_Editor;
+local EditorPlacementLimit = 1;
