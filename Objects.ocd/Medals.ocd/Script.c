@@ -17,6 +17,8 @@
 local round_medals;
 // Variable to store the medal evaluation data summary.
 local round_eval_data;
+// Variable to store which player types receive medals (default C4PT_User).
+local award_plr_type;
 // Variable to store whether the medal rule logs, inactive by default.
 local logging_active;
 // Variable to store whether clunker reward is active, true by default.
@@ -30,6 +32,8 @@ protected func Initialize()
 	// Under no circumstance there may by multiple copies of this rule.
 	if (ObjectCount(Find_ID(Rule_Medals)) > 1)
 		return RemoveObject();
+	// Set player type for awarding medals to normal players.
+	award_plr_type = C4PT_User;
 	// Set logging to inactive.
 	logging_active = false;
 	// Set clunker rewarding to active by default.
@@ -110,7 +114,7 @@ public func PerformMedalCallbacks(string callback, par1, par2, par3, par4)
 }
 
 
-/*-- Medal Rewarding --*/
+/*-- Medal Awarding --*/
 
 // Gives the player the specified medal.
 public func AwardMedal(id medal, int plr)
@@ -133,7 +137,7 @@ public func AwardMedal(id medal, int plr)
 		Log("$WarningInvalidPlayerNumber$", plr);
 		return;
 	}
-	
+
 	// Get the active medal rule.
 	var active_rule = FindObject(Find_ID(Rule_Medals));
 		
@@ -144,6 +148,10 @@ public func AwardMedal(id medal, int plr)
 		Log("$WarningFixMedalScript$");
 		return;
 	}
+	
+	// Don't award medals to wrong player type (only for C4PT_User by default).
+	if (!(GetPlayerType(plr) & active_rule->GetAwardingPlayerType()))
+		return;
 	
 	// Retrieve the medal count from the players medal list using the medal index.
 	var medal_index = medal->GetMedalIndex();
@@ -250,6 +258,17 @@ public func GetPlayerMedalCount(int plr, bool round_only, id for_medal)
 		if (def->~IsMedal() && (for_medal == nil || def == for_medal))
 			medal_count += GetMedalCount(medal_data, def->GetMedalIndex());
 	return medal_count;
+}
+
+public func SetAwardingPlayerType(int for_type)
+{
+	award_plr_type = for_type;
+	return;
+}
+
+public func GetAwardingPlayerType()
+{
+	return award_plr_type;
 }
 
 
