@@ -109,6 +109,7 @@ local FxSprayEffects = new Effect
 		this.y = Target->GetY();
 		this.ext = GetMaterialVal("Extinguisher", "Material", Material(mat));
 		this.inc = GetMaterialVal("Incendiary", "Material", Material(mat));
+		this.cor = GetMaterialVal("Corrosive", "Material", Material(mat));
 		this.wind_drift = GetMaterialVal("WindDrift", "Material", Material(mat)) - 20;
 		// Don't do anything for materials that do not extinguish or incinerate.
 		if (!this.ext && !this.inc)
@@ -153,6 +154,21 @@ local FxSprayEffects = new Effect
 					continue;
 				obj->Incinerate(this.str / Max(1, inf), this.causing_plr);
 			}
+		}
+		
+		// Damages living beings at current position of dummy.
+		if (this.cor)
+		{
+			for (var obj in Target->FindObjects(Find_Or(Find_AtPoint(), Find_Distance(6)), Find_OCF(OCF_Alive)))
+			{
+				if (obj.CorrosionResist)
+					continue;
+				obj->DoEnergy(-this.cor * this.str, true, FX_Call_EngCorrosion, this.causing_plr);
+				if (!Random(3))
+					obj->~PlaySoundScream();
+				else if (!Random(2))
+					obj->~PlaySoundHurt();
+			}	
 		}
 		return FX_OK;
 	}
