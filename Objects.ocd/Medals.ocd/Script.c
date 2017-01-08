@@ -23,6 +23,8 @@ local award_plr_type;
 local logging_active;
 // Variable to store whether clunker reward is active, true by default.
 local reward_active;
+// Variable to store whether a scoreboard column for medals is turned on.
+local scoreboard_active;
 
 
 /*-- Callbacks --*/
@@ -38,6 +40,8 @@ protected func Initialize()
 	logging_active = false;
 	// Set clunker rewarding to active by default.
 	reward_active = true;
+	// Scoreboard is not active by default.
+	scoreboard_active = false;
 	// Checks all loaded medals for overlapping medal indices. 
 	CheckActiveMedals();
 	// Initialize the local round medals to an empty list.
@@ -79,6 +83,12 @@ protected func InitializePlayer(int plr)
 	// Set the round medals to zero for this player.
 	var plr_id = GetPlayerID(plr);
 	round_medals[plr_id] = "MEDALS__";
+	// Init the scoreboard for this player if it is active.
+	if (GetScoreboard() && GetPlayerType(plr) == C4PT_User)
+	{
+		Scoreboard->NewPlayerEntry(plr);
+		Scoreboard->SetPlayerData(plr, "medals", 0);
+	}
 	// Perform "OnInitializePlayer" callback for all loaded medals.
 	PerformMedalCallbacks("OnInitializePlayer", plr);
 	return;
@@ -187,6 +197,10 @@ public func AwardMedal(id medal, int plr)
 	// If logging is active log the rewarding of the medal.
 	if (active_rule->GetLogging())
 		LogMedalReward(medal, plr);
+		
+	// Update scoreboard if active.
+	if (active_rule->GetScoreboard() && GetPlayerType(plr) == C4PT_User)
+		Scoreboard->SetPlayerData(plr, "medals", GetPlayerMedalCount(plr, true));
 	return;
 }
 
@@ -511,6 +525,26 @@ public func SetRewarding(bool active)
 public func GetRewarding()
 {
 	return reward_active;
+}
+
+
+/*-- Scoreboard --*/
+
+public func SetScoreboard(bool active)
+{
+	scoreboard_active = active;
+	if (scoreboard_active)
+	{
+		Scoreboard->Init([
+			{key = "medals", title = Medal_Template, sorted = true, desc = true, default = "0", priority = 0}
+		]);
+	}
+	return;
+}
+
+public func GetScoreboard()
+{
+	return scoreboard_active;
 }
 
 
