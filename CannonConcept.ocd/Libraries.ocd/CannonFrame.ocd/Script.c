@@ -149,6 +149,14 @@ private func DetachCannonGraphics(object cannon)
 
 public func IsContainer() { return true; }
 
+public func Destruction()
+{
+	// Remove cannon from frame before destruction happens.
+	if (lib_cannon.cannon)
+		lib_cannon.cannon->DismountCannon(this);
+	return;
+}
+
 
 /*-- Interaction Menu --*/
 
