@@ -1,0 +1,2 @@
+DE:Medal Test
+US:Medal Test

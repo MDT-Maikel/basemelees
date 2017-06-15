@@ -12,7 +12,8 @@ static plr_victim;
 public func Initialize()
 {
 	// Create medal rule.
-	CreateObject(Rule_Medals);
+	var rule_medals = CreateObject(Rule_Medals);
+	rule_medals->SetAwardingPlayerType(C4PT_User | C4PT_Script);
 	
 	// Create script players for these tests.
 	CreateScriptPlayer("Medalist", RGB(255, 0, 0), nil, CSPF_NoEliminationCheck);
