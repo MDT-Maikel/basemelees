@@ -1,0 +1,10 @@
+[DefCore]
+id=GuardTowerCannonMount
+Version=8,0
+Category=C4D_StaticBack
+Width=24
+Height=24
+Offset=-12,-12
+Vertices=1
+VertexX=0
+VertexY=36

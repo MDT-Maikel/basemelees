@@ -1,0 +1,11 @@
+Name=Verteidigungsturm
+Description=Großer, fester Steinturm, mit Tore und eine Kanone.
+MenuDoorControl=Door Control
+MsgOpenDoorLeft=Open left door
+MsgOpenDoorRight=Open right door
+MsgCloseDoorLeft=Close left door
+MsgCloseDoorRight=Close right door
+DescOpenDoorLeft=Open the left door of this guard tower.
+DescOpenDoorRight=Open the right door of this guard tower.
+DescCloseDoorLeft=Close the left door of this guard tower.
+DescCloseDoorRight=Close the right door of this guard tower.

@@ -1,0 +1,12 @@
+[DefCore]
+id=GuardTowerDeck
+Version=8,0
+Category=C4D_StaticBack
+Width=14
+Height=20
+Offset=-7,-10
+Vertices=1
+VertexX=0
+VertexY=36
+Entrance=-7,-10,14,20
+HideInCreator=true

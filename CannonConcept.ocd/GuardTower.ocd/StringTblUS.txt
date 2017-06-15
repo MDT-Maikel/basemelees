@@ -1,0 +1,11 @@
+Name=Guard Tower
+Description=Large solid stone tower with gates and a cannon mount.
+MenuDoorControl=Door Control
+MsgOpenDoorLeft=Open left door
+MsgOpenDoorRight=Open right door
+MsgCloseDoorLeft=Close left door
+MsgCloseDoorRight=Close right door
+DescOpenDoorLeft=Open the left door of this guard tower.
+DescOpenDoorRight=Open the right door of this guard tower.
+DescCloseDoorLeft=Close the left door of this guard tower.
+DescCloseDoorRight=Close the right door of this guard tower.

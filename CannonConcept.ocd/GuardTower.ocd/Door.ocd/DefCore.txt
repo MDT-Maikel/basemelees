@@ -1,0 +1,15 @@
+[DefCore]
+id=GuardTowerDoor
+Version=8,0
+Category=C4D_None
+Width=4
+Height=24
+Offset=-2,-12
+Vertices=2
+VertexX=0,0
+VertexY=-12,11
+VertexCNAT=4,8
+VertexFriction=40,40
+SolidMask=0,0,4,24,0,0
+HorizontalFix=1
+HideInCreator=true
