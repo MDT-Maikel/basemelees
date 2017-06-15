@@ -10,7 +10,7 @@ global func Incinerate(strength, int caused_by)
 	// Notify the effect that keeps track of the pyromania that an object has been incinerated.
 	var effect = GetEffect("IntMedalPyromania", nil);
 	if (effect && caused_by != NO_OWNER)
-		EffectCall(nil, effect, "OnIncineration", caused_by);	
+		EffectCall(nil, effect, "OnIncineration", this, caused_by);	
 		
 	// Return back to the overloaded function.
 	return _inherited(strength, caused_by, ...);
