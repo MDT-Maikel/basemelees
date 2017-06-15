@@ -23,30 +23,41 @@ protected func InitializePlayer(int plr)
 	SetFoW(false, plr);
 	
 	var clonk = GetCrew(plr);
-	clonk->SetPosition(100, 140);
+	clonk->SetPosition(90, 150);
 	
 	CreateObject(Rule_NoPowerNeed);
 	
-	var frame = CreateObjectAbove(CannonFrame, 100, 140);
-	var artillery_cannon = CreateObjectAbove(ArtilleryCannon, 80, 140);
+	var frame = CreateObjectAbove(CannonFrame, 90, 140);
+	var artillery_cannon = CreateObjectAbove(ArtilleryCannon, 70, 140);
 	artillery_cannon->CreateContents(PowderKeg);
-	CreateObjectAbove(Chest, 40, 140)->CreateContents(IronBomb, 10);
-	var gatling_gun = CreateObjectAbove(GatlingGun, 120, 140);
+	CreateObjectAbove(Chest, 30, 160)->CreateContents(IronBomb, 10);
+	var gatling_gun = CreateObjectAbove(GatlingGun, 120, 80);
 	gatling_gun->CreateContents(LeadBullet, 10);
-	var liquid_cannon = CreateObjectAbove(LiquidCannon, 60, 140);
+	var liquid_cannon = CreateObjectAbove(LiquidCannon, 50, 140);
 	//liquid_cannon->MountCannon(frame);
-	var crossbow = CreateObjectAbove(Crossbow, 40, 140);
+	var crossbow = CreateObjectAbove(Crossbow, 30, 140);
 	crossbow->CreateContents(Arrow);
 	crossbow->CreateContents(FireArrow);	
 	crossbow->CreateContents(BombArrow);
 	crossbow->MountCannon(frame);
+	
+	var tesla_cannon = CreateObjectAbove(TeslaCannon, 110, 150);
 		
-	var pump = CreateObjectAbove(Pump, 84, 160, plr);
+	var pump = CreateObjectAbove(Pump, 54, 160, plr);
 	var source = CreateObjectAbove(Pipe, 168, 292, plr);
 	source->ConnectPipeTo(pump, PIPE_STATE_Source);
 	var drain = CreateObjectAbove(Pipe, 240, 100, plr);
 	drain->ConnectPipeTo(pump, PIPE_STATE_Drain);
 	drain->ConnectPipeTo(liquid_cannon, PIPE_STATE_Drain);
+	
+	var tower = CreateObjectAbove(GuardTower, 120, 160);
+	var tower_base = CreateObjectAbove(Basement, 120, 168);
+	tower_base->SetParent(tower);
+	
+	//CreateObjectAbove(Flagpole, 20, 160, plr);
+	//CreateObjectAbove(WindGenerator, 20, 160, plr);
+	
+	tesla_cannon->MountCannon(tower->GetCannonMount());
 	return;
 }
 
