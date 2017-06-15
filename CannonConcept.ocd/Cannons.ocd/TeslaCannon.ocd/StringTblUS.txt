@@ -1,0 +1,5 @@
+Name=Tesla cannon
+Description=Shoots a large amount of electricity in a beam.
+MsgNeedsCharge=Tesla cannon is not charged.
+MenuCannonCharge=Cannon Charge
+MsgCannonCharge=Charge: %d%

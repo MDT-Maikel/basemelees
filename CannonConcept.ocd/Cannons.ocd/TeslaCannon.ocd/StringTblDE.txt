@@ -1,0 +1,5 @@
+Name=Tesla-Kanone
+Description=Schießt hohen Menge elektrischer Ladung in einem Strahl.
+MsgNeedsCharge=Die Tesla-Kanone ist nicht geladen.
+MenuCannonCharge=Cannon Charge
+MsgCannonCharge=Charge: %d%
