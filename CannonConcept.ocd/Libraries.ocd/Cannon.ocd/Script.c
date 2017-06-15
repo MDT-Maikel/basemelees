@@ -79,6 +79,8 @@ public func QueryRejectCannonDismount(object from_frame)
 
 public func GetCannonFrame() { return lib_cannon.frame; }
 
+public func IsMounted() { return !!lib_cannon.frame; }
+
 
 /*-- Interaction --*/
 
@@ -126,6 +128,14 @@ public func CoordinatesToAngle(object frame, int x, int y)
 /*-- Contents --*/
 
 public func IsContainer() { return true; }
+
+public func QueryRejectDeparture(object container)
+{
+	// Don't allow removal via contents menu if mounted.
+	if (container == lib_cannon.frame)
+		return true;
+	return false;
+}
 
 
 /*-- Properties --*/
