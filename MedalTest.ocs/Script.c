@@ -384,19 +384,22 @@ global func Test_Medal_CrashPilot(object medalist, object victim)
 
 global func Test_Medal_Energizer(object medalist, object victim)
 {
-	CreateObjectAbove(SteamEngine, 100, 160, plr_medalist)->CreateContents(Coal, 10);
-	CreateObjectAbove(SteamEngine, 200, 160, plr_medalist)->CreateContents(Coal, 10);
-	CreateObjectAbove(SteamEngine, 300, 160, plr_medalist)->CreateContents(Coal, 10);
-	CreateObjectAbove(SteamEngine, 400, 160, plr_medalist)->CreateContents(Coal, 10);
-	CreateObjectAbove(SteamEngine, 500, 160, plr_medalist)->CreateContents(Coal, 10);	
-			
+	CreateObjectAbove(Flagpole, 40, 160, plr_medalist);
+	CreateObjectAbove(Flagpole, LandscapeWidth() / 2, 160, plr_medalist);
+	CreateObjectAbove(Flagpole, LandscapeWidth() - 40, 160, plr_medalist);
+	
 	for (var index = 0; index < 10; index++)
+	{
+		var engine = CreateObjectAbove(SteamEngine, 80 + index * 10, 160, plr_medalist);
+		engine->CreateContents(Coal, 100);
+	}
+
+	for (var index = 0; index < 30; index++)
 	{	
-		var workshop = CreateObjectAbove(ToolsWorkshop, 60 * (index + 1), 160, plr_medalist);
-		workshop->CreateContents(Wood, 20);
-		workshop->CreateContents(Metal, 20);
-		workshop->AddToQueue(Shovel, 20);
-		workshop.Plane = workshop.Plane = 1;
+		var workshop = CreateObjectAbove(ToolsWorkshop, 360 + index * 10, 160, plr_medalist);
+		workshop->CreateContents(Wood, 100);
+		workshop->CreateContents(Metal, 100);
+		workshop->AddToQueue(Shovel, 100);
 	}
 	return true;
 }

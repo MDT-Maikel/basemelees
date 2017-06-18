@@ -18,8 +18,13 @@ public func GetMedalReward() { return 20; }
 
 /*-- Medal Settings --*/
 
-// This is the number of constructions that need to be aided with for achieving the medal.
-private func GetPowerGoal() { return 36 * 60 * 100 * 5; }
+// This is the amount of power that needs to be consumed to achieve one medal.
+// Equal to x minutes of consuming 100 units of power.
+private func GetPowerGoal()
+{
+	var consume_for_minutes = 10;
+	return 36 * 60 * 100 * consume_for_minutes;
+}
 
 
 /*-- Medal Scripts --*/
