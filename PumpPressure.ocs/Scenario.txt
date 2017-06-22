@@ -1,6 +1,6 @@
 [Head]
 Icon=22
-Title=PumpFight
+Title=PumpPressure
 Version=6,0
 MinPlayer=2
 MaxPlayer=16

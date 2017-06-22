@@ -7,3 +7,5 @@ Ziel: Vernichte alle Flaggen der Gegner.
 Tipps:
 - Either go for the direct attack or defend and flood the base of your enemies.
 - There are gems at the bottom of the map which provide large amounts of clunkers.
+- In the caves deep down there is infinite supply of resources to sustain battles.
+- Connect any pump to the base drain at the top of the map to pump liquids to the enemy.

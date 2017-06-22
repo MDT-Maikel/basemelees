@@ -48,6 +48,7 @@ protected func Initialize()
 	InitEnvironment(nr_areas);
 	InitAnimals(nr_areas);
 	InitBlocking(SCENPAR_AttackBarrier);
+	InitResourceCaves(nr_areas);
 	InitLiquidControl();
 	return;
 }
@@ -84,6 +85,9 @@ protected func InitializePlayer(int plr)
 		crew->SetPosition(x, y);
 		crew->CreateContents(Shovel);
 	}
+	
+	// Create base drain.
+	CreateObject(BaseDrain, base[0], 22, plr);
 	
 	// Base startup objects.
 	var base_objects = [
@@ -131,26 +135,19 @@ protected func InitializePlayer(int plr)
 	return;	
 }
 
-public func OnPumpPlacement(object placed, int plr)
+public func OnPumpPlacement(object pump, int plr)
 {
 	// Place a source pipe at the base of the pump.
-	var source = placed->CreateObjectAbove(Pipe, 0, placed->GetBottom());
-	source->ControlUse(placed);
-	// Place a drain pipe and put it in the basin.
-	var nr_areas = BoundBy(GetStartupTeamCount(), 2, 4);
-	var area_nr = nr_areas * placed->GetX() / LandscapeWidth();
-	var x = (2 * area_nr + 1) * LandscapeWidth() / (2 * nr_areas);
-	var y = 52;	
-	var drain = placed->CreateObjectAbove(Pipe, 0, placed->GetBottom());
-	drain->ControlUse(placed);
-	drain->SetPosition(x, y);
-	var dir = Sign(placed->GetX() - x);
-	var pipe = FindObject(Find_ID(PipeLine), Find_Func("IsConnectedTo", drain));
-	pipe->AddVertex(x, y);
-	ScheduleCall(pipe, "InsertVertex", 5, 0, 1, x + dir * 16, y - 12);
-	ScheduleCall(pipe, "InsertVertex", 6, 0, 2, x + dir * 24, y - 12);
+	var source = pump->CreateObjectAbove(Pipe, 0, pump->GetBottom());
+	source->ConnectPipeTo(pump, PIPE_STATE_Source);
+	// Place a drain pipe and connect it to base drain.
+	var drain = pump->CreateObjectAbove(Pipe, 0, pump->GetBottom());
+	drain->ConnectPipeTo(pump, PIPE_STATE_Drain);
+	var base_drain = FindObject(Find_ID(BaseDrain), Find_Owner(plr));
+	drain->ConnectPipeTo(base_drain);
 	return;
 }
+
 
 /*-- Scenario Initiliaztion --*/
 
@@ -179,11 +176,11 @@ private func InitVegetation(int nr_areas)
 	}
 	
 	// Some objects in the earth.	
-	PlaceObjects(Metal, 5 * nr_areas, "Earth");
-	PlaceObjects(Wood, 5 * nr_areas, "Earth");
-	PlaceObjects(Firestone, 10 * nr_areas, "Earth");
-	PlaceObjects(Rock, 10 * nr_areas, "Earth");
-	PlaceObjects(Loam, 10 * nr_areas, "Earth");
+	PlaceObjects(Metal, 6 * nr_areas, "Earth");
+	PlaceObjects(Wood, 6 * nr_areas, "Earth");
+	PlaceObjects(Firestone, 12 * nr_areas, "Earth");
+	PlaceObjects(Rock, 12 * nr_areas, "Earth");
+	PlaceObjects(Loam, 12 * nr_areas, "Earth");
 	return;
 }
 
@@ -204,17 +201,23 @@ private func InitEnvironment(int nr_areas)
 
 private func InitAnimals(int nr_areas)
 {
-	// Fish if material is liquid.
+	var bottom_rect = Rectangle(0, LandscapeHeight() / 2, LandscapeWidth(), LandscapeHeight() / 2);
+	// Fish if material is water.
 	if (SCENPAR_LiquidType == 0)
 	{
-		Fish->Place(8 * nr_areas);
-		Piranha->Place(2 * nr_areas);	
+		Fish->Place(8 * nr_areas, bottom_rect);
+		Piranha->Place(2 * nr_areas, bottom_rect);
 	}
 	// Chippies if material is acid.
 	if (SCENPAR_LiquidType == 1)
 	{
-		//Chippie_Egg->Place(4 * nr_areas, Rectangle(0, LandscapeHeight() / 2, LandscapeWidth(), LandscapeHeight() / 2));
-	}	
+		Chippie->Place(10 * nr_areas, bottom_rect);
+	}
+	// Lava cores if material is lava.
+	if (SCENPAR_LiquidType == 2)
+	{
+		LavaCore->Place(2 * nr_areas, bottom_rect, {size_range = [30, 45]});
+	}
 	// Zaps and mosquitos.
 	Mosquito->Place(3 * nr_areas);
 	Zaphive->Place(2 * nr_areas);
@@ -241,11 +244,27 @@ private func InitBlocking(int minutes)
 		var y = base[1];
 		AttackBarrier->BlockLine(x - 188, y - 72, x - 188, y - 24, time);
 		AttackBarrier->BlockLine(x + 188, y - 72, x + 188, y - 24, time);
-		AttackBarrier->BlockLine(x - 212, 70 * 8, x - 212, 120 * 8, time);
-		AttackBarrier->BlockLine(x + 212, 70 * 8, x + 212, 120 * 8, time);
+		AttackBarrier->BlockLine(x - 212, 560, x - 212, LandscapeHeight(), time);
+		AttackBarrier->BlockLine(x + 212, 560, x + 212, LandscapeHeight(), time);
 	}
 	// Create a countdown clock for the players showing when the barriers come down.
 	GUI_Clock->CreateCountdown(time / 36);
+	return;
+}
+
+private func InitResourceCaves(int nr_areas)
+{
+	// Lorries with valuable stuff in the resource caves.
+	for (var cnt = 0; cnt < nr_areas; cnt++)
+	{
+		var loc = FindLocation(Loc_InRect(0, LandscapeHeight() - 28 * 8, LandscapeWidth(), 28 * 8), Loc_Tunnel(), Loc_Space(10));
+		if (!loc)
+			continue;
+		var lorry = CreateObject(Lorry, loc.x, loc.y);
+		lorry->CreateContents(DynamiteBox, 5);
+		lorry->CreateContents(Wood, 30);
+		lorry->CreateContents(GoldBar, 5);	
+	}
 	return;
 }
 
@@ -255,95 +274,95 @@ private func InitBlocking(int minutes)
 private func InitLiquidControl()
 {
 	// Add an effect to control liquid flows.
-	var effect = AddEffect("LiquidControl", nil, 100, 1);
+	var fx = AddEffect("LiquidControl", nil, 100, 1);
 	// Type of rain according to the scenario parameter.
-	effect.rain_mat = "Water";
+	fx.rain_mat = "Water";
 	if (SCENPAR_LiquidType == 1)
-		effect.rain_mat = "Acid";
+		fx.rain_mat = "Acid";
 	if (SCENPAR_LiquidType == 2)
-		effect.rain_mat = "DuroLava";
+		fx.rain_mat = "DuroLava";
 	if (SCENPAR_LiquidType == 3)
-		effect.rain_mat = "Oil";
+		fx.rain_mat = "Oil";
 	// Amount of rain according to the scenario parameter.
-	effect.rain_amount = SCENPAR_LiquidAmount;
+	fx.rain_amount = SCENPAR_LiquidAmount;
 
 	// Add areas to liquid control effect.
 	var nr_areas = 2 * BoundBy(GetStartupTeamCount(), 2, 4);
 	var exclude_width = 80;
 	var include_width = LandscapeWidth() / nr_areas - exclude_width;
-	effect.areas = [];
+	fx.areas = [];
 	for (var index = 0; index < (nr_areas / 2); index++)
 	{
 		var set_from = exclude_width / 2 + index * 2 * (include_width + exclude_width);
-		var set_to_middle = set_from + include_width + exclude_width / 2 - 32;
-		var set_from_middle = set_from + include_width + exclude_width / 2 + 32;
 		var set_to = set_from + 2 * include_width + exclude_width;
-		effect.areas[index] = {from = set_from, to_middle = set_to_middle, from_middle = set_from_middle, to = set_to};
+		fx.areas[index] = {from = set_from, to = set_to};
 	}
 	return;
 }
 
-global func FxLiquidControlStart(object target, proplist effect, int temporary)
+global func FxLiquidControlStart(object target, effect fx, int temporary)
 {
 	if (temporary)
 		return FX_OK;
 	var wdt = LandscapeWidth();
 	// Determine amount and location of liquid basins.
-	effect.nr_basins = BoundBy(GetStartupTeamCount(), 2, 4);
-	effect.basins = [];
-	effect.basin_to_area = [];
-	for (var index = 0; index < effect.nr_basins; index++)
+	fx.nr_drains = BoundBy(GetStartupTeamCount(), 2, 4);
+	fx.drains = [];
+	fx.drain_to_area = [];
+	for (var index = 0; index < fx.nr_drains; index++)
 	{
-		effect.basins[index] = {x = (2 * index + 1) * wdt / (2 * effect.nr_basins), y = 52};
-		effect.basin_to_area[index] = 0;
+		fx.drains[index] = {x = (2 * index + 1) * wdt / (2 * fx.nr_drains), y = 20};
+		fx.drain_to_area[index] = 0;
 	}
 	return FX_OK;
 }
 
-global func FxLiquidControlTimer(object target, proplist effect, int time)
+global func FxLiquidControlTimer(object target, effect fx, int time)
 {
 	// Spread rain among the different area.
-	if (Random(100) < effect.rain_amount)
+	if (Random(100) < fx.rain_amount)
 	{
-		for (var area in effect.areas)
+		for (var area in fx.areas)
 		{
-			var x = RandomX(area.from, area.to_middle);
-			if (!Random(2))
-				x = RandomX(area.from_middle, area.to);
+			var x = RandomX(area.from, area.to);
 			var y = 20;
-			InsertMaterial(Material(effect.rain_mat), x, y);
+			InsertMaterial(Material(fx.rain_mat), x, y, 0, 10);
 		}
 	}
 
 	// Transfer pumped liquids to enemy areas.
-	var basin_nr = 0;
-	for (var basin in effect.basins)
+	var drain_nr = 0;
+	for (var drain_pos in fx.drains)
 	{
-		// Get all liquid in the basin.
+		var base_drain = FindObject(Find_ID(BaseDrain), Find_AtPoint(drain_pos.x, drain_pos.y));
+		if (!base_drain)
+		{
+			drain_nr++;
+			continue;
+		}
+		// Get all liquid in the base drain.
 		var mat;
-		while ((mat = ExtractLiquid(basin.x, basin.y)) != -1)
+		while ((mat = base_drain->RemoveLiquid(nil, 1)[0]))
 		{
 			// Determine area in which to insert the liquid. Cycle through the enemy basins.
-			effect.basin_to_area[basin_nr]++;
-			if (effect.basin_to_area[basin_nr] == basin_nr)
-				effect.basin_to_area[basin_nr]++;
-			if (effect.basin_to_area[basin_nr] >= effect.nr_basins)
-				effect.basin_to_area[basin_nr] = 0;
-			if (effect.basin_to_area[basin_nr] == basin_nr)
-				effect.basin_to_area[basin_nr]++;
-			var area = effect.areas[effect.basin_to_area[basin_nr]];
-			var x = RandomX(area.from, area.to_middle);
-			if (!Random(2))
-				x = RandomX(area.from_middle, area.to);
+			fx.drain_to_area[drain_nr]++;
+			if (fx.drain_to_area[drain_nr] == drain_nr)
+				fx.drain_to_area[drain_nr]++;
+			if (fx.drain_to_area[drain_nr] >= fx.nr_drains)
+				fx.drain_to_area[drain_nr] = 0;
+			if (fx.drain_to_area[drain_nr] == drain_nr)
+				fx.drain_to_area[drain_nr]++;
+			var area = fx.areas[fx.drain_to_area[drain_nr]];
+			var x = RandomX(area.from, area.to);
 			var y = 20;
-			InsertMaterial(mat, x, y);
+			InsertMaterial(Material(mat), x, y, 0, 10);
 		}
-		basin_nr++;
+		drain_nr++;
 	}
 	return FX_OK;
 }
 
-global func FxLiquidControlStop(target, proplist effect, int reason, bool temporary)
+global func FxLiquidControlStop(target, effect fx, int reason, bool temporary)
 {
 	return FX_OK;
 }

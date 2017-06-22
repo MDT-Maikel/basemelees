@@ -1,0 +1,5 @@
+Name=Basis-Zufluss
+Description=Verbinde das Abflussrohr jeder Pumpe um Flüssigkeiten in der feindliche Basis zu transferieren.
+
+MsgConnectedPipe=Rohr angeschlossen.
+MsgPipeProhibited=Zuflussrohre können nicht an den Basis-Zufluss angeschlossen werden.

@@ -1,0 +1,5 @@
+Name=Base Drain
+Description=Attach the drain pipe of any pump to transfer liquids into the enemy base.
+
+MsgConnectedPipe=Connected pipe.
+MsgPipeProhibited=Source pipes cannot be connected to the base drain.
