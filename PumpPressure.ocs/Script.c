@@ -285,18 +285,24 @@ private func InitLiquidControl()
 		fx.rain_mat = "Oil";
 	// Amount of rain according to the scenario parameter.
 	fx.rain_amount = SCENPAR_LiquidAmount;
+	
+	
+	// Add effect to check flooding and take measures.
+	var fx_flooding = AddEffect("FloodingControl", nil, 100, 5);
 
-	// Add areas to liquid control effect.
+	// Add areas to liquid control and flooding control effect.
 	var nr_areas = 2 * BoundBy(GetStartupTeamCount(), 2, 4);
 	var exclude_width = 80;
 	var include_width = LandscapeWidth() / nr_areas - exclude_width;
 	fx.areas = [];
+	fx_flooding.areas = [];
 	for (var index = 0; index < (nr_areas / 2); index++)
 	{
 		var set_from = exclude_width / 2 + index * 2 * (include_width + exclude_width);
 		var set_to = set_from + 2 * include_width + exclude_width;
 		fx.areas[index] = {from = set_from, to = set_to};
-	}
+		fx_flooding.areas[index] = {from = set_from, to = set_to};
+	}	
 	return;
 }
 
@@ -364,5 +370,26 @@ global func FxLiquidControlTimer(object target, effect fx, int time)
 
 global func FxLiquidControlStop(target, effect fx, int reason, bool temporary)
 {
+	return FX_OK;
+}
+
+global func FxFloodingControlTimer(object target, effect fx, int time)
+{
+	for (var area in fx.areas)
+	{
+		// Check if area is flooded.
+		var flooded = true;
+		for (var x = area.from; x < area.to; x++)
+		{
+			if (!GBackSemiSolid(x, 17))
+			{
+				flooded = false;
+				break;
+			}
+		}
+		// Launch meteor as punishment, this also breaks any type of protection players build.
+		if (flooded && !Random(20))
+			LaunchMeteor(RandomX(area.from, area.to), 20 + Random(8), 50, RandomX(-2, 2), RandomX(30, 40));		
+	}
 	return FX_OK;
 }
