@@ -1,3 +1,7 @@
 Name=Crossbow
 Description=Shoots arrows at a fast rate and higher speed that the normal bow.
 MsgNeedsArrows=Crossbow has no arrows.
+
+ArrowPriority=Arrow priority
+ArrowPriorityDescription=The arrow type that is available and appears first in this list will be shot.
+ArrowMoveUp=Click to move %s up in the shooting priority.

@@ -11,6 +11,18 @@
 
 
 local crossbow_fx;
+local arrow_priority;
+
+public func Initialize()
+{
+	// Fill arrow priority list with loaded arrows.
+	arrow_priority = [];
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		if (def->~IsArrow())
+			PushBack(arrow_priority, def);		
+	return _inherited(...);
+}
 
 
 /*-- Controls --*/
@@ -88,7 +100,7 @@ local FxCrossbow = new Effect
 	Timer = func(int time)
 	{
 		Target->CheckForArrows(this.shooter);
-		var arrow = FindObject(Find_Container(Target), Find_Func("IsArrow"));
+		var arrow = FindObject(Find_Container(Target), Find_Func("IsArrow"), Sort_Func("SortArrowPriority"));
 		if (!arrow)
 			return FX_Execute_Kill;
 		Target->FireArrow(arrow, this.aim_angle, this.aim_prec);
@@ -114,6 +126,87 @@ public func RejectCollect(id def, object obj)
 	if (!obj->~IsArrow() || ContentsCount() >= 10)
 		return true;
 	return false;
+}
+
+
+/*-- Interaction --*/
+
+public func HasInteractionMenu() { return true; }
+
+public func GetInteractionMenus(object clonk)
+{
+	var menus = _inherited(clonk, ...) ?? [];		
+	var arrow_menu =
+	{
+		title = "$ArrowPriority$",
+		entries_callback = this.GetArrowSelectionMenuEntries,
+		callback = "OnArrowSelection",
+		callback_hover = "OnArrowSelectionHover",
+		callback_target = this,
+		BackgroundColor = RGB(0, 50, 50),
+		Priority = 25,
+		extra_data = "description"
+	};
+	PushBack(menus, arrow_menu);
+	return menus;
+}
+
+public func GetArrowSelectionMenuEntries(object clonk)
+{
+	var menu_entries = [];
+	// Add arrow types to the selection.
+	var index = 0;
+	for (var arrow in arrow_priority)
+	{
+		index++;
+		var act = "move_up";
+		PushBack(menu_entries, 
+			{
+				symbol = arrow, extra_data = act, 
+				custom =
+				{
+					Right = "2em", Bottom = "2em",
+					BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
+					Priority = index,
+					status = {Right = "1em", Top = "1em", Symbol = Icon_Number, GraphicsName = Format("%d", index)},
+					image = {Symbol = arrow}
+			}}
+		);
+	}
+	return menu_entries;
+}
+
+public func OnArrowSelectionHover(id symbol, string action, desc_menu_target, menu_id)
+{
+	var text = "";
+	if (action == "move_up") text = Format("$ArrowMoveUp$", symbol->GetName());
+	else if (action == "description") text = "$ArrowPriorityDescription$";
+	GuiUpdateText(text, menu_id, 1, desc_menu_target);
+}
+
+public func OnArrowSelection(symbol_or_object, string action, bool alt)
+{
+	if (action == "move_up")
+		MoveArrowUpPriority(symbol_or_object);
+	UpdateInteractionMenus(this.GetArrowSelectionMenuEntries);	
+}
+
+public func MoveArrowUpPriority(id arrow)
+{
+	var arrow_index = GetIndexOf(arrow_priority, arrow);
+	if (arrow_index <= 0)
+		return;
+	var swap = arrow_priority[arrow_index];
+	arrow_priority[arrow_index] = arrow_priority[arrow_index - 1];
+	arrow_priority[arrow_index - 1] = swap;
+	return;
+}
+
+
+// Todo: make this non-global.
+global func SortArrowPriority()
+{
+	return GetIndexOf(Contained().arrow_priority, this->GetID());
 }
 
 
