@@ -59,6 +59,8 @@ public func QueryRejectCannonDismount(object cannon)
 	return false;
 }
 
+public func GetCannon() { return lib_cannon.cannon; }
+
 
 /*-- Controls --*/
 
