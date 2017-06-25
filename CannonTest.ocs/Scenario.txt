@@ -1,13 +1,22 @@
 [Head]
-Title=Cannons
 Version=8
 NoInitialize=true
 
 [Definitions]
-Definition1=Objects.ocd
 Definition2=Decoration.ocd
 
+[Player1]
+
+[Player2]
+
+[Player3]
+
+[Player4]
+
 [Landscape]
+LeftOpen=2400
+RightOpen=2400
+AutoScanSideOpen=false
 MapWidth=100,0,64,10000
 MapHeight=50,0,40,10000
 NoScan=true
