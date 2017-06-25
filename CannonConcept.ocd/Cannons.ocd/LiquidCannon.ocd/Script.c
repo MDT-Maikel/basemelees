@@ -73,6 +73,9 @@ local FxSprayLiquid = new Effect
 		// Determine liquid type and amount available.
 		var mat = liquid[0];
 		var amount = liquid[1];
+		// Convert liquid type to material type if needed.
+		if (Material(mat) == -1)
+			mat = GetDefinition(mat)->~GetLiquidMaterial();
 		
 		// Cast liquid pixels in the aimed direction.
 		var x = Sin(this.aim_angle, 10) + RandomX(-1, 1);
@@ -164,6 +167,8 @@ local FxSprayEffects = new Effect
 				if (obj.CorrosionResist)
 					continue;
 				obj->DoEnergy(-this.cor * this.str, true, FX_Call_EngCorrosion, this.causing_plr);
+				if (!obj)
+					continue;
 				if (!Random(3))
 					obj->~PlaySoundScream();
 				else if (!Random(2))
