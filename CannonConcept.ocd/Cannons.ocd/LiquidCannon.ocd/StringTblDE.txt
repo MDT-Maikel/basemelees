@@ -1,3 +1,5 @@
 Name=Liquid Cannon
 Description=Connect to a pump to shoot liquids.
 MsgConnectedPipe=Connected pipe.
+NameType=%s Cannon
+DescriptionType=This cannon currently shoots %s.

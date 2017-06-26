@@ -236,6 +236,45 @@ public func OnPipeControl(symbol_or_object, string action, bool alt)
 }
 
 
+/*-- Name & Description --*/
+
+public func RemoveLiquid(liquid_name, int amount, object destination)
+{
+	var res = _inherited(liquid_name, amount, destination, ...);
+	UpdateName();
+	UpdateDescription();	
+	return res;
+}
+
+public func PutLiquid(liquid_name, int amount, object source)
+{
+	var res = _inherited(liquid_name, amount, source, ...);
+	UpdateName();
+	UpdateDescription();	
+	return res;
+}
+
+private func UpdateName()
+{
+	var name = "$Name$";
+	var liquid = GetLiquidContents()[0];
+	if (liquid)
+		name = Format("$NameType$", liquid->GetLiquidType());
+	this.Name = name;
+	return;
+}
+
+private func UpdateDescription()
+{
+	var desc = "$Description$";
+	var liquid = GetLiquidContents()[0];
+	if (liquid)
+		desc = Format("%s $DescriptionType$", desc, liquid->GetLiquidType());
+	this.Description = desc;
+	return;
+}
+
+
 /*-- Properties --*/
 
 local Name = "$Name$";
