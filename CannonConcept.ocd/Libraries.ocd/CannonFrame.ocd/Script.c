@@ -166,7 +166,8 @@ public func HasInteractionMenu() { return true; }
 
 public func GetInteractionMenus(object clonk)
 {
-	var menus = _inherited(clonk, ...) ?? [];		
+	var menus = _inherited(clonk, ...) ?? [];
+	// Add cannon mount menu.
 	var mount_menu =
 	{
 		title = "$MsgCannonMounting$",
@@ -178,6 +179,9 @@ public func GetInteractionMenus(object clonk)
 		Priority = 20
 	};
 	PushBack(menus, mount_menu);
+	// Add possible existing menus from mounted cannon.
+	if (lib_cannon.cannon && lib_cannon.cannon->~HasInteractionMenu())
+		menus = Concatenate(menus, lib_cannon.cannon->~GetInteractionMenus(clonk));
 	return menus;
 }
 
@@ -245,7 +249,7 @@ public func OnCannonMountingClick(object cannon, string action, bool alt)
 	{
 		cannon->MountCannon(this);
 	}
-	return UpdateInteractionMenus(this.GetCannonMountingMenuEntries);
+	return UpdateInteractionMenus(/*this.GetCannonMountingMenuEntries*/);
 }
 
 

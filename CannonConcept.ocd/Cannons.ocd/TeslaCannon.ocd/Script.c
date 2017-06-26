@@ -63,7 +63,6 @@ public func CannonUseCancel(object frame)
 	return true;
 }
 
-// Takes bullets from either the clonk or the gun itself.
 private func CheckCharge(object clonk)
 {
 	if (charge_fx->GetCharge() > 0)
@@ -214,6 +213,7 @@ public func GetInteractionMenus(object clonk)
 	{
 		title = "$MenuCannonCharge$",
 		entries_callback = this.GetChargeMenuEntries,
+		entries_callback_target = this,
 		//callback = "OnDoorControl",
 		//callback_hover = "OnDoorControlHover",
 		callback_target = this,
@@ -227,11 +227,11 @@ public func GetInteractionMenus(object clonk)
 public func GetChargeMenuEntries(object clonk)
 {
 	var menu_entries = [];
-	PushBack(menu_entries, GetDoorMenuEntry(Library_PowerConsumer, Format("$MsgCannonCharge$", charge_fx->GetChargePercentage()), 1, "closeright"));		
+	PushBack(menu_entries, GetChargeMenuEntry(Library_PowerConsumer, Format("$MsgCannonCharge$", charge_fx->GetChargePercentage()), 1, "closeright"));		
 	return menu_entries;
 }
 
-public func GetDoorMenuEntry(symbol, string text, int priority, extra_data)
+public func GetChargeMenuEntry(symbol, string text, int priority, extra_data)
 {
 	var custom_entry = 
 	{
@@ -247,7 +247,8 @@ public func GetDoorMenuEntry(symbol, string text, int priority, extra_data)
 			Priority = priority,
 			text = {Prototype = custom_entry.text, Text = text},
 			image = {Prototype = custom_entry.image, Symbol = symbol}
-		}};
+		}
+	};
 }
 
 

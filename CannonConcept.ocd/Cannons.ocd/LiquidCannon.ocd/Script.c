@@ -223,6 +223,19 @@ public func OnPipeConnect(object pipe, string specific_pipe_state)
 }
 
 
+/*-- Interaction --*/
+
+public func OnPipeControl(symbol_or_object, string action, bool alt)
+{
+	_inherited(symbol_or_object, action, alt, ...);
+	// Forward updates to cannon frame if mounted.
+	var frame = GetCannonFrame();
+	if (frame)
+		frame->UpdateInteractionMenus(this.GetPipeControlMenuEntries);
+	return;
+}
+
+
 /*-- Properties --*/
 
 local Name = "$Name$";

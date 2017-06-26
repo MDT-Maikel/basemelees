@@ -135,11 +135,12 @@ public func HasInteractionMenu() { return true; }
 
 public func GetInteractionMenus(object clonk)
 {
-	var menus = _inherited(clonk, ...) ?? [];		
+	var menus = _inherited(clonk, ...) ?? [];	
 	var arrow_menu =
 	{
 		title = "$ArrowPriority$",
 		entries_callback = this.GetArrowSelectionMenuEntries,
+		entries_callback_target = this,
 		callback = "OnArrowSelection",
 		callback_hover = "OnArrowSelectionHover",
 		callback_target = this,
@@ -188,7 +189,11 @@ public func OnArrowSelection(symbol_or_object, string action, bool alt)
 {
 	if (action == "move_up")
 		MoveArrowUpPriority(symbol_or_object);
-	UpdateInteractionMenus(this.GetArrowSelectionMenuEntries);	
+	UpdateInteractionMenus(this.GetArrowSelectionMenuEntries);
+	var frame = GetCannonFrame();
+	if (frame)
+		frame->UpdateInteractionMenus(this.GetArrowSelectionMenuEntries);
+	return;		
 }
 
 public func MoveArrowUpPriority(id arrow)
