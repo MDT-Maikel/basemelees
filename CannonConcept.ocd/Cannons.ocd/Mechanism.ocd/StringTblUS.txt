@@ -1,0 +1,2 @@
+Name=Cannon Mechanism
+Description=Automates certain cannon actions.

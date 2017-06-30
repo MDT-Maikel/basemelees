@@ -123,6 +123,53 @@ public func RejectCollect(id def, object obj)
 	return false;
 }
 
+/*-- Automation --*/
+
+public func HasAutomationModes() { return true; }
+
+public func GetAutomationModes()
+{
+	return [
+		{mode = "mode::attack_enemy", symbol = Icon_Skull}
+	];
+}
+
+public func OnAutomationModeChange(string old_mode, string new_mode)
+{
+	if (new_mode == "mode::attack_enemy")
+	{
+		CreateEffect(FxAutomatedControl, 100, this.FireRate);
+	}
+	return;
+}
+
+local FxAutomatedControl = new Effect
+{
+	Construction = func()
+	{
+		this.Interval = Target.FireRate;
+		// Perform the first shot.
+		this->Timer(0);
+	},
+	Timer = func(int time)
+	{
+		if (!Target->GetCannonFrame())
+			return FX_OK;		
+		// Improve enemy finding.
+		var enemy = Target->FindObject(Find_ID(DefenseBoomAttack), Target->Find_Distance(400), Target->Sort_Distance());
+		if (!enemy)
+			return FX_OK;
+		var ammo = FindObject(Find_Container(Target), Find_Func("IsBullet"));
+		if (!ammo)
+			return FX_OK;
+		var angle = Angle(Target->GetX(), Target->GetY(), enemy->GetX(), enemy->GetY());
+		Target->FireBullet(ammo, angle, 1);
+		return FX_OK;
+	}
+};
+
+public func IsArmoryProduct() { return true; }
+
 
 /*-- Properties --*/
 

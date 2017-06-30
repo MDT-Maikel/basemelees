@@ -12,35 +12,37 @@
 
 
 local liquid_fx;
+local last_aim_angle;
 
 
 /*-- Controls --*/
 
 public func CannonUseStart(object frame, object clonk, int x, int y)
 {
-	var angle = CoordinatesToAngle(frame, x, y) / frame.AimingAnglePrecision;
-	liquid_fx = CreateEffect(FxSprayLiquid, 100, nil, angle);
+	last_aim_angle = CoordinatesToAngle(frame, x, y) / frame.AimingAnglePrecision;
+	if (!liquid_fx)
+		liquid_fx = CreateEffect(FxSprayLiquid, 100, nil, last_aim_angle);
 	return true;
 }
 
 public func CannonUseHolding(object frame, object clonk, int x, int y)
 {
-	var angle = CoordinatesToAngle(frame, x, y) / frame.AimingAnglePrecision;
+	last_aim_angle = CoordinatesToAngle(frame, x, y) / frame.AimingAnglePrecision;
 	if (liquid_fx)
-		liquid_fx->UpdateAimingAngle(angle);
+		liquid_fx->UpdateAimingAngle(last_aim_angle);
 	return true;
 }
 
 public func CannonUseStop(object frame, object clonk, int x, int y)
 {
-	if (liquid_fx)
+	if (liquid_fx && !liquid_fx.is_automated)
 		liquid_fx->Remove();
 	return true;
 }
 
 public func CannonUseCancel(object frame)
 {
-	if (liquid_fx)
+	if (liquid_fx && !liquid_fx.is_automated)
 		liquid_fx->Remove();
 	return true;
 }
@@ -65,6 +67,10 @@ local FxSprayLiquid = new Effect
 	},
 	Timer = func(int time)
 	{
+		// Do not spray liquid if not mounted.
+		if (!Target->GetCannonFrame())
+			return FX_OK;	
+		
 		// Get the current liquid in the cannon.
 		var liquid = Target->RemoveLiquid(nil, Target.LiquidSprayStrength);
 		if (liquid[0] == nil)
@@ -273,6 +279,36 @@ private func UpdateDescription()
 	this.Description = desc;
 	return;
 }
+
+
+/*-- Automation --*/
+
+public func HasAutomationModes() { return true; }
+
+public func GetAutomationModes()
+{
+	return [
+		{mode = "mode::continuous", symbol = Icon_Play}
+	];
+}
+
+public func OnAutomationModeChange(string old_mode, string new_mode)
+{
+	if (new_mode == "mode::continuous")
+	{
+		if (!liquid_fx)
+			liquid_fx = CreateEffect(FxSprayLiquid, 100, nil, last_aim_angle);
+		liquid_fx.is_automated = true;
+	}
+	else if (new_mode == "mode::off")
+	{
+		if (liquid_fx)
+			liquid_fx->Remove();
+	}
+	return;
+}
+
+public func IsArmoryProduct() { return true; }
 
 
 /*-- Properties --*/

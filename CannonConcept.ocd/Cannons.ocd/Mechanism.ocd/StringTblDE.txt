@@ -1,0 +1,2 @@
+Name=KanonenMechanismus
+Description=Automatisiert bestimmte Aktionen der Kanone.

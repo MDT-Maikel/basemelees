@@ -1,1 +1,13 @@
 MsgMountCannon=Mount %s.
+AutomationControl=Cannon Automation
+MsgAutomated=Cannon is automated
+MsgNotAutomated=Cannon is not automated
+MsgAddAutomationMechanism=Add automation mechanism.
+MsgRemoveAutomationMechanism=Remove automation mechanism.
+MsgSelectMode=Select automation mode:
+
+DescAddAutomation=Add a mechanism to this cannon to allow for automated shooting.
+DescRemoveAutomation=Remove automated shooting from this cannon.
+DescNotAutomated=Currently this cannon is not automated, you need add an automation mechanism to this cannon.
+DescAutomated=This cannon is automated, select one of the shooting modes available for this cannon.
+DescSelectMode=Select the automation mode for this cannon.
