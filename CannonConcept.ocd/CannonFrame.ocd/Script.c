@@ -38,6 +38,9 @@ private func DetachCannonGraphics(object cannon)
 	return;
 }
 
+public func IsArmoryProduct() { return true; }
+
+
 /*-- Properties --*/
 
 local Name = "$Name$";

@@ -214,6 +214,8 @@ global func SortArrowPriority()
 	return GetIndexOf(Contained().arrow_priority, this->GetID());
 }
 
+public func IsArmoryProduct() { return true; }
+
 
 /*-- Properties --*/
 

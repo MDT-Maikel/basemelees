@@ -143,6 +143,8 @@ local FxCoolDown = new Effect
 	}
 };
 
+public func IsArmoryProduct() { return true; }
+
 
 /*-- Properties --*/
 

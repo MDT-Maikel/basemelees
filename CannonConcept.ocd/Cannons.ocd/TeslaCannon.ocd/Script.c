@@ -262,6 +262,8 @@ public func RejectCollect(id def, object obj)
 	return true;
 }
 
+public func IsArmoryProduct() { return true; }
+
 
 /*-- Properties --*/
 
