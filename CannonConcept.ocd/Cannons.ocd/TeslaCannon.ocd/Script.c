@@ -12,14 +12,12 @@
 
 
 local tesla_fx;
-local charge_fx;
+//local charge_fx;
 
 public func Initialize()
 {
-	// Initialize power system before making a request.
+	// Initialize power system before making any requests.
 	_inherited(...);
-	// Add an effect to increase charge if power is available.
-	charge_fx = CreateEffect(FxCharging, 100, 3);
 	return;
 }
 
@@ -28,16 +26,12 @@ public func Initialize()
 
 public func CannonUseStart(object frame, object clonk, int x, int y)
 {
-	// Check for charge.
-	var is_charged = CheckCharge(clonk);
-	if (!is_charged)
-	{
-		clonk->CancelUse();
+	// Don't do anything it already shooting.
+	if (tesla_fx)
 		return true;
-	}
 	// Create shooting effect.
 	var angle = CoordinatesToAngle(frame, x, y);
-	tesla_fx = CreateEffect(FxTeslaCannon, 100, this.FireRate, clonk, angle, frame.AimingAnglePrecision, charge_fx);
+	PerformTeslaShot(angle);
 	return true;
 }
 
@@ -52,7 +46,7 @@ public func CannonUseHolding(object frame, object clonk, int x, int y)
 public func CannonUseStop(object frame, object clonk, int x, int y)
 {
 	if (tesla_fx)
-		tesla_fx->Remove();
+		tesla_fx->DoShot();
 	return true;
 }
 
@@ -63,192 +57,148 @@ public func CannonUseCancel(object frame)
 	return true;
 }
 
-private func CheckCharge(object clonk)
-{
-	if (charge_fx->GetCharge() > 0)
-		return true;
-	PlayerMessage(clonk->GetOwner(), "$MsgNeedsCharge$");
-	return false;
-}
-
 
 /*-- Gun Effect --*/
 
-local FxTeslaCannon = new Effect 
+public func PerformTeslaShot(int angle)
 {
-	Construction = func(object clonk, int angle, int angle_prec, effect fx_charge)
+	tesla_fx = CreateEffect(FxPerformTeslaShot, 100, 1, angle, GetCannonFrame().AimingAnglePrecision);
+	// Register power request.
+	RegisterPowerRequest(this.TeslaShotPowerNeed);
+	return;
+}
+
+local FxPerformTeslaShot = new Effect
+{
+	Construction = func(int angle, int angle_prec)
 	{
-		this.Interval = Target.FireRate;
-		this.shooter = clonk;
+		this.Interval = 1;
 		this.aim_angle = angle;
 		this.aim_prec = angle_prec;
-		this.fx_charge = fx_charge;
-		// Perform the first beam.
-		this->Timer(0);
+		this.has_power = false;
+		this.charge = 0;
+		// Particles.
+		this.part_charge = {
+			Prototype = Particles_ElectroSpark1(),
+			R = 40,
+			G = 40,
+			B = 255
+		};
+		this.part_sphere = {
+			Prototype = Particles_Flash(10),
+			R = 40,
+			G = 40,
+			B = 255		
+		};
+		// Charging sound.
+		Target->Sound("Objects::Electrical", nil, 10, nil, +1);
 	},
+	
+	Timer = func(int time)
+	{
+		// Do charging effects.
+		if (this.has_power)
+			this.charge++;
+		if (this.charge > 0)
+			ChargeEffect();
+		// Do shot if max charge is reached.
+		if (this.charge >= Target.TeslaShotMaxCharge)
+		{
+			DoShot();
+			return FX_Execute_Kill;	
+		}
+		return FX_OK;
+	},
+	
+	ChargeEffect = func()
+	{
+		// Color charging according to whether shot is ready.
+		this.part_sphere.Alpha = 80 + 175 * this.charge / Target.TeslaShotMaxCharge;
+		if (this.charge < Target.TeslaShotMinCharge)
+		{
+			this.part_sphere.R = 255;
+			this.part_sphere.G = 40;
+			this.part_sphere.B = 40;
+		}
+		else
+		{
+			this.part_sphere.R = 40;
+			this.part_sphere.G = 40;
+			this.part_sphere.B = 255;
+		}
+		var barrel_x = Sin(this.aim_angle, 10, this.aim_prec);
+		var barrel_y = -Cos(this.aim_angle, 10, this.aim_prec);
+		Target->CreateParticle("ElectroSpark", PV_Random(barrel_x - 4, barrel_x + 4), PV_Random(barrel_y - 4, barrel_y + 4), PV_Random(-4, 4), PV_Random(-4, 4), PV_Random(4, 6), this.part_charge, this.charge / 4);
+		Target->CreateParticle("SphereSpark", barrel_x, barrel_y, PV_Random(-1, 1), PV_Random(-1, 1), PV_Random(3, 4), this.part_sphere, this.charge / 4);
+		// Increase charging sound volume.
+		Target->Sound("Objects::Electrical", nil, 10 + 90 * this.charge / Target.TeslaShotMaxCharge, nil, +1);
+	},
+	
+	Destruction = func()
+	{
+		// Unregister power request.
+		Target->UnregisterPowerRequest();
+		// End charging sound.
+		Target->Sound("Objects::Electrical", nil, nil, nil, -1);
+	},
+
 	UpdateAimingAngle = func(int new_angle)
 	{
 		this.aim_angle = new_angle;	
 	},
-	Timer = func(int time)
+	
+	DoShot = func()
 	{
-		Target->CheckCharge(this.shooter);
-		this.fx_charge->DoCharge(-1);
+		// Don't shoot if not charged enough.
+		if (this.charge < Target.TeslaShotMinCharge)
+			return Remove();		
+		var strength = 40 + (80 * this.charge - Target.TeslaShotMinCharge) / (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge);
 		var barrel_x = Sin(this.aim_angle, 10, this.aim_prec);
 		var barrel_y = -Cos(this.aim_angle, 10, this.aim_prec);
 		var xdir = Sin(this.aim_angle, 20, this.aim_prec);
 		var ydir = -Cos(this.aim_angle, 20, this.aim_prec);
-		LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, 40, xdir, ydir, 2, 2, true);
-		return FX_OK;
+		Target->LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, strength, xdir, ydir, 2, 2, true);
+		Remove();
+	},
+	
+	GetCharge = func()
+	{
+		return this.charge;
+	},
+	
+	OnEnoughPower = func()
+	{
+		this.has_power = true;
+	},
+
+	OnNotEnoughPower = func()
+	{
+		this.has_power = false;
 	}
 };
+
+public func GetTeslaShotControl()
+{
+	return tesla_fx;
+}
 
 
 /*-- Power --*/
 
-public func GetConsumerPriority() { return 25; }
+public func GetConsumerPriority() { return 75; }
 
 public func OnEnoughPower()
 {
-	if (!charge_fx)
-		return;
-	// Make charging effect active and start sound.
-	charge_fx.active = true;
+	if (tesla_fx)
+		tesla_fx->OnEnoughPower();
 	return _inherited(...);
 }
 
 public func OnNotEnoughPower()
 {
-	if (!charge_fx)
-		return;
-	// Make charging inactive and stop sound.
-	charge_fx.active = false;
+	if (tesla_fx)
+		tesla_fx->OnNotEnoughPower();
 	return _inherited(...);
-}
-
-local FxCharging = new Effect
-{
-	Construction = func()
-	{
-		this.Interval = 3;
-		// Also ensure initial charge and power need are known.
-		this.active = false;
-		this.charge = 0;
-		this.power_need = 40;
-		this.max_charge = 50;
-		this.sound = false;
-		this.request = false;
-	},
-	Timer = func()
-	{
-		// Increase charge if there is power and control sound.
-		if (this.active && Target->IsMounted())
-		{
-			this.charge++;
-			if (!this.sound)
-			{
-				this.sound = true;
-				Target->Sound("Objects::Electrical", nil, 50, nil, 1);
-			}
-			if (this.charge >= this.max_charge)
-			{
-				this.request = false;
-				Target->UnregisterPowerRequest();
-				this.active = false;
-			}
-		}
-		else
-		{
-			if (this.sound)
-			{
-				this.sound = false;
-				Target->Sound("Objects::Electrical", nil, 50, nil, -1);
-			}
-			if (!this.request && this.charge < this.max_charge)
-			{
-				this.request = true;
-				Target->RegisterPowerRequest(this.power_need);
-			}
-		}
-	},
-	Destruction = func()
-	{
-		// Unmake this object a power consumer.
-		Target->UnregisterPowerRequest();
-		// Turn off sound if it was still on.
-		if (this.sound)
-			Target->Sound("Objects::Electrical", nil, 50, nil, -1);
-	},
-	
-	SetCharge = func(int to)
-	{
-		this.charge = to;
-		return;
-	},
-	GetCharge = func()
-	{
-		return this.charge;
-	},
-	DoCharge = func(int add)
-	{
-		this.charge += add;
-		return;
-	},
-	GetChargePercentage = func()
-	{
-		return 100 * this.charge / this.max_charge;
-	}
-};
-
-
-/*-- Interaction Menu --*/
-
-public func HasInteractionMenu() { return true; }
-
-public func GetInteractionMenus(object clonk)
-{
-	var menus = _inherited(clonk, ...) ?? [];
-	
-	var charge_menu =
-	{
-		title = "$MenuCannonCharge$",
-		entries_callback = this.GetChargeMenuEntries,
-		entries_callback_target = this,
-		//callback = "OnDoorControl",
-		//callback_hover = "OnDoorControlHover",
-		callback_target = this,
-		BackgroundColor = RGB(0, 50, 50),
-		Priority = 30
-	};
-	PushBack(menus, charge_menu);
-	return menus;
-}
-
-public func GetChargeMenuEntries(object clonk)
-{
-	var menu_entries = [];
-	PushBack(menu_entries, GetChargeMenuEntry(Library_PowerConsumer, Format("$MsgCannonCharge$", charge_fx->GetChargePercentage()), 1, "closeright"));		
-	return menu_entries;
-}
-
-public func GetChargeMenuEntry(symbol, string text, int priority, extra_data)
-{
-	var custom_entry = 
-	{
-		Right = "100%", Bottom = "2em",
-		BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
-		image = {Right = "2em"},
-		text = {Left = "2em"}
-	};
-	return {symbol = symbol, extra_data = extra_data, 
-		custom =
-		{
-			Prototype = custom_entry,
-			Priority = priority,
-			text = {Prototype = custom_entry.text, Text = text},
-			image = {Prototype = custom_entry.image, Symbol = symbol}
-		}
-	};
 }
 
 
@@ -262,6 +212,102 @@ public func RejectCollect(id def, object obj)
 	return true;
 }
 
+/*-- Automation --*/
+
+public func HasAutomationModes() { return true; }
+
+public func GetAutomationModes()
+{
+	return [
+		{mode = "mode::attack_meteor", symbol = Icon_Skull}
+	];
+}
+
+public func OnAutomationModeChange(string old_mode, string new_mode)
+{
+	if (new_mode == "mode::attack_meteor")
+	{
+		CreateEffect(FxAutomatedControl, 100, 1);
+	}
+	else if (new_mode == "mode::off")
+	{
+		var control_fx = GetEffect("FxAutomatedControl", this);
+		if (control_fx)
+			control_fx->Remove();
+	}
+	return;
+}
+
+local FxAutomatedControl = new Effect
+{
+	Construction = func()
+	{
+		this.Interval = 1;
+		this.target = nil;
+		this.tesla_shot = nil;
+	},
+	Timer = func(int time)
+	{
+		if (!Target->GetCannonFrame())
+			return FX_OK;
+			
+		// Find a target.
+		this.target = this.target ?? Target->FindObject(Find_ID(Meteor), Target->Find_Distance(800), Target->Find_PathFree(), Target->Sort_Distance());
+		if (!this.target)
+		{
+			// Remove current shot if is running.
+			if (this.tesla_shot)
+				this.tesla_shot->Remove();
+			return FX_OK;
+		}
+		
+		// Determine where to shoot.
+		var x = Target->GetX();
+		var y = Target->GetY();
+		var tx = this.target->GetX();
+		var ty = this.target->GetY();
+		var shot_speed = 200;
+		var distance = Distance(x, y, tx, ty);
+		var dt = distance * 10 / shot_speed;
+		tx += this.target->GetXDir(dt);
+		ty += this.target->GetYDir(dt);
+		
+		// Check if path of shot is free.
+		if (!PathFree(x, y, tx, ty))
+		{
+			// Try to find target in the next iteration.
+			this.target = nil;
+			return FX_OK;
+		}
+		
+		// Determine angle to target.
+		var angle_prec = Target->GetCannonFrame().AimingAnglePrecision;
+		var angle = Angle(x, y, tx, ty, angle_prec);		
+
+		// Init the shot if not already existing.
+		this.tesla_shot = this.tesla_shot ?? Target->GetTeslaShotControl();
+		this.tesla_shot = this.tesla_shot ?? Target->PerformTeslaShot(angle);	
+		if (!this.tesla_shot)
+			return FX_OK;
+		
+		// Update angle to target.
+		this.tesla_shot->UpdateAimingAngle(angle);
+		
+		// Do shot if charged and target in reach.
+		if (this.tesla_shot->GetCharge() >= Target.TeslaShotMinCharge)
+		{
+			this.tesla_shot->DoShot();
+			return FX_OK;
+		}
+		return FX_OK;
+	},
+	Destruction = func()
+	{
+		if (this.tesla_shot)
+			this.tesla_shot->Remove();
+	}
+};
+
 public func IsArmoryProduct() { return true; }
 
 
@@ -272,6 +318,8 @@ local Description = "$Description$";
 local BorderBound = C4D_Border_Sides;
 local ContactCalls = true;
 local Components = {Metal = 3, Coal = 2, Wood = 2, Diamond = 1};
-// Number of frames for one beam.
-local FireRate = 2;
+// Amount of power needed while shooting and minimum and maximum shot charging times.
+local TeslaShotPowerNeed = 300;
+local TeslaShotMinCharge = 18;
+local TeslaShotMaxCharge = 54;
 
