@@ -10,15 +10,52 @@ static script_plr;
 
 public func Initialize()
 {
-	// No power need for pumping and tesla cannon.
-	CreateObject(Rule_NoPowerNeed);
+	// Relaunch testers.
+	var flag = CreateObjectAbove(Flagpole, 580, 448);
+	flag->SetNeutral(true);
+	var relaunch_rule = GetRelaunchRule();
+	relaunch_rule->SetInventoryTransfer(true);
+	relaunch_rule->SetFreeCrew(true);
+	relaunch_rule->SetRespawnDelay(1);
+	relaunch_rule->SetBaseRespawn(true);
+	relaunch_rule->SetDefaultRelaunchCount(nil);
+	relaunch_rule->SetAllowPlayerRestart(true);
+	relaunch_rule->SetLastClonkRespawn(true);	
+	relaunch_rule->SetInitialRelaunch(false);
 
 	// Create different cannons and test grounds.
+	InitPower();
 	InitLiquidCannon();
 	InitGatlingGun();
 	InitCrossbow();
 	InitArtilleryCannon();
 	InitTeslaCannon();
+	InitArmory();
+	return;
+}
+
+public func InitPower()
+{
+	var steam_engine = CreateObjectAbove(SteamEngine, 254, 520);
+	steam_engine->CreateContents(Coal, 100);
+	var steam_engine = CreateObjectAbove(SteamEngine, 324, 520);
+	steam_engine->CreateContents(Coal, 100);
+	
+	CreateObjectAbove(Flagpole, 370, 304);
+	CreateObjectAbove(Flagpole, 620, 352);
+	
+	CreateObjectAbove(WindGenerator, 80, 448);
+	CreateObjectAbove(WindGenerator, 120, 448);
+	
+	CreateObjectAbove(Compensator, 232, 560);
+	CreateObjectAbove(Compensator, 262, 560);
+	CreateObjectAbove(Compensator, 292, 560);
+	CreateObjectAbove(Compensator, 322, 560);
+	CreateObjectAbove(Compensator, 352, 560);
+	CreateObjectAbove(Compensator, 382, 560);	
+	
+	// No power need for pumping and tesla cannon.
+	//CreateObject(Rule_NoPowerNeed);
 	return;
 }
 
@@ -31,7 +68,7 @@ public func InitLiquidCannon()
 	var pump4 = CreateObjectAbove(Pump, 660, 448);
 	var pump5 = CreateObjectAbove(Pump, 652, 352);
 	pump1->SetMaterialSelection([Water]);
-	pump2->SetMaterialSelection([Lava]);
+	pump2->SetMaterialSelection([Lava, DuroLava]);
 	pump3->SetMaterialSelection([Acid]);
 	pump4->SetMaterialSelection([Water]);
 	pump5->SetMaterialSelection([Concrete]);
@@ -134,9 +171,30 @@ public func InitArtilleryCannon()
 
 public func InitTeslaCannon()
 {
+	// Create tesla cannon.
 	var frame = CreateObjectAbove(CannonFrame, 384, 222);
 	var tesla_cannon = CreateObjectAbove(TeslaCannon, 384, 222);
 	tesla_cannon->MountCannon(frame);
+	
+	// Automate tesla cannon.
+	var automation = CreateObject(CannonMechanism);
+	tesla_cannon->AddAutomationMechanism(automation);
+	tesla_cannon->SetAutomationMode("mode::attack_meteor");
+	
+	// Create meteors as targets.
+	CreateEffect(FxCreateMeteors, 100, 54);
+	return;
+}
+
+public func InitArmory()
+{
+	var armory = CreateObjectAbove(Armory, 400, 448);
+	armory->CreateContents(Wood, 20);
+	armory->CreateContents(Metal, 20);
+	armory->CreateContents(Coal, 20);
+	armory->CreateContents(Firestone, 20);
+	armory->CreateContents(Pipe, 5);
+	armory->CreateContents(Diamond, 5);
 	return;
 }
 
@@ -148,9 +206,24 @@ public func InitializePlayer(int plr)
 	// No FoW to see everything happening.
 	SetFoW(false, plr);
 	
+	// Give the player all construction plans.
+	var index = 0, def;
+	while (def = GetDefinition(index++))
+		SetPlrKnowledge(plr, def);
+	
 	// Move clonk to middle.
 	var clonk = GetCrew(plr);
 	clonk->SetPosition(580, 440);
+	
+		
+	// Claim ownership of structures, last player who joins owns all the flags.
+	for (var structure in FindObjects(Find_Or(Find_Category(C4D_Structure), Find_Func("IsFlagpole"))))
+		structure->SetOwner(plr);
+		
+	// Some useful tools.
+	clonk->CreateContents(WindBag);
+	clonk->CreateContents(Hammer);
+	clonk->CreateContents(CannonMechanism, 2);
 	return;
 }
 
@@ -165,8 +238,16 @@ static const FxCreateRockets = new Effect
 			{X = 724, Y = RandomX(10, 30)},
 			{X = RandomX(520, 560), Y = RandomX(100, 140)},
 			{X = RandomX(420, 460), Y = RandomX(320, 360)},
-			{X = RandomX(160, 200), Y = RandomX(320, 360)},
+			{X = RandomX(80, 120), Y = RandomX(320, 360)},
 			{X = 0, Y = RandomX(180, 220)}
 		]);	
+	}
+};
+
+static const FxCreateMeteors = new Effect
+{
+	Timer = func(int time)
+	{
+		LaunchMeteor(RandomX(200, 300), 12, RandomX(40, 60), RandomX(-10, 10), RandomX(40, 80));
 	}
 };
