@@ -1,5 +1,9 @@
 Name=Tesla-Kanone
-Description=Schießt hohen Menge elektrischer Ladung in einem Strahl.
-MsgNeedsCharge=Die Tesla-Kanone ist nicht geladen.
-MenuCannonCharge=Cannon Charge
-MsgCannonCharge=Charge: %d%
+Description=Schießt hohen Menge elektrischer Ladung in einem Strahl. Braucht einige Zeit zum aufladen. Sei vorsichtig und stelle dich nicht im Strahlbereich!
+
+TeslaShotWidth=Beam width
+TeslaAdjustShotWidth=Adjust beam width
+TeslaCurrentShotWidth=Current width: %d
+DescTeslaShotWidth=Adjust the width of the tesla beam that is emitted. A narrow beam is precise and a wider beam covers a larger area.
+DescDecreaseWidth=Decrease the tesla beam width.
+DescIncreaseWidth=Increase the tesla beam width.

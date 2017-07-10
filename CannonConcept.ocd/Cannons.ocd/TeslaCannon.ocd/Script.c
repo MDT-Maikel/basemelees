@@ -12,12 +12,14 @@
 
 
 local tesla_fx;
-//local charge_fx;
+local tesla_shot_width;
 
 public func Initialize()
 {
 	// Initialize power system before making any requests.
 	_inherited(...);
+	// Init show width.
+	tesla_shot_width = this.TeslaShotMinWidth;
 	return;
 }
 
@@ -157,7 +159,8 @@ local FxPerformTeslaShot = new Effect
 		var barrel_y = -Cos(this.aim_angle, 10, this.aim_prec);
 		var xdir = Sin(this.aim_angle, 20, this.aim_prec);
 		var ydir = -Cos(this.aim_angle, 20, this.aim_prec);
-		Target->LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, strength, xdir, ydir, 2, 2, true);
+		var dev = 2 * Target->GetTeslaShotWidth();
+		Target->LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, strength, xdir, ydir, dev, dev, true);
 		Remove();
 	},
 	
@@ -182,6 +185,11 @@ public func GetTeslaShotControl()
 	return tesla_fx;
 }
 
+public func GetTeslaShotWidth()
+{
+	return tesla_shot_width;
+}
+
 
 /*-- Power --*/
 
@@ -199,6 +207,94 @@ public func OnNotEnoughPower()
 	if (tesla_fx)
 		tesla_fx->OnNotEnoughPower();
 	return _inherited(...);
+}
+
+
+/*-- Interaction --*/
+
+public func HasInteractionMenu() { return true; }
+
+public func GetInteractionMenus(object clonk)
+{
+	var menus = _inherited(clonk, ...) ?? [];	
+	var arrow_menu =
+	{
+		title = "$TeslaShotWidth$",
+		entries_callback = this.GetTeslaShotMenuEntries,
+		entries_callback_target = this,
+		callback = "OnTeslaSelection",
+		callback_hover = "OnTeslaSelectionHover",
+		callback_target = this,
+		BackgroundColor = RGB(0, 50, 50),
+		Priority = 25,
+		extra_data = "description"
+	};
+	PushBack(menus, arrow_menu);
+	return menus;
+}
+
+public func GetTeslaShotMenuEntries(object clonk)
+{
+	var menu_entries = [];
+	PushBack(menu_entries, {symbol = this, extra_data = "decrease",
+		custom = 
+		{
+			Right = "2em", Bottom = "2em",
+			BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
+			Symbol = Icon_Number,
+			GraphicsName = "Minus"
+		}
+	});	
+	PushBack(menu_entries, {symbol = this, extra_data = "description",
+		custom =
+		{
+			Right = "100%-4em", Bottom = "2em",
+			BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
+			text = 
+			{
+				Bottom = "1em",
+				Text = "$TeslaAdjustShotWidth$"
+			},
+			width = 
+			{
+				Top = "1em",
+				Text = Format("$TeslaCurrentShotWidth$", GetTeslaShotWidth())			
+			}
+		}
+	});
+	PushBack(menu_entries, {symbol = this, extra_data = "increase",
+		custom = 
+		{
+			Left = "100%-2em", Bottom = "2em",
+			BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
+			Symbol = Icon_Number,
+			GraphicsName = "Plus"
+		}
+	});
+
+	return menu_entries;
+}
+
+public func OnTeslaSelectionHover(id symbol, string action, desc_menu_target, menu_id)
+{
+	var text = "";
+	if (action == "decrease") text = "$DescDecreaseWidth$";
+	else if (action == "increase") text = "$DescIncreaseWidth$";
+	else if (action == "description") text = "$DescTeslaShotWidth$";
+	GuiUpdateText(text, menu_id, 1, desc_menu_target);
+}
+
+public func OnTeslaSelection(symbol_or_object, string action, bool alt)
+{
+	if (action == "increase")
+		tesla_shot_width = Min(tesla_shot_width + 1, this.TeslaShotMaxWidth);
+	else if (action == "decrease")
+		tesla_shot_width = Max(tesla_shot_width - 1, this.TeslaShotMinWidth);
+	UpdateInteractionMenus(this.GetTeslaShotMenuEntries);
+	var frame = GetCannonFrame();
+	if (frame)
+		frame->UpdateInteractionMenus(this.GetTeslaShotMenuEntries);
+	return;		
 }
 
 
@@ -322,4 +418,7 @@ local Components = {Metal = 3, Coal = 2, Wood = 2, Diamond = 1};
 local TeslaShotPowerNeed = 300;
 local TeslaShotMinCharge = 18;
 local TeslaShotMaxCharge = 54;
+// Minimum and maximum width of the lightning strike.
+local TeslaShotMinWidth = 2;
+local TeslaShotMaxWidth = 8;
 

@@ -1,5 +1,9 @@
 Name=Tesla cannon
-Description=Shoots a large amount of electricity in a beam.
-MsgNeedsCharge=Tesla cannon is not charged.
-MenuCannonCharge=Cannon Charge
-MsgCannonCharge=Charge: %d%
+Description=Shoots a large amount of electricity in a beam. Needs to charge for a while before shooting. Be careful to not stand in the beam!
+
+TeslaShotWidth=Beam width
+TeslaAdjustShotWidth=Adjust beam width
+TeslaCurrentShotWidth=Current width: %d
+DescTeslaShotWidth=Adjust the width of the tesla beam that is emitted. A narrow beam is precise and a wider beam covers a larger area.
+DescDecreaseWidth=Decrease the tesla beam width.
+DescIncreaseWidth=Increase the tesla beam width.
