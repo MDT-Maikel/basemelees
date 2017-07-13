@@ -65,9 +65,15 @@ public func CannonUseCancel(object frame)
 public func PerformTeslaShot(int angle)
 {
 	tesla_fx = CreateEffect(FxPerformTeslaShot, 100, 1, angle, GetCannonFrame().AimingAnglePrecision);
-	// Register power request.
-	RegisterPowerRequest(this.TeslaShotPowerNeed);
+	// Register power request.	
+	RegisterPowerRequest(GetCurrentPowerNeed());
 	return;
+}
+
+public func GetCurrentPowerNeed()
+{
+	// The power need depends on the shot width, narrow shots require more power.
+	return this.TeslaShotPowerNeedBase + this.TeslaShotPowerNeedAdd * (this.TeslaShotMaxWidth - tesla_shot_width);
 }
 
 local FxPerformTeslaShot = new Effect
@@ -157,8 +163,8 @@ local FxPerformTeslaShot = new Effect
 		var strength = 40 + (80 * this.charge - Target.TeslaShotMinCharge) / (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge);
 		var barrel_x = Sin(this.aim_angle, 10, this.aim_prec);
 		var barrel_y = -Cos(this.aim_angle, 10, this.aim_prec);
-		var xdir = Sin(this.aim_angle, 20, this.aim_prec);
-		var ydir = -Cos(this.aim_angle, 20, this.aim_prec);
+		var xdir = Sin(this.aim_angle, Target.TeslaShotSpeed, this.aim_prec);
+		var ydir = -Cos(this.aim_angle, Target.TeslaShotSpeed, this.aim_prec);
 		var dev = 2 * Target->GetTeslaShotWidth();
 		Target->LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, strength, xdir, ydir, dev, dev, true);
 		Remove();
@@ -253,12 +259,20 @@ public func GetTeslaShotMenuEntries(object clonk)
 			text = 
 			{
 				Bottom = "1em",
+				Style = GUI_TextVCenter,
 				Text = "$TeslaAdjustShotWidth$"
 			},
 			width = 
 			{
-				Top = "1em",
+				Top = "1em", Right = "50%",
+				Style = GUI_TextVCenter,
 				Text = Format("$TeslaCurrentShotWidth$", GetTeslaShotWidth())			
+			},
+			power =
+			{
+				Top = "1em", Left = "50%",
+				Style = GUI_TextVCenter,
+				Text = Format("$TeslaCurrentPowerNeed$", GetCurrentPowerNeed() / 10)
 			}
 		}
 	});
@@ -271,7 +285,6 @@ public func GetTeslaShotMenuEntries(object clonk)
 			GraphicsName = "Plus"
 		}
 	});
-
 	return menu_entries;
 }
 
@@ -341,6 +354,7 @@ local FxAutomatedControl = new Effect
 		this.Interval = 1;
 		this.target = nil;
 		this.tesla_shot = nil;
+		this.max_distance = 800;
 	},
 	Timer = func(int time)
 	{
@@ -348,7 +362,7 @@ local FxAutomatedControl = new Effect
 			return FX_OK;
 			
 		// Find a target.
-		this.target = this.target ?? Target->FindObject(Find_ID(Meteor), Target->Find_Distance(800), Target->Find_PathFree(), Target->Sort_Distance());
+		this.target = this.target ?? Target->FindObject(Find_ID(Meteor), Target->Find_Distance(this.max_distance), Target->Find_PathFree(), Target->Sort_Distance());
 		if (!this.target)
 		{
 			// Remove current shot if is running.
@@ -362,7 +376,7 @@ local FxAutomatedControl = new Effect
 		var y = Target->GetY();
 		var tx = this.target->GetX();
 		var ty = this.target->GetY();
-		var shot_speed = 200;
+		var shot_speed = 10 * Target.TeslaShotSpeed;
 		var distance = Distance(x, y, tx, ty);
 		var dt = distance * 10 / shot_speed;
 		tx += this.target->GetXDir(dt);
@@ -390,7 +404,7 @@ local FxAutomatedControl = new Effect
 		this.tesla_shot->UpdateAimingAngle(angle);
 		
 		// Do shot if charged and target in reach.
-		if (this.tesla_shot->GetCharge() >= Target.TeslaShotMinCharge)
+		if (this.tesla_shot->GetCharge() >= Target.TeslaShotMinCharge + Max(0, distance - 200) * (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge) / (this.max_distance - 200))
 		{
 			this.tesla_shot->DoShot();
 			return FX_OK;
@@ -414,11 +428,14 @@ local Description = "$Description$";
 local BorderBound = C4D_Border_Sides;
 local ContactCalls = true;
 local Components = {Metal = 3, Coal = 2, Wood = 2, Diamond = 1};
+// Propagation speed for the tesla beam.
+local TeslaShotSpeed = 20;
 // Amount of power needed while shooting and minimum and maximum shot charging times.
-local TeslaShotPowerNeed = 300;
+local TeslaShotPowerNeedBase = 250;
+local TeslaShotPowerNeedAdd = 10;
 local TeslaShotMinCharge = 18;
 local TeslaShotMaxCharge = 54;
 // Minimum and maximum width of the lightning strike.
-local TeslaShotMinWidth = 2;
+local TeslaShotMinWidth = 1;
 local TeslaShotMaxWidth = 8;
 
