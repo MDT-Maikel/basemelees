@@ -14,6 +14,7 @@ Definition2=Decoration.ocd
 [Player4]
 
 [Landscape]
+TopOpen=1
 LeftOpen=2400
 RightOpen=2400
 AutoScanSideOpen=false

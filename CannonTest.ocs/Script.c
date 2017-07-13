@@ -124,7 +124,7 @@ public func InitLiquidCannon()
 	}
 	
 	// Place some bats which can be killed with the acid spray.
-	Bat->Place(20, nil, Rectangle(800, 0, 224, 400));
+	Bat->Place(20, Rectangle(800, 0, 224, 400));
 	return;
 }
 
@@ -248,6 +248,6 @@ static const FxCreateMeteors = new Effect
 {
 	Timer = func(int time)
 	{
-		LaunchMeteor(RandomX(200, 300), 12, RandomX(40, 60), RandomX(-10, 10), RandomX(40, 80));
+		LaunchMeteor(RandomX(200, 300), -12, RandomX(40, 60), RandomX(-10, 10), RandomX(40, 80));
 	}
 };
