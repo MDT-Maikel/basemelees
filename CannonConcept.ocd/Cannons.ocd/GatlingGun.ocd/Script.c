@@ -140,6 +140,12 @@ public func OnAutomationModeChange(string old_mode, string new_mode)
 	{
 		CreateEffect(FxAutomatedControl, 100, this.FireRate);
 	}
+	else if (new_mode == "mode::off")
+	{
+		var control_fx = GetEffect("FxAutomatedControl", this);
+		if (control_fx)
+			control_fx->Remove();
+	}
 	return;
 }
 
