@@ -49,7 +49,12 @@ public func DismountCannon(object from_frame)
 {
 	if (QueryRejectCannonDismount(from_frame) || from_frame->QueryRejectCannonDismount(this))
 		return false;
-	Exit(0, from_frame->GetBottom() - GetBottom());
+	// Exit cannon and move to bottom of the frame, free if needed.	
+	Exit(0, from_frame->GetBottom() - GetBottom(), from_frame->GetR());
+	var x = GetX();
+	var dx = 0;
+	while (dx++ <= 8 && Stuck())
+		SetPosition(x + dx, GetY());
 	// Dismount callbacks.
 	OnCannonDismount(from_frame);
 	from_frame->OnCannonDismount(this);
