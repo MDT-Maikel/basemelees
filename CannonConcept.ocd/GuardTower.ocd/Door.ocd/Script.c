@@ -59,6 +59,11 @@ private func ForceDigFree()
 }
 
 
+/*-- Saving --*/
+
+// Door is created on tower initialize.
+public func SaveScenarioObject() { return false; }
+
 
 /*-- Properties --*/
 

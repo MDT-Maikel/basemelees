@@ -137,7 +137,7 @@ public func OnDoorControl(symbol_or_object, string action, bool alt)
 		this->CloseDoorLeft();
 	else if (action == "closeright")
 		this->CloseDoorRight();		
-	UpdateInteractionMenus(this.GetPipeControlMenuEntries);	
+	UpdateInteractionMenus(this.GetDoorControlMenuEntries);	
 	return;
 }
 

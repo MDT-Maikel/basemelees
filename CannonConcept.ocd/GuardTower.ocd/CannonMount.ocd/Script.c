@@ -58,6 +58,12 @@ private func DetachCannonGraphics(object cannon)
 }
 
 
+/*-- Saving --*/
+
+// Mount is created on tower initialize.
+public func SaveScenarioObject() { return false; }
+
+
 /*-- Properties --*/
 
 local Name = "$Name$";

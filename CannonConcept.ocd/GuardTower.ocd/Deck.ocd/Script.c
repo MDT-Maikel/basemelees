@@ -42,6 +42,13 @@ public func Collection2(object obj)
 	return _inherited(obj, ...);
 }
 
+
+/*-- Saving --*/
+
+// Deck is created on tower initialize.
+public func SaveScenarioObject() { return false; }
+
+
 /*-- Properties --*/
 
 local Name = GuardTower.Name;
