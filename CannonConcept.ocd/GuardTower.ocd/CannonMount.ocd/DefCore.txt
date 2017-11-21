@@ -8,3 +8,4 @@ Offset=-12,-12
 Vertices=1
 VertexX=0
 VertexY=36
+NoPushEnter=1
