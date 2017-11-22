@@ -16,11 +16,15 @@ protected func Initialize()
 	// Goals & Rules.
 	//CreateObject(Goal_Melee);
 	CreateObject(Rule_Domination);
-	CreateObject(Rule_BaseRespawn);
 	CreateObject(Rule_BuyAtFlagpole);
 	CreateObject(Rule_TeamAccount);
 	CreateObject(Rule_BaseMeleeLogging);
 	CreateObject(Rule_Medals);
+	var relaunch_rule = GetRelaunchRule();
+	relaunch_rule->SetBaseRespawn(true);
+	relaunch_rule->SetFreeCrew(false);
+	relaunch_rule->SetLastClonkRespawn(true);
+	relaunch_rule->SetRespawnDelay(0);
 	
 	// Scoreboard.
 	Scoreboard_BaseMelee_Data->Init();

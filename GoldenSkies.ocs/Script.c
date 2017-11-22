@@ -17,12 +17,16 @@ protected func Initialize()
 	CreateObject(Goal_Melee);
 	CreateObject(Rule_NoBorders);
 	CreateObject(Rule_Domination);
-	CreateObject(Rule_BaseRespawn);
 	CreateObject(Rule_BuyAtFlagpole);
 	CreateObject(Rule_TeamAccount);
 	CreateObject(Rule_BaseMeleeLogging);
 	CreateObject(Rule_NoPowerNeed);
 	CreateObject(Rule_Medals);
+	var relaunch_rule = GetRelaunchRule();
+	relaunch_rule->SetBaseRespawn(true);
+	relaunch_rule->SetFreeCrew(false);
+	relaunch_rule->SetLastClonkRespawn(true);
+	relaunch_rule->SetRespawnDelay(0);
 	
 	// Scoreboard.
 	Scoreboard_BaseMelee_Data->Init();
@@ -133,7 +137,7 @@ private func InitVegetation(int nr_areas)
 	// Some grass is always nice.
 	Grass->Place(85);
 	
-	// Cave mushrooms and coconut trees provide wood.
+	// Trees provide wood.
 	Tree_Deciduous->Place(16 * nr_areas);
 	Tree_Coniferous2->Place(2 * nr_areas);
 	
