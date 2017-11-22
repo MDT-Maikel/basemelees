@@ -151,6 +151,14 @@ private func DetachCannonGraphics(object cannon)
 
 public func IsContainer() { return true; }
 
+public func RejectCollect(id def, object obj)
+{
+	// Only accept cannons.
+	if (!obj->~IsCannon())
+		return true;
+	return _inherited(def, obj, ...);
+}
+
 public func Destruction()
 {
 	// Remove cannon from frame before destruction happens.
