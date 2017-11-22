@@ -288,7 +288,8 @@ public func HasAutomationModes() { return true; }
 public func GetAutomationModes()
 {
 	return [
-		{mode = "mode::continuous", symbol = Icon_Play}
+		{mode = "mode::continuous", symbol = Icon_Play, hover_name = "$MsgModeContinuous$", hover_desc = "$DescModeContinuous$"},
+		{mode = "mode::auto_extinguish", symbol = Icon_Flame, hover_name = "$MsgModeAutoExtinguish$", hover_desc = "$DescModeAutoExtinguish$"}
 	];
 }
 
@@ -300,8 +301,15 @@ public func OnAutomationModeChange(string old_mode, string new_mode)
 			liquid_fx = CreateEffect(FxSprayLiquid, 100, nil, last_aim_angle);
 		liquid_fx.is_automated = true;
 	}
+	else if (new_mode == "mode::auto_extinguish")
+	{
+		CreateEffect(FxAutomatedExtinguishControl, 100, 4);
+	}
 	else if (new_mode == "mode::off")
 	{
+		var control_fx = GetEffect("FxAutomatedExtinguishControl", this);
+		if (control_fx)
+			control_fx->Remove();
 		if (liquid_fx)
 			liquid_fx->Remove();
 	}
@@ -309,6 +317,42 @@ public func OnAutomationModeChange(string old_mode, string new_mode)
 }
 
 public func IsArmoryProduct() { return true; }
+
+local FxAutomatedExtinguishControl = new Effect
+{
+	Construction = func()
+	{
+		this->Timer(0);
+	},
+	Timer = func(int time)
+	{
+		var frame = Target->GetCannonFrame();
+		if (!frame)
+			return FX_OK;
+		var controller = frame->GetController();
+		
+		// Find anything that is on fire in range.
+		var on_fire = Target->FindObject(Find_OCF(OCF_OnFire), Target->Find_Distance(200), Target->Find_PathFree(), Target->Sort_Distance());
+		if (!on_fire)
+		{
+			// Remove liquid control effect.
+			if (Target.liquid_fx)
+				Target.liquid_fx->Remove();
+			return FX_OK;
+		}
+		
+		// Find angle to burning object. TODO: improve.
+		var angle = Angle(Target->GetX(), Target->GetY(), on_fire->GetX(), on_fire->GetY());
+			
+		// Get liquid control effect or turn on.
+		if (!Target.liquid_fx)
+			Target.liquid_fx = Target->CreateEffect(Target.FxSprayLiquid, 100, nil, angle);
+			
+		// Update aiming angle.
+		Target.liquid_fx->UpdateAimingAngle(angle);
+		return FX_OK;
+	}
+};
 
 
 /*-- Properties --*/

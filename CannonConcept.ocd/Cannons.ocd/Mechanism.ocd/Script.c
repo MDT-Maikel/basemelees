@@ -6,10 +6,10 @@
 */
 
 
-public func Hit(x, y)
+public func Hit(int x, int y)
 {
 	StonyObjectHit(x, y);
-	return true;
+	return;
 }
 
 public func IsArmoryProduct() { return true; }
@@ -26,5 +26,5 @@ public func GetSubstituteComponent(id component)
 
 local Name = "$Name$";
 local Description = "$Description$";
-local Collectible = 1;
+local Collectible = true;
 local Components = {Metal = 4, Coal = 2, Diamond = 1};

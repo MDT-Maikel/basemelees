@@ -3,3 +3,8 @@ Description=Connect to a pump to shoot liquids.
 MsgConnectedPipe=Connected pipe.
 NameType=%s Cannon
 DescriptionType=This cannon currently shoots %s.
+
+MsgModeContinuous=Continuous
+DescModeContinuous=Shoot the selected liquid continuously in the direction the cannon is currently pointing.
+MsgModeAutoExtinguish=Auto extinguish
+DescModeAutoExtinguish=Automatically extinguish any object within range that is on fire.

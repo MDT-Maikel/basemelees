@@ -163,11 +163,16 @@ local FxPerformTeslaShot = new Effect
 		var strength = 40 + (80 * this.charge - Target.TeslaShotMinCharge) / (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge);
 		var barrel_x = Sin(this.aim_angle, 10, this.aim_prec);
 		var barrel_y = -Cos(this.aim_angle, 10, this.aim_prec);
-		var xdir = Sin(this.aim_angle, Target.TeslaShotSpeed, this.aim_prec);
-		var ydir = -Cos(this.aim_angle, Target.TeslaShotSpeed, this.aim_prec);
+		var xdir = Sin(this.aim_angle, Target->GetTeslaShotSpeed(), this.aim_prec);
+		var ydir = -Cos(this.aim_angle, Target->GetTeslaShotSpeed(), this.aim_prec);
 		var dev = 2 * Target->GetTeslaShotWidth();
 		Target->LaunchLightning(Target->GetX() + barrel_x, Target->GetY() + barrel_y, strength, xdir, ydir, dev, dev, true);
-		Remove();
+		// Graphical effect for the shot.
+		this.part_sphere.Size = PV_Random(10, 18);
+		Target->CreateParticle("SphereSpark", barrel_x, barrel_y, PV_Random(-1, 1), PV_Random(-1, 1), PV_Random(4, 5), this.part_sphere, this.charge / 4);
+		// Remove this effect, since the shot is done.
+		this.charge = 0;
+		return Remove();
 	},
 	
 	GetCharge = func()
@@ -194,6 +199,12 @@ public func GetTeslaShotControl()
 public func GetTeslaShotWidth()
 {
 	return tesla_shot_width;
+}
+
+public func GetTeslaShotSpeed()
+{
+	// Increase the shot speed a bit if the beam become more narrow.
+	return this.TeslaShotSpeed + TeslaShotMaxWidth - tesla_shot_width;
 }
 
 
@@ -311,6 +322,35 @@ public func OnTeslaSelection(symbol_or_object, string action, bool alt)
 }
 
 
+/*-- Lightning Attraction --*/
+
+/*public func IsLightningStrikable(object lightning) { return true; }
+
+public func GetLightningAttractionOffset() { return [0, 0]; }
+
+public func OnLightningStrike(object lightning, int damage)
+{
+	Log("damage = %d", damage);
+	return;
+}
+
+public func OnCannonMount(object onto_frame)
+{
+	onto_frame.IsLightningAttractor = this.IsLightningAttractor;
+	onto_frame.IsLightningStrikable = this.IsLightningStrikable;
+	onto_frame.OnLightningStrike = this.OnLightningStrike;
+	return _inherited(onto_frame);;
+}
+
+public func OnCannonDismount(object from_frame)
+{
+	from_frame.IsLightningAttractor =  from_frame->GetID().IsLightningAttractor;
+	from_frame.IsLightningStrikable = from_frame->GetID().IsLightningStrikable;
+	from_frame.OnLightningStrike = from_frame->GetID().OnLightningStrike;
+	return _inherited(from_frame);;
+}*/
+
+
 /*-- Contents --*/
 
 public func IsContainer() { return false; }
@@ -321,6 +361,7 @@ public func RejectCollect(id def, object obj)
 	return true;
 }
 
+
 /*-- Automation --*/
 
 public func HasAutomationModes() { return true; }
@@ -328,16 +369,18 @@ public func HasAutomationModes() { return true; }
 public func GetAutomationModes()
 {
 	return [
-		{mode = "mode::attack_meteor", symbol = Icon_Skull}
+		{mode = "mode::attack_enemy", symbol = Icon_Skull, hover_name = "$MsgModeAttackEnemy$", hover_desc = "$DescModeAttackEnemy$"},
+		{mode = "mode::attack_meteor", symbol = Meteor, hover_name = "$MsgModeAttackMeteor$", hover_desc = "$DescModeAttackMeteor$"}
 	];
 }
 
 public func OnAutomationModeChange(string old_mode, string new_mode)
 {
-	if (new_mode == "mode::attack_meteor")
+
+	if (new_mode == "mode::attack_enemy" || new_mode == "mode::attack_meteor")
 	{
-		CreateEffect(FxAutomatedControl, 100, 1);
-	}
+		CreateEffect(FxAutomatedControl, 100, 1, new_mode);
+	}	
 	else if (new_mode == "mode::off")
 	{
 		var control_fx = GetEffect("FxAutomatedControl", this);
@@ -349,20 +392,32 @@ public func OnAutomationModeChange(string old_mode, string new_mode)
 
 local FxAutomatedControl = new Effect
 {
-	Construction = func()
+	Construction = func(string new_mode)
 	{
+		this.attack_mode = new_mode;
 		this.Interval = 1;
 		this.target = nil;
 		this.tesla_shot = nil;
-		this.max_distance = 800;
 	},
 	Timer = func(int time)
 	{
-		if (!Target->GetCannonFrame())
+		var frame = Target->GetCannonFrame();
+		if (!frame)
 			return FX_OK;
+		var controller = frame->GetController();
+			
+		// Determine shot parameters
+		var shot_speed = 10 * Target->GetTeslaShotSpeed();
+		var max_distance = 300 + shot_speed;
 			
 		// Find a target.
-		this.target = this.target ?? Target->FindObject(Find_ID(Meteor), Target->Find_Distance(this.max_distance), Target->Find_PathFree(), Target->Sort_Distance());
+		if (!this.target)
+		{
+			if (this.attack_mode == "mode::attack_meteor")
+				this.target = Target->FindObject(Find_ID(Meteor), Target->Find_Distance(max_distance), Target->Find_PathFree(), Target->Sort_Distance());
+			else if (this.attack_mode == "mode::attack_enemy")	
+				this.target = Target->FindObject(Find_Hostile(controller), Find_Func("IsProjectileTarget", nil, Target), Target->Find_Distance(max_distance), Target->Find_PathFree(), Target->Sort_Distance());
+		}
 		if (!this.target)
 		{
 			// Remove current shot if is running.
@@ -376,18 +431,31 @@ local FxAutomatedControl = new Effect
 		var y = Target->GetY();
 		var tx = this.target->GetX();
 		var ty = this.target->GetY();
-		var shot_speed = 10 * Target.TeslaShotSpeed;
 		var distance = Distance(x, y, tx, ty);
 		var dt = distance * 10 / shot_speed;
-		tx += this.target->GetXDir(dt);
-		ty += this.target->GetYDir(dt);
+		tx += AI_HelperFunctions->GetTargetXDir(this.target, dt);
+		ty += AI_HelperFunctions->GetTargetYDir(this.target, dt);
 		
-		// Check if path of shot is free.
-		if (!PathFree(x, y, tx, ty))
+		// Check if path of shot is free and is not outside of bounds.
+		if (!PathFree(x, y, tx, ty) || !Inside(tx, 0, LandscapeWidth()) || !Inside(ty, 0, LandscapeHeight()))
 		{
 			// Try to find target in the next iteration.
 			this.target = nil;
 			return FX_OK;
+		}
+		
+		// Check for allies on shot path.
+		if (!FindObject(Find_ID(Rule_NoFriendlyFire)))
+		{
+			var ally = Target->FindObject(Find_OnLine(0, 0, tx - x, ty - y), Find_Allied(controller), Find_Func("IsProjectileTarget", nil, Target), Find_Exclude(frame));	
+			if (ally)
+			{
+				// Remove shot and restart if ally is not path any more.
+				this.target = nil;
+				if (this.tesla_shot)
+					this.tesla_shot->Remove();
+				return FX_OK;
+			}
 		}
 		
 		// Determine angle to target.
@@ -404,9 +472,12 @@ local FxAutomatedControl = new Effect
 		this.tesla_shot->UpdateAimingAngle(angle);
 		
 		// Do shot if charged and target in reach.
-		if (this.tesla_shot->GetCharge() >= Target.TeslaShotMinCharge + Max(0, distance - 200) * (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge) / (this.max_distance - 200))
+		if (this.tesla_shot->GetCharge() >= Target.TeslaShotMinCharge + Max(0, distance - 160) * (Target.TeslaShotMaxCharge - Target.TeslaShotMinCharge) / (max_distance - 160))
 		{
-			this.tesla_shot->DoShot();
+			if (this.target)
+				this.tesla_shot->DoShot();
+			else
+				this.tesla_shot->Remove();
 			return FX_OK;
 		}
 		return FX_OK;
@@ -420,6 +491,13 @@ local FxAutomatedControl = new Effect
 
 public func IsArmoryProduct() { return true; }
 
+public func GetSubstituteComponent(id component)
+{
+	// Can be made from diamond, ruby or amethyst.
+	if (component == Diamond)
+		return [Ruby, Amethyst];
+}
+
 
 /*-- Properties --*/
 
@@ -428,6 +506,8 @@ local Description = "$Description$";
 local BorderBound = C4D_Border_Sides;
 local ContactCalls = true;
 local Components = {Metal = 3, Coal = 2, Wood = 2, Diamond = 1};
+// Attracts lightning.
+local IsLightningAttractor = true;
 // Propagation speed for the tesla beam.
 local TeslaShotSpeed = 20;
 // Amount of power needed while shooting and minimum and maximum shot charging times.

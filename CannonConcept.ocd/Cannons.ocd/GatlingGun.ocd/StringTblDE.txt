@@ -1,3 +1,6 @@
 Name=Gatling-Gun
 Description=Schießt Kugeln in erstaunlichen Tempo.
 MsgNeedsAmmo=Die Gatling-Gun hat keine Munition.
+
+MsgModeAttackEnemy=Attack enemies
+DescModeAttackEnemy=Attack all hostile threats that can be hit by lead bullets.

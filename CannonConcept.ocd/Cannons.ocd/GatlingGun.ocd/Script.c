@@ -123,6 +123,7 @@ public func RejectCollect(id def, object obj)
 	return false;
 }
 
+
 /*-- Automation --*/
 
 public func HasAutomationModes() { return true; }
@@ -130,7 +131,7 @@ public func HasAutomationModes() { return true; }
 public func GetAutomationModes()
 {
 	return [
-		{mode = "mode::attack_enemy", symbol = Icon_Skull}
+		{mode = "mode::attack_enemy", symbol = Icon_Skull, hover_name = "$MsgModeAttackEnemy$", hover_desc = "$DescModeAttackEnemy$"}
 	];
 }
 
@@ -159,17 +160,46 @@ local FxAutomatedControl = new Effect
 	},
 	Timer = func(int time)
 	{
-		if (!Target->GetCannonFrame())
-			return FX_OK;		
-		// Improve enemy finding.
-		var enemy = Target->FindObject(Find_ID(DefenseBoomAttack), Target->Find_Distance(400), Target->Sort_Distance());
+		var frame = Target->GetCannonFrame();
+		if (!frame)
+			return FX_OK;
+		var controller = frame->GetController();
+		// Find anything hostile that can be hit by a projectile in cannon's range.
+		var enemy = Target->FindObject(Find_Hostile(controller), Find_Func("IsProjectileTarget", nil, Target), Target->Find_Distance(400), Target->Find_PathFree(), Target->Sort_Distance());
 		if (!enemy)
 			return FX_OK;
 		var ammo = FindObject(Find_Container(Target), Find_Func("IsBullet"));
 		if (!ammo)
 			return FX_OK;
-		var angle = Angle(Target->GetX(), Target->GetY(), enemy->GetX(), enemy->GetY());
-		Target->FireBullet(ammo, angle, 1);
+		
+		// Determine where to shoot.
+		var x = Target->GetX();
+		var y = Target->GetY();
+		var tx = enemy->GetX();
+		var ty = enemy->GetY();
+		var distance = Distance(x, y, tx, ty);
+		var dt = distance * 10 / 200;
+		tx += AI_HelperFunctions->GetTargetXDir(enemy, dt);
+		ty += AI_HelperFunctions->GetTargetYDir(enemy, dt);
+		
+		// Check if path of shot is free and is not outside of bounds.
+		if (!PathFree(x, y, tx, ty) || !Inside(tx, 0, LandscapeWidth()) || !Inside(ty, 0, LandscapeHeight()))
+			return FX_OK;
+			
+		// Check for allies on shot path.
+		if (!FindObject(Find_ID(Rule_NoFriendlyFire)))
+		{
+			var ally = Target->FindObject(Find_OnLine(0, 0, tx - x, ty - y), Find_Allied(controller), Find_Func("IsProjectileTarget", nil, Target), Find_Exclude(frame));	
+			if (ally)
+				return FX_OK;
+		}
+			
+		// Determine angle to target.
+		var angle_prec = frame.AimingAnglePrecision;
+		var angle = Angle(x, y, tx, ty, angle_prec) + RandomX(-angle_prec, angle_prec);
+		
+		// Fire a bullet.
+		Target->FireBullet(ammo, angle, angle_prec);
 		return FX_OK;
 	}
 };

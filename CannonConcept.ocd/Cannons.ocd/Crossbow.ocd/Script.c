@@ -100,13 +100,30 @@ local FxCrossbow = new Effect
 	Timer = func(int time)
 	{
 		Target->CheckForArrows(this.shooter);
-		var arrow = FindObject(Find_Container(Target), Find_Func("IsArrow"), Sort_Func("SortArrowPriority"));
+		var arrow = Target->FindArrow();
 		if (!arrow)
 			return FX_Execute_Kill;
 		Target->FireArrow(arrow, this.aim_angle, this.aim_prec);
 		return FX_OK;
 	}
 };
+
+public func FindArrow()
+{
+	// Get the arrow with the highest priority.
+	var high_prio = GetLength(arrow_priority);
+	var prio_arrow = nil;
+	for (var arrow in FindObjects(Find_Container(this), Find_Func("IsArrow")))
+	{
+		var prio = GetIndexOf(arrow_priority, arrow->GetID());
+		if (prio < high_prio)
+		{
+			high_prio = prio;
+			prio_arrow = arrow;
+		}
+	}
+	return prio_arrow;
+}
 
 public func FireArrow(object arrow, int angle, int ang_prec)
 {
@@ -208,11 +225,72 @@ public func MoveArrowUpPriority(id arrow)
 }
 
 
-// Todo: make this non-global.
-global func SortArrowPriority()
+/*-- Automation --*/
+
+public func HasAutomationModes() { return true; }
+
+public func GetAutomationModes()
 {
-	return GetIndexOf(Contained().arrow_priority, this->GetID());
+	return [
+		{mode = "mode::attack_enemy", symbol = Icon_Skull, hover_name = "$MsgModeAttackEnemy$", hover_desc = "$DescModeAttackEnemy$"}
+	];
 }
+
+public func OnAutomationModeChange(string old_mode, string new_mode)
+{
+	if (new_mode == "mode::attack_enemy")
+	{
+		CreateEffect(FxAutomatedControl, 100, this.FireRate);
+	}
+	else if (new_mode == "mode::off")
+	{
+		var control_fx = GetEffect("FxAutomatedControl", this);
+		if (control_fx)
+			control_fx->Remove();
+	}
+	return;
+}
+
+local FxAutomatedControl = new Effect
+{
+	Construction = func()
+	{
+		this.Interval = Target.FireRate;
+		// Perform the first shot.
+		this->Timer(0);
+	},
+	Timer = func(int time)
+	{
+		var frame = Target->GetCannonFrame();
+		if (!frame)
+			return FX_OK;
+		var controller = frame->GetController();
+		// Find anything hostile that can be hit by a projectile in cannon's range.
+		var enemy = Target->FindObject(Find_Hostile(controller), Find_Func("IsProjectileTarget", nil, Target), Target->Find_Distance(600), Target->Find_PathFree(), Target->Sort_Distance());
+		if (!enemy)
+			return FX_OK;
+		var arrow = Target->FindArrow();
+		if (!arrow)
+			return FX_OK;
+			
+		// Determine where to shoot.
+		var x = Target->GetX();
+		var y = Target->GetY();
+		var tx = enemy->GetX();
+		var ty = enemy->GetY();
+		var distance = Distance(x, y, tx, ty);
+		var dt = distance * 10 / 200;
+		tx += AI_HelperFunctions->GetTargetXDir(enemy, dt);
+		ty += AI_HelperFunctions->GetTargetYDir(enemy, dt);
+		
+		// Determine the ballistic angle to target.
+		var angle = frame.AimingAnglePrecision * AI_HelperFunctions->GetBallisticAngle(x, y, tx, ty, Target.FireSpeed, frame.AimingAngleRange[1]) / 10;
+		
+		// Fire an arrow.
+		Target->FireArrow(arrow, angle, frame.AimingAnglePrecision);
+		return FX_OK;
+	}
+};
 
 public func IsArmoryProduct() { return true; }
 
