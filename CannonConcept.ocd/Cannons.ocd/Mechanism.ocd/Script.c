@@ -12,12 +12,19 @@ public func Hit(x, y)
 	return true;
 }
 
-
 public func IsArmoryProduct() { return true; }
+
+public func GetSubstituteComponent(id component)
+{
+	// Can be made from diamond, ruby or amethyst.
+	if (component == Diamond)
+		return [Ruby, Amethyst];
+}
+
 
 /*-- Properties --*/
 
 local Name = "$Name$";
 local Description = "$Description$";
 local Collectible = 1;
-local Components = {Metal = 2, Coal = 1};
+local Components = {Metal = 4, Coal = 2, Diamond = 1};

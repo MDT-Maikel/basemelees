@@ -9,7 +9,7 @@ Vertices=3
 VertexX=0,2,-2
 VertexY=1,-1,-1
 VertexFriction=40,40,40
-Value=40
+Value=45
 Mass=20
 Rotate=1
 
