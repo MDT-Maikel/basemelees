@@ -181,10 +181,22 @@ public func InitTeslaCannon()
 	tesla_cannon->AddAutomationMechanism(automation);
 	tesla_cannon->SetAutomationMode("mode::attack_meteor");
 	
+	// Create another tesla cannon as attractor.
+	var attractor_frame = CreateObjectAbove(CannonFrame, 84, 104);
+	var attractor_tesla_cannon = CreateObjectAbove(TeslaCannon, 84, 104);
+	attractor_tesla_cannon->MountCannon(attractor_frame);
+	
+	// Some compensators to charge.
+	CreateObjectAbove(Compensator, 20, 104);
+	CreateObjectAbove(Compensator, 36, 104);
+	CreateObjectAbove(Compensator, 52, 104);
+	
 	// Create meteors as targets.
 	CreateEffect(FxCreateMeteors, 100, 54);
 	return;
 }
+
+global func True() { return true; }
 
 public func InitArmory()
 {
