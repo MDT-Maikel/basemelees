@@ -9,30 +9,36 @@
 
 #include StoneDoor
 
+private func ForceDigFree()
+{
+	SetSolidMask();
+	DigFreeRect(GetX() - 5, GetY() - 30, 10, 60, true);
+	SetSolidMask(0, 0, 10, 60);
+}
+
 protected func FxAutoControlTimer(object target, effect, int time)
 {
 	var d = 0;
 	if (IsOpen())
-		d = 30;
+		d = 40;
 	var owner = GetOwner();
-	var team = effect.Team;
 	var open_door = false;
-	// Team control
-	if (team != nil)
-		for (var clonk in FindObjects(Find_OCF(OCF_CrewMember), Find_InRect(-50, d - 50, 100, 120)))
-		{
-			var plr = clonk->GetOwner();
-			var plr_team = GetPlayerTeam(plr);
-			if (team == 0 || plr_team == team)
-				open_door = true;			
-		}
-	// Player control
-	else
-		if (FindObject(Find_OCF(OCF_CrewMember), Find_InRect(-50, d - 50, 100, 120), Find_Allied(owner)))
-			open_door = true;
 	
-	// Keep door closed if hostile?
-	// TODO?
+	// Crew nearby: open.
+	if (FindObject(Find_OCF(OCF_CrewMember), Find_InRect(-50, d - 50, 100, 120), Find_Allied(owner)))
+		open_door = true;
+	
+	// Airplane flying towards door: open.
+	for (var airplane in FindObjects(Find_ID(Airplane), Find_InRect(-180, d - 60, 360, 140), Find_Allied(owner)))
+	{
+		if (airplane->GetAction() != "Fly")
+			continue;		
+		var dist_x = airplane->GetX() - GetX();
+		if (dist_x < 0 && airplane->GetXDir() > -dist_x / 8)
+			open_door = true;
+		if (dist_x > 0 && airplane->GetXDir() < -dist_x / 8)
+			open_door = true;
+	}
 	
 	if (open_door && IsClosed())
 		OpenDoor();

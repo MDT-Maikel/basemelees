@@ -11,5 +11,4 @@ VertexY=-29,29
 VertexCNAT=4,8
 SolidMask=0,0,10,60,0,0
 Mass=1000
-Components=Rock=10;
 HorizontalFix=1
