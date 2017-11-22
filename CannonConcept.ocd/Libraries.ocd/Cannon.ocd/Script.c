@@ -167,6 +167,7 @@ public func IsAutomated()
 // mode (string): string of the form mode::xyz to identify the mode.
 // symbol (id): Symbol of the entry.
 // graph_name (string): GraphicsName for the entry.
+// hover_name (string): name that appears in the menu when hovering.
 // hover_desc (string): description that appears in the menu when hovering.
 public func GetAutomationModes()
 {
@@ -187,6 +188,18 @@ public func GetAutomationMode() { return lib_cannon.automation_mode; }
 public func OnAutomationModeChange(string old_mode, string new_mode)
 {
 	return;
+}
+
+public func GetAutomationModeDescription(string for_mode)
+{
+	if (for_mode == "mode::off")
+		return Format("<c cc0000>%s:</c> %s", "$MsgModeOff$", "$DescModeOff$");
+	for (var auto_mode in this->GetAutomationModes())
+	{
+		if (auto_mode.mode == for_mode)
+			return Format("<c cc0000>%s:</c> %s", auto_mode.hover_name, auto_mode.hover_desc);
+	}
+	return "AUTOMATION DESCRIPTION MISSING";
 }
 
 
@@ -331,6 +344,8 @@ public func OnAutomationControlHover(id symbol, string action, desc_menu_target,
 	}
 	else if (action == "desc_automation_modes")
 		text = "$DescSelectMode$";
+	else if (WildcardMatch(action, "mode::*"))
+		text = GetAutomationModeDescription(action);
 	GuiUpdateText(text, menu_id, 1, desc_menu_target);
 	return;
 }
