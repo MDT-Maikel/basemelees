@@ -68,7 +68,7 @@ public func SaveScenarioObject() { return false; }
 
 local Name = "$Name$";
 local Description = "$Description$";
-local Touchable = 1;
+local Touchable = 2;
 local AimingAngleRange = [260, 100];
 
 local ActMap = {
