@@ -81,34 +81,43 @@ public func GetInteractionMenus(object clonk)
 public func GetDoorControlMenuEntries(object clonk)
 {
 	var menu_entries = [];
-	if (door_left && !door_left->IsOpen())
-		PushBack(menu_entries, GetDoorMenuEntry(door_left, "$MsgOpenDoorLeft$", 1, "openleft"));
-	if (door_right && !door_right->IsOpen())
-		PushBack(menu_entries, GetDoorMenuEntry(door_right, "$MsgOpenDoorRight$", 1, "openright"));
+	if (door_left && (door_left->IsClosed() || door_left->IsClosing()))
+		PushBack(menu_entries, GetDoorMenuEntry(door_left, "$MsgOpenDoorLeft$", 1, "openleft", true));
+	if (door_right && (door_right->IsClosed() || door_right->IsClosing()))
+		PushBack(menu_entries, GetDoorMenuEntry(door_right, "$MsgOpenDoorRight$", 2, "openright", true));
 
-	if (door_left && !door_left->IsClosed())
-		PushBack(menu_entries, GetDoorMenuEntry(door_left, "$MsgCloseDoorLeft$", 1, "closeleft"));
-	if (door_right && !door_right->IsClosed())
-		PushBack(menu_entries, GetDoorMenuEntry(door_right, "$MsgCloseDoorRight$", 1, "closeright"));		
+	if (door_left && (door_left->IsOpen() || door_left->IsOpening()))
+		PushBack(menu_entries, GetDoorMenuEntry(door_left, "$MsgCloseDoorLeft$", 1, "closeleft", false));
+	if (door_right && (door_right->IsOpen() || door_right->IsOpening()))
+		PushBack(menu_entries, GetDoorMenuEntry(door_right, "$MsgCloseDoorRight$", 2, "closeright", false));		
 	return menu_entries;
 }
 
-public func GetDoorMenuEntry(symbol, string text, int priority, extra_data)
+public func GetDoorMenuEntry(symbol, string text, int priority, extra_data, bool open)
 {
-	var custom_entry = 
-	{
-		Right = "100%", Bottom = "2em",
-		BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
-		image = {Right = "2em"},
-		text = {Left = "2em"}
-	};
+	var action_graphics_name = "Down";
+	if (open)
+		action_graphics_name = "Up";
 	return {symbol = symbol, extra_data = extra_data, 
 		custom =
 		{
-			Prototype = custom_entry,
+			Right = "100%", Bottom = "2em",
+			BackgroundColor = {Std = 0, OnHover = 0x50ff0000},
 			Priority = priority,
-			text = {Prototype = custom_entry.text, Text = text},
-			image = {Prototype = custom_entry.image, Symbol = symbol}
+			text =
+			{
+				Left = "2em",
+				Text = text
+			},
+			image = {
+				Right = "2em",
+				Symbol = symbol,
+				action = {
+					Margin = "0.2em",
+					Symbol = Icon_Arrow,
+					GraphicsName = action_graphics_name
+				}
+			}
 		}};
 }
 
@@ -136,7 +145,7 @@ public func OnDoorControl(symbol_or_object, string action, bool alt)
 	else if (action == "closeleft")
 		this->CloseDoorLeft();
 	else if (action == "closeright")
-		this->CloseDoorRight();		
+		this->CloseDoorRight();
 	UpdateInteractionMenus(this.GetDoorControlMenuEntries);	
 	return;
 }

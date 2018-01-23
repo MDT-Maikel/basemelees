@@ -13,18 +13,24 @@ protected func Initialize()
 	return;
 }
 
-private func IsOpen()
+public func IsOpen()
 {
-	if (GetContact(-1) & CNAT_Top)
-	 	return true;
-	return false;
+	return (GetContact(-1) & CNAT_Top) && GetComDir() == COMD_Up;
 }
 
-private func IsClosed()
+public func IsClosed()
 {
-	if (GetContact(-1) & CNAT_Bottom)
-	 	return true;
-	return false;
+	return (GetContact(-1) & CNAT_Bottom) && GetComDir() == COMD_Down;
+}
+
+public func IsOpening()
+{
+	return !(GetContact(-1) & CNAT_Top) && GetComDir() == COMD_Up;
+}
+
+public func IsClosing()
+{
+	return !(GetContact(-1) & CNAT_Bottom) && GetComDir() == COMD_Down;
 }
 
 public func OpenDoor()
