@@ -203,7 +203,7 @@ public func GetLiquidContainerMaxFillLevel(liquid_name)
 }
 
 // The liquid cannon may have one drain pipe.
-public func QueryConnectPipe(object pipe)
+public func QueryConnectPipe(object pipe, bool do_msg)
 {
 	if (pipe->IsDrainPipe() && GetDrainPipe())
 		return true;
