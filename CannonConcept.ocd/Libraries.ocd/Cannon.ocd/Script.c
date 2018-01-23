@@ -12,6 +12,10 @@
 */
 
 
+// Cannons are destructible.
+#include Library_Destructible
+
+
 // All cannon related local variables are stored in a single proplist.
 // This reduces the chances of clashing local variables. See 
 // Construction for which variables are being used.
@@ -386,3 +390,5 @@ public func IsCannon() { return true; }
 
 // All cannons must be pushable.
 local Touchable = 1;
+// As default cannons have 100 hit points.
+local HitPoints = 100;

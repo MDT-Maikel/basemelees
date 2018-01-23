@@ -8,6 +8,7 @@
 
 #include Library_CannonFrame
 #include Library_ElevatorControl
+#include Library_Destructible
 
 
 /*-- Graphics --*/
@@ -38,6 +39,23 @@ private func DetachCannonGraphics(object cannon)
 	return;
 }
 
+
+/*-- Destruction --*/
+
+public func OnDestruction(int change, int cause, int by_player)
+{
+
+	return false;
+}
+
+public func OnHalfDamage(int change, int cause, int by_player)
+{
+	return;
+}
+
+
+/*-- Production --*/
+
 public func IsArmoryProduct() { return true; }
 
 
@@ -49,4 +67,5 @@ local Touchable = 1;
 local BorderBound = C4D_Border_Sides;
 local ContactCalls = true;
 local Components = {Metal = 1, Wood = 2};
+local HitPoints = 150;
 local AimingAngleRange = [260, 100];

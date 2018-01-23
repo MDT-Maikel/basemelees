@@ -257,7 +257,8 @@ public func OnCannonMountingClick(object cannon, string action, bool alt)
 	{
 		cannon->MountCannon(this);
 	}
-	return UpdateInteractionMenus(/*this.GetCannonMountingMenuEntries*/);
+	// Update all interaction menus of the cannon frame.
+	return UpdateInteractionMenus();
 }
 
 
