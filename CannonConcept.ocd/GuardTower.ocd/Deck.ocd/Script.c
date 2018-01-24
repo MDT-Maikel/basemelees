@@ -42,6 +42,9 @@ public func Collection2(object obj)
 	return _inherited(obj, ...);
 }
 
+// Allows vehicle entrance while not being a container.
+public func AllowsVehicleEntrance() { return true; }
+
 
 /*-- Saving --*/
 
