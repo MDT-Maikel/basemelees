@@ -93,35 +93,6 @@ public func GetCannonFrame() { return lib_cannon.frame; }
 public func IsMounted() { return !!lib_cannon.frame; }
 
 
-/*-- Interaction --*/
-
-public func IsInteractable(object clonk)
-{
-	var frame = FindObject(Find_AtPoint(), Find_NoContainer(), Find_Func("IsCannonFrame"));
-	if (!frame)
-		return false;
-	if (QueryRejectCannonMount(frame) || frame->QueryRejectCannonMount(this))
-		return false;
-	return true;
-}
-
-public func GetInteractionMetaInfo(object clonk)
-{
-	return { Description = Format("$MsgMountCannon$", this->GetName()) };
-}
-
-public func Interact(object clonk)
-{
-	var frame = FindObject(Find_AtPoint(), Find_Func("IsCannonFrame"));
-	if (!frame)
-		return false;
-	if (QueryRejectCannonMount(frame) || frame->QueryRejectCannonMount(this))
-		return false;
-	MountCannon(frame);
-	return true;
-}
-
-
 /*-- Controls -- */
 
 public func CannonUseStart(object frame, object clonk, int x, int y) { return true; }
